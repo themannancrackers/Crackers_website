@@ -1,0 +1,260 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<style>
+
+/* RESET */
+body {
+    background: #f8f9fc;
+    color: #222;
+    font-family: Georgia, "Times New Roman", Times, serif;
+}
+
+/* ================== WRAPPER ================== */
+.contact-wrapper {
+    text-align: center;
+    padding: 40px 20px;
+    max-width: 900px;
+    margin: auto;
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+/* Title */
+.contact-title {
+    font-size: 36px;
+    font-weight: 800;
+    color: #222;
+    letter-spacing: 1px;
+}
+
+.contact-underline {
+    width: 90px;
+    height: 4px;
+    background: linear-gradient(90deg, #ff6600, #ff8c00);
+    margin: 8px auto 25px;
+    border-radius: 30px;
+}
+
+/* Icon Circle */
+.contact-icon-circle {
+    width: 90px;
+    height: 90px;
+    border-radius: 22px;
+    background: linear-gradient(135deg, #fff, #f3f3f3);
+    border: 2px solid #eee;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 35px auto 15px;
+    box-shadow: 0 5px 18px rgba(0,0,0,0.08);
+    transition: transform 0.3s ease;
+}
+
+.contact-icon-circle:hover {
+    transform: translateY(-6px);
+}
+
+.contact-icon-circle i {
+    font-size: 38px;
+    color: #ff6600;
+}
+
+/* Section Heading */
+.contact-heading {
+    font-size: 26px;
+    font-weight: 700;
+    color: #333;
+}
+
+/* Description Text */
+.contact-text {
+    font-family: 'Inter', sans-serif;
+    font-size: 18px;
+    margin: 8px 0 20px;
+    color: #444;
+    line-height: 1.7;
+}
+
+/* Social Icons */
+.contact-social img {
+    width: 48px;
+    margin: 0 10px;
+    transition: transform .25s, filter .25s;
+}
+
+.contact-social img:hover {
+    transform: scale(1.15);
+    filter: brightness(1.15);
+}
+
+/* Google Map */
+.contact-map iframe {
+    width: 100%;
+    height: 330px;
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    margin-top: 20px;
+}
+
+
+/* ==============================================================
+   📟 TABLET SCREENS (768px – 1199px)
+   ============================================================== */
+@media (min-width: 768px) and (max-width: 1199px) {
+
+    .contact-wrapper {
+        padding: 35px 30px;
+        border-radius: 18px;
+    }
+
+    .contact-title {
+        font-size: 30px;
+    }
+
+    .contact-heading {
+        font-size: 23px;
+    }
+
+    .contact-text {
+        font-size: 16px;
+    }
+
+    .contact-icon-circle {
+        width: 80px;
+        height: 80px;
+    }
+
+    .contact-icon-circle i {
+        font-size: 32px;
+    }
+
+    .contact-map iframe {
+        height: 300px;
+    }
+}
+
+
+/* ==============================================================
+   📱 MOBILE (≤ 767px)
+   ============================================================== */
+@media (max-width: 767px) {
+
+    .contact-wrapper {
+        padding: 22px 14px;
+        box-shadow: none;
+        border-radius: 0;
+        background: transparent;
+    }
+
+    .contact-title {
+        font-size: 26px;
+        margin-top: 10px;
+    }
+
+    .contact-underline {
+        width: 60px;
+        height: 3px;
+        margin-bottom: 18px;
+    }
+
+    .contact-icon-circle {
+        width: 70px;
+        height: 70px;
+        border-radius: 16px;
+    }
+
+    .contact-icon-circle i {
+        font-size: 26px;
+    }
+
+    .contact-heading {
+        font-size: 20px;
+    }
+
+    .contact-text {
+        font-size: 15px;
+        line-height: 1.5;
+        margin-bottom: 15px;
+    }
+
+    .contact-social img {
+        width: 38px;
+        margin: 0 6px;
+    }
+
+    .contact-map iframe {
+        height: 230px;
+    }
+}
+
+</style>
+
+{% endblock %}
+
+
+
+{% block content %}
+<div class="contact-wrapper">
+
+    <!-- Top Title -->
+    <h2 class="contact-title">CONTACT US</h2>
+    <div class="contact-underline"></div>
+
+    <!-- Address Section -->
+    <div class="contact-icon-circle">
+        <i class="bi bi-geo-alt-fill"></i>
+    </div>
+    <h3 class="contact-heading">Address</h3>
+    <p class="contact-text">
+        The Mannan Crackers<br>
+        10/112/3, Bharathi school complex, Sattur Road,<br>
+        Meenampatti Bus Stop, Sivakasi - 626189
+    </p>
+
+    <!-- Owner Section -->
+    <div class="contact-icon-circle">
+        <i class="bi bi-telephone-fill"></i>
+    </div>
+    <h3 class="contact-heading">Owner</h3>
+    <p class="contact-text">
+        Mobile: <b>+91 9123517649</b>
+    </p>
+
+    <!-- Email Section -->
+    <div class="contact-icon-circle">
+        <i class="bi bi-globe2"></i>
+    </div>
+
+    <h3 class="contact-heading">Connect With Us</h3>
+    <p class="contact-text">
+        themannancrackers@gmail.com
+    </p>
+
+    <!-- Social Icons -->
+    <div class="contact-social">
+        <!-- Instagram -->
+        <a href="https://www.instagram.com/the_mannan_crackers/" target="_blank" rel="noopener noreferrer">
+            <img src="https://cdn-icons-png.flaticon.com/512/174/174855.png" alt="Instagram">
+        </a>
+
+        <!-- Google Maps Location -->
+        <a href="https://maps.app.goo.gl/wsbUxzTGtAc7oXEe7" target="_blank" rel="noopener noreferrer">
+            <img src="https://cdn-icons-png.flaticon.com/512/2991/2991231.png" alt="Location">
+        </a>
+    </div>
+
+    <!-- Map -->
+    <div class="contact-map">
+        <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3915.06859787431!2d77.82179877480544!3d9.42799908324272!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3b06db4e2b3a1f77%3A0x26b98d2bb6f6f489!2sMeenampatti%2C%20Tamil%20Nadu%20626189!5e0!3m2!1sen!2sin!4v1708599820000"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+
+</div>
+{% endblock %}

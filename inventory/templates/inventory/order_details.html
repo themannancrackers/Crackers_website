@@ -1,0 +1,224 @@
+{% load tz %}
+
+<div class="container-fluid p-0">
+    <!-- Order Header -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <h5 class="fw-bold mb-3"></h5>
+            <p class="mb-1"><strong>Customer:</strong> {{ order.full_name }}</p>
+            <p class="mb-1"><strong>Email:</strong> {{ order.email }}</p>
+            <p class="mb-1"><strong>Phone:</strong> {{ order.phone }}</p>
+            <p class="mb-1"><strong>Address:</strong> {{ order.address }}</p>
+        </div>
+        <div class="col-md-6 text-end">
+<p class="mb-1">
+  <strong>Order Date:</strong>
+  {{ order.created_at|localtime|date:"M d, Y h:i A" }}
+</p>
+            <p class="mb-2"><strong>Status:</strong> 
+                <span class="badge bg-{% if order.status == 'pending' %}warning
+                    {% elif order.status == 'processing' %}info
+                    {% elif order.status == 'shipped' %}primary
+                    {% elif order.status == 'delivered' %}success
+                    {% else %}danger{% endif %}">
+                    {{ order.get_status_display }}
+                </span>
+            </p>
+<small class="text--white-muted">
+  Last Updated: {{ order.updated_at|localtime|date:"M d, Y h:i A" }}
+</small>
+        </div>
+    </div>
+
+    <!-- Order Items -->
+    <div class="table-responsive mb-4">
+        <table class="table table-hover order-details-table">
+            <thead class="table-light">
+                <tr>
+                    <th>Product</th>
+                    <th class="text-center">Quantity</th>
+                    <th class="text-end">Price</th>
+                    <th class="text-end">Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+<tr>
+    <td data-label="Product">{{ item.product.name }}</td>
+    <td class="text-center" data-label="Qty">{{ item.quantity }}</td>
+    <td class="text-end" data-label="Price">₹{{ item.price }}</td>
+    <td class="text-end" data-label="Total">₹{{ item.total }}</td>
+</tr>
+
+                {% endfor %}
+            </tbody>
+            <tfoot class="table-light">
+                <tr>
+                    <td colspan="3" class="text-end"><strong>Total Amount:</strong></td>
+                    <td class="text-end"><strong>₹{{ order.total_amount }}</strong></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <!-- Order Timeline -->
+    <div class="row">
+        <div class="col-12">
+            <h6 class="fw-bold mb-3">Order Timeline</h6>
+            <div class="status-timeline">
+                {% for status_code, status_label in order.STATUS_CHOICES %}
+                <div class="status-step {% if order.status == status_code %}active{% endif %}">
+                    <div class="status-icon">
+                        <i class="bi {% if order.status == status_code %}bi-check-circle-fill{% else %}bi-circle{% endif %}"></i>
+                    </div>
+                    <div class="status-label">{{ status_label }}</div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.status-timeline {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    padding: 20px 0;
+}
+
+.status-step {
+    text-align: center;
+    flex: 1;
+    position: relative;
+}
+
+.status-step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 25px;
+    right: -50%;
+    width: 100%;
+    height: 2px;
+    background-color: #dee2e6;
+    z-index: 1;
+}
+
+.status-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: white;
+    border: 2px solid #dee2e6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+}
+
+.status-step.active .status-icon {
+    border-color: #007bff;
+    color: #007bff;
+}
+
+.status-step.active .status-icon i {
+    font-size: 1.25rem;
+}
+
+.status-label {
+    margin-top: 10px;
+    font-size: 0.875rem;
+    color: #6c757d;
+}
+
+.status-step.active .status-label {
+    color: #007bff;
+    font-weight: bold;
+}
+
+.table thead th, 
+.table tfoot td {
+    font-weight: 600;
+}
+
+.badge {
+    padding: 0.5em 1em;
+    font-weight: 500;
+}
+
+@media (max-width: 768px) {
+    
+   .status-timeline {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    padding: 20px 0;
+}
+
+.status-step {
+    text-align: center;
+    flex: 1;
+    position: relative;
+}
+
+.status-step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 25px;
+    right: -50%;
+    width: 100%;
+    height: 2px;
+    background-color: #dee2e6;
+    z-index: 1;
+}
+
+.status-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: white;
+    border: 2px solid #dee2e6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+}
+
+.status-step.active .status-icon {
+    border-color: #007bff;
+    color: #007bff;
+}
+
+.status-step.active .status-icon i {
+    font-size: 1.25rem;
+}
+
+.status-label {
+    margin-top: 10px;
+    font-size: 0.875rem;
+    color: #6c757d;
+}
+
+.status-step.active .status-label {
+    color: #007bff;
+    font-weight: bold;
+}
+
+.table thead th, 
+.table tfoot td {
+    font-weight: 600;
+}
+
+.badge {
+    padding: 0.5em 1em;
+    font-weight: 500;
+} 
+}
+
+</style>

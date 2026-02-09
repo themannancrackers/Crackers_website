@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Order is Confirmed | Happy Diwali from The Mannan Crackers</title>
+
+<style>
+  body, table, td, a { -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; }
+  table { border-collapse: collapse !important; }
+  body { margin: 0 !important; padding: 0 !important; background-color: #f8f9fa; }
+  img { border: 0; outline: none; text-decoration: none; }
+
+  @media screen and (max-width: 600px) {
+    h1 { font-size: 22px !important; }
+    .content { padding: 20px !important; }
+    .info-cell { display: block !important; width: 100% !important; margin-bottom: 12px !important; }
+  }
+</style>
+</head>
+
+<body style="margin:0; padding:0; background-color:#f8f9fa;">
+
+<!-- Wrapper -->
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td align="center">
+
+      <!-- Main Container -->
+      <table width="100%" style="max-width:750px; background:white; border-radius:12px; overflow:hidden; box-shadow:0 0 12px rgba(0,0,0,0.08);">
+
+        <!-- Header -->
+        <tr>
+          <td align="center" style="background: linear-gradient(135deg,#ffb703,#fb8500); padding:50px 20px; color:white;">
+            <h1 style="font-size:30px; font-family:'Segoe UI',Arial,sans-serif; margin:0 0 10px; font-weight:700;">
+              🎆 Happy Diwali! 🎇
+            </h1>
+            <p style="font-size:16px; margin:0; font-family:'Segoe UI',Arial,sans-serif; opacity:0.95;">
+              Your order has been successfully confirmed. Thank you for celebrating Diwali with us!
+            </p>
+          </td>
+        </tr>
+
+        <!-- Greeting -->
+        <tr>
+          <td class="content" style="padding:35px;">
+            <h2 style="font-size:22px; font-family:'Segoe UI',Arial,sans-serif; font-weight:600; color:#1a365d; margin-bottom:10px;">
+              Dear {{ customer_name }},
+            </h2>
+            <p style="font-size:15px; color:#444; line-height:1.7; font-family:'Segoe UI',Arial,sans-serif;">
+              We are pleased to inform you that your order with <strong>The Mannan Crackers</strong> has been confirmed and is now being processed. 
+              Our team is carefully preparing your items to ensure they reach you safely and on time for the festivities.
+            </p>
+
+            <div style="text-align:center; margin:30px 0;">
+              <a href="{{ tracking_link }}" style="background:#fb8500; font-family:'Segoe UI',Arial,sans-serif; color:#fff; padding:12px 28px; border-radius:30px; font-size:15px; font-weight:600; text-decoration:none; display:inline-block;">
+                🔍 Track Your Order
+              </a>
+            </div>
+          </td>
+        </tr>
+
+        <!-- Order Summary -->
+        <tr>
+          <td style="padding:0 35px 25px;">
+            <h3 style="font-size:18px; font-family:'Segoe UI',Arial,sans-serif; color:#1a365d; margin-bottom:15px;">
+              Order Summary
+            </h3>
+
+            <table width="100%" cellpadding="10" cellspacing="0" style="border:1px solid #e2e8f0; border-radius:8px;">
+              <thead style="background:#f7fafc;">
+                <tr>
+                  <th align="left" style="font-size:14px; font-family:'Segoe UI',Arial,sans-serif; color:#2d3748;">Product</th>
+                  <th align="left" style="font-size:14px; font-family:'Segoe UI',Arial,sans-serif; color:#2d3748;">Quantity</th>
+                  <th align="left" style="font-size:14px; font-family:'Segoe UI',Arial,sans-serif; color:#2d3748;">Unit Price</th>
+                  <th align="left" style="font-size:14px; font-family:'Segoe UI',Arial,sans-serif; color:#2d3748;">Total</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {{ items_html|safe }}
+              </tbody>
+
+              <tfoot>
+                <tr style="background:#1a365d; color:white; font-weight:600;">
+                  <td colspan="3" align="right" style="padding:12px;">Total Amount:</td>
+                  <td style="padding:12px;">{{ order_total }}</td>
+                </tr>
+              </tfoot>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Delivery Information -->
+        <tr>
+          <td style="padding:0 35px 35px;">
+            <h3 style="font-size:18px; font-family:'Segoe UI',Arial,sans-serif; color:#1a365d; margin-bottom:10px;">
+              Delivery Details
+            </h3>
+
+            <table width="100%" cellpadding="10" cellspacing="0" style="border:1px solid #e2e8f0; border-radius:8px;">
+              <tr>
+                <td width="33%" class="info-cell" style="font-family:'Segoe UI',Arial,sans-serif;">
+                  <strong style="color:#1a365d;">Delivery Address</strong><br>
+                  <span style="color:#444;">{{ delivery_address }}</span>
+                </td>
+
+                <td width="33%" class="info-cell" style="font-family:'Segoe UI',Arial,sans-serif;">
+                  <strong style="color:#1a365d;">Contact Number</strong><br>
+                  <span style="color:#444;">{{ phone }}</span>
+                </td>
+
+                <td width="33%" class="info-cell" style="font-family:'Segoe UI',Arial,sans-serif;">
+                  <strong style="color:#1a365d;">Email</strong><br>
+                  <span style="color:#444;">{{ email }}</span>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Diwali Note -->
+        <tr>
+          <td align="center" style="background:#fff7e6; padding:25px;">
+            <h3 style="font-size:18px; color:#b45309; font-family:'Segoe UI',Arial,sans-serif; margin:0 0 10px;">
+              🌟 Warm Wishes from Our Team
+            </h3>
+            <p style="font-size:15px; color:#92400e; line-height:1.7; max-width:600px; margin:0 auto; font-family:'Segoe UI',Arial,sans-serif;">
+              May the light of Diwali bring joy, prosperity, and happiness to you and your family.  
+              Thank you for choosing <strong>The Mannan Crackers</strong> — spreading festive cheer since 1995.
+            </p>
+          </td>
+        </tr>
+
+        <!-- Footer -->
+        <tr>
+          <td align="center" bgcolor="#1a1a2e" style="padding:35px; color:white;">
+            <p style="font-size:15px; font-family:'Segoe UI',Arial,sans-serif; margin-bottom:8px;">
+              For any assistance, our support team is here to help:
+            </p>
+
+            <p style="font-size:14px; font-family:'Segoe UI',Arial,sans-serif;">
+              📞 +91 98765 43210 &nbsp; | &nbsp; ✉️ themannancrackers@gmail.com
+            </p>
+
+            <hr style="border:none; border-top:1px solid rgba(255,255,255,0.2); margin:20px 0;">
+
+            <p style="font-size:13px; font-family:'Segoe UI',Arial,sans-serif; opacity:0.85;">
+              © 2025 The Mannan Crackers Pvt. Ltd.<br>
+              Delivering Festive Joy Since 2026
+            </p>
+          </td>
+        </tr>
+
+      </table>
+      <!-- End Main Container -->
+
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>

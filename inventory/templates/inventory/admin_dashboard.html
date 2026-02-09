@@ -1,0 +1,1010 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block extra_css %}
+<style>
+:root {
+  --diwali-gold: #ffd700;
+  --diwali-orange: #ff8c00;
+  --diwali-red: #ff4d4d;
+  --diwali-green: #28a745;
+  --diwali-blue: #0f172a;
+  --diwali-pink: #ff69b4;
+  --diwali-bg: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+}
+
+/* Base */
+body {
+  background: var(--diwali-bg);
+  min-height: 100vh;
+  overflow-x: hidden;
+ font-family: Georgia, "Times New Roman", Times, serif;  color: #fff;
+}
+
+/* Top festive bar */
+.diwali-header-bar {
+  text-align: center;
+  padding: 10px 16px;
+  background: linear-gradient(90deg, var(--diwali-orange), var(--diwali-gold), var(--diwali-orange));
+  color: #1a1a2e;
+  font-weight: 700;
+  font-size: 1rem;
+  box-shadow: 0 4px 15px rgba(255, 165, 0, 0.5);
+  border-radius: 12px;
+  margin-bottom: 24px;
+  animation: glowPulse 3s infinite ease-in-out;
+}
+
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 10px var(--diwali-gold); }
+  50% { box-shadow: 0 0 22px var(--diwali-orange); }
+}
+
+/* Dashboard header */
+.dashboard-header {
+  background: rgba(10, 16, 35, 0.95);
+  padding: 18px 20px;
+  border-radius: 16px;
+  border-left: 4px solid var(--diwali-gold);
+  margin-bottom: 28px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.dashboard-header h2 {
+  background: linear-gradient(to right, var(--diwali-gold), var(--diwali-orange));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 2rem;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dashboard-header .btn {
+  border-radius: 999px;
+}
+
+/* KPI cards */
+.kpi-card {
+  border: none;
+  border-radius: 18px;
+  overflow: hidden;
+  text-align: center;
+  padding: 22px 12px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  min-height: 170px;
+  position: relative;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  isolation: isolate;
+}
+
+.kpi-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.18;
+  background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.9), transparent 55%);
+  pointer-events: none;
+}
+
+.kpi-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.6);
+}
+
+.kpi-icon {
+  font-size: 2.4rem;
+  margin-bottom: 10px;
+}
+
+.kpi-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  opacity: 0.9;
+}
+
+.kpi-value {
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin-top: 6px;
+  font-family: "Courier New", ui-monospace, monospace;
+}
+
+/* KPI card backgrounds */
+.bg-users {
+  background: linear-gradient(135deg, #005bea, #00c6ff);
+  color: #fdfdfd;
+}
+
+.bg-products {
+  background: linear-gradient(135deg, #1e9600, #99f2c8);
+  color: #0f172a;
+  font-weight: 600;
+}
+
+.bg-orders {
+  background: linear-gradient(135deg, #ff8c00, #ffd700);
+  color: #1a1a2e;
+  font-weight: 600;
+}
+
+.bg-revenue {
+  background: linear-gradient(135deg, #ff4d4d, #ff7eb3);
+  color: #fff;
+}
+
+/* Generic cards */
+.card {
+  border: none;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.96);
+  color: #1a1a2e;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  backdrop-filter: blur(10px);
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+}
+
+/* Table */
+.table {
+  margin-bottom: 0;
+}
+
+.table thead {
+  background: linear-gradient(90deg, var(--diwali-orange), var(--diwali-gold));
+  color: #1a1a2e;
+}
+
+.table thead th {
+  border: 0;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.table tbody tr {
+  border-bottom: 1px solid #e9ecef;
+}
+
+tbody tr:hover {
+  background-color: rgba(255, 215, 0, 0.06);
+  transition: background-color 0.25s ease;
+}
+
+/* Buttons */
+.btn-outline-light {
+  border-color: var(--diwali-gold);
+  color: var(--diwali-gold);
+}
+
+.btn-outline-light:hover {
+  background: linear-gradient(135deg, var(--diwali-orange), var(--diwali-gold));
+  color: #1a1a2e;
+  border-color: transparent;
+}
+
+.btn-outline-warning {
+  color: var(--diwali-orange);
+  border-color: var(--diwali-orange);
+}
+
+.btn-outline-warning:hover {
+  background: linear-gradient(135deg, var(--diwali-orange), var(--diwali-gold));
+  color: #1a1a2e;
+  border-color: var(--diwali-gold);
+}
+
+.btn-outline-success {
+  color: var(--diwali-green);
+}
+
+.btn-outline-success:hover {
+  background-color: var(--diwali-green);
+  border-color: var(--diwali-green);
+  color: #fff;
+}
+
+/* Utility */
+.text-orange {
+  color: var(--diwali-orange);
+}
+
+/* Order status dropdown */
+select.order-status {
+  background-color: #fff;
+  border: 1px solid var(--diwali-orange);
+  font-weight: 500;
+  color: #1a1a2e;
+  border-radius: 999px;
+  padding-inline: 12px;
+}
+
+select.order-status:focus {
+  border-color: var(--diwali-gold);
+  box-shadow: 0 0 0 0.15rem rgba(255, 215, 0, 0.4);
+  background-color: #fff;
+}
+
+select.order-status option {
+  background-color: #fff;
+  color: #1a1a2e;
+}
+
+.status-updated {
+  background-color: rgba(255, 215, 0, 0.22) !important;
+  transition: background-color 0.6s ease-out;
+}
+
+/* List group (low stock) */
+.list-group-item {
+  background-color: #f8f9fa;
+  color: #1a1a2e;
+  border-color: #e9ecef;
+}
+
+.list-group-item:hover {
+  background: linear-gradient(90deg, rgba(255,215,0,0.08), rgba(255,140,0,0.04));
+}
+
+/* Badges */
+.badge {
+  font-size: 0.8rem;
+  padding: 5px 10px;
+  font-weight: 600;
+  border-radius: 999px;
+}
+
+/* Low stock grid */
+#low-stock-list {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 12px;
+  padding: 12px;
+}
+
+#low-stock-list .list-group-item {
+  display: flex !important;
+  flex-direction: column;
+  align-items: flex-start !important;
+  justify-content: space-between;
+  border-radius: 12px;
+  background: #ffffff !important;
+  border: 1px solid #e9ecef !important;
+  padding: 12px 14px !important;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+}
+
+/* Modal */
+.modal-content {
+  border-radius: 18px;
+  border: 1px solid rgba(255, 215, 0, 0.5);
+}
+
+.modal-dialog {
+  max-width: 900px;
+}
+
+/* RESPONSIVE STYLES */
+
+/* Laptop / small desktop tweaks */
+@media (max-width: 1200px) {
+  #low-stock-list {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Tablet */
+@media (max-width: 992px) {
+  .dashboard-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 14px;
+    align-items: stretch !important;
+  }
+
+  .dashboard-header h2 {
+    justify-content: center;
+  }
+
+  #refreshBtn {
+    width: 100%;
+  }
+
+  #last-updated {
+    display: block;
+    margin-top: 6px;
+  }
+
+  .card-header {
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 8px;
+  }
+
+  #orderFilter {
+    width: 100% !important;
+    margin-top: 6px;
+  }
+
+  .kpi-card {
+    padding: 18px 10px;
+    min-height: 150px;
+  }
+
+  #low-stock-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .modal-dialog {
+    width: 94% !important;
+    margin: 18px auto !important;
+  }
+}
+
+/* Tablet & large phones: 2-column card layout for recent orders */
+@media (max-width: 768px) {
+  .dashboard-header h2 {
+    font-size: 1.7rem;
+  }
+
+  .kpi-value {
+    font-size: 1.8rem;
+  }
+
+  .kpi-icon {
+    font-size: 2.1rem;
+  }
+
+  /* Turn table rows into cards */
+  table thead {
+    display: none !important;
+  }
+
+  #recent-orders-table {
+    border-collapse: separate;
+    border-spacing: 0 10px;
+  }
+
+  #recent-orders {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    padding: 10px;
+  }
+
+  #recent-orders-table tr {
+    display: block;
+    background: #ffffff;
+    border-radius: 12px;
+    border-left: 4px solid var(--diwali-orange);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    padding: 10px 12px;
+  }
+
+  #recent-orders-table td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0 !important;
+    border: none;
+    font-size: 0.85rem;
+  }
+
+  #recent-orders-table td::before {
+    content: attr(data-label);
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--diwali-orange);
+    text-transform: uppercase;
+    margin-right: 10px;
+  }
+
+  #low-stock-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Small phones */
+@media (max-width: 480px) {
+  .diwali-header-bar {
+    font-size: 0.9rem;
+    padding-inline: 10px;
+  }
+
+  .dashboard-header h2 {
+    font-size: 1.5rem !important;
+  }
+
+  .kpi-value {
+    font-size: 1.6rem !important;
+  }
+
+  .kpi-icon {
+    font-size: 2rem !important;
+  }
+
+  #recent-orders {
+    grid-template-columns: 1fr !important;
+  }
+
+  #low-stock-list {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+  <!-- Header -->
+  <div class="diwali-header-bar">
+    ✨ Welcome to The Mannan Crackers Admin Dashboard ✨
+  </div>
+
+  <!-- Dashboard Header -->
+  <div class="dashboard-header d-flex justify-content-between align-items-center">
+    <h2><i class="bi bi-speedometer2"></i> Admin Dashboard</h2>
+    <div>
+      <button class="btn btn-sm btn-outline-light" id="refreshBtn">
+        <i class="bi bi-arrow-clockwise"></i> Refresh
+      </button>
+      <small class="text-light ms-3">Last updated: <span id="last-updated">Just now</span></small>
+    </div>
+  </div>
+
+  <!-- KPI Cards -->
+  <div class="row g-4 mb-4">
+    <div class="col-md-6 col-lg-3">
+      <div class="card kpi-card bg-users shadow-lg">
+        <i class="bi bi-people-fill kpi-icon"></i>
+        <div class="kpi-label">Total Users</div>
+        <div class="kpi-value" id="total-users">{{ total_users }}</div>
+      </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+      <div class="card kpi-card bg-products shadow-lg">
+        <i class="bi bi-box-seam kpi-icon"></i>
+        <div class="kpi-label">Total Products</div>
+        <div class="kpi-value" id="total-products">{{ total_products }}</div>
+      </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+      <div class="card kpi-card bg-orders shadow-lg">
+        <i class="bi bi-cart-check kpi-icon"></i>
+        <div class="kpi-label">Total Orders</div>
+        <div class="kpi-value" id="total-orders">{{ total_orders }}</div>
+      </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+      <div class="card kpi-card bg-revenue shadow-lg">
+        <i class="bi bi-currency-rupee kpi-icon"></i>
+        <div class="kpi-label">Total Revenue</div>
+        <div class="kpi-value" id="total-revenue">₹{{ total_revenue }}</div>
+      </div>
+    </div>
+  </div>
+
+    <!-- Recent Orders -->
+    <div class="col-lg-12">
+      <div class="card shadow-lg rounded-4 border-0" style="border-left: 5px solid var(--diwali-orange);">
+        <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center rounded-top-4">
+          <h6 class="mb-0">
+            <i class="bi bi-bag-check"></i> 
+            <span style="background: linear-gradient(90deg, var(--diwali-orange), var(--diwali-gold)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">
+              Recent Orders
+            </span>
+          </h6>
+          <select id="orderFilter" class="form-select form-select-sm w-auto bg-dark text-white border-warning" onchange="filterOrders(this.value)" style="border-color: var(--diwali-orange) !important;">
+            <option value="all">All Orders</option>
+            <option value="pending">Pending</option>
+            <option value="confirmed">Confirmed</option>
+          </select>
+        </div>
+
+        <div class="card-body table-responsive p-0">
+<table id="recent-orders-table" class="table table-hover align-middle mb-0">
+            <thead class="bg-dark text-white-50">
+              <tr>
+                <th class="ps-3">Order</th>
+                <th>Customer</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th class="pe-3">Action</th>
+              </tr>
+            </thead>
+            <tbody id="recent-orders" class="bg-light">
+              {% for order in recent_orders %}
+              <tr data-id="{{ order.id }}" style="border-bottom: 1px solid #e9ecef;">
+<td data-label="Order" class="ps-3 fw-bold text-orange">#{{ order.id }}</td>
+                <td>{{ order.full_name }}</td>
+                <td>
+                  <span style="background: linear-gradient(135deg, var(--diwali-orange), var(--diwali-gold)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; font-weight: 600;">
+                    ₹{{ order.total_amount }}
+                  </span>
+                </td>
+                <td>
+                  <select class="form-select form-select-sm order-status" data-id="{{ order.id }}" style="border-color: var(--diwali-orange);">
+                    <option value="pending" {% if order.status == 'pending' %}selected{% endif %}>Pending</option>
+                    <option value="confirmed" {% if order.status == 'confirmed' %}selected{% endif %}>Confirmed</option>
+                  </select>
+                </td>
+<td class="order-date" data-date="{{ order.created_at }}">{{ order.created_at }}</td>
+                <td class="pe-3">
+                  <button class="btn btn-sm btn-outline-warning view-details" data-id="{{ order.id }}" style="border-color: var(--diwali-orange); color: var(--diwali-orange);">
+                    <i class="bi bi-eye"></i>
+                  </button>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+
+
+    <!-- Low Stock Section -->
+
+      <div class="card shadow-lg rounded-4 border-0" style="border-left: 5px solid var(--diwali-red);">
+        <div class="card-header bg-dark text-white rounded-top-4">
+          <h6 class="mb-0">
+            <i class="bi bi-exclamation-triangle"></i>
+            <span style="background: linear-gradient(90deg, var(--diwali-red), var(--diwali-pink)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">
+              Low Stock Products
+            </span>
+          </h6>
+        </div>
+        <div class="card-body p-0">
+          <ul class="list-group list-group-flush" id="low-stock-list">
+            {% for product in low_stock_products %}
+            <li class="list-group-item d-flex justify-content-between align-items-center" style="background: linear-gradient(90deg, rgba(255,215,0,0.05), transparent); border-bottom: 1px solid #e9ecef;">
+              <span class="fw-500">{{ product.name }}</span>
+              <div>
+                <span class="badge" style="background: linear-gradient(135deg, var(--diwali-red), var(--diwali-pink));">{{ product.stock_quantity }}</span>
+                <button class="btn btn-sm btn-outline-success ms-2 add-stock-btn" data-id="{{ product.id }}" style="border-color: var(--diwali-green); color: var(--diwali-green);">
+                  <i class="bi bi-plus"></i>
+                </button>
+              </div>
+            </li>
+            {% empty %}
+            <li class="list-group-item text-center text-muted py-4">
+              <i class="bi bi-check-circle" style="color: var(--diwali-green); font-size: 1.5rem;"></i><br>
+              No low stock items 🎉
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+
+<!-- Order Details Modal -->
+<div class="modal fade" id="orderDetailsModal" tabindex="-1" aria-labelledby="orderDetailsLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content" style="background: linear-gradient(135deg, rgba(26,26,46,0.95), rgba(22,33,62,0.95));">
+      <div class="modal-header bg-dark text-white border-bottom" style="border-bottom-color: var(--diwali-orange) !important;">
+        <h5 class="modal-title" id="orderDetailsLabel" style="color: var(--diwali-gold);">Order Details</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body text-light" id="orderDetailsContent">
+        <div class="text-center text-muted">Loading...</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Additional Styles -->
+<style>
+  /* Text color for orange */
+  .text-orange {
+    color: var(--diwali-orange);
+  }
+
+  /* Table styling */
+  tbody tr:hover {
+    background-color: rgba(255, 215, 0, 0.05);
+    transition: all 0.3s ease;
+  }
+
+  /* Order status dropdown */
+  select.order-status {
+    background-color: #fff;
+    border: 1px solid var(--diwali-orange);
+    font-weight: 500;
+    color: #1a1a2e;
+  }
+
+  select.order-status:focus {
+    border-color: var(--diwali-gold);
+    box-shadow: 0 0 5px rgba(255, 215, 0, 0.3);
+    background-color: #fff;
+  }
+
+  select.order-status option {
+    background-color: #fff;
+    color: #1a1a2e;
+  }
+
+  select.order-status option:hover {
+    background: linear-gradient(135deg, var(--diwali-orange), var(--diwali-gold));
+  }
+
+  /* Highlight when updated */
+  .status-updated {
+    background-color: rgba(255, 215, 0, 0.2) !important;
+    transition: background-color 0.6s ease-out;
+  }
+
+  /* Card hover effect */
+  .card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  /* List group styling */
+  .list-group-item {
+    background-color: #f8f9fa;
+    color: #1a1a2e;
+  }
+
+  .list-group-item:hover {
+    background: linear-gradient(90deg, rgba(255,215,0,0.1), rgba(255,140,0,0.05));
+  }
+
+  /* Badge styling */
+  .badge {
+    font-size: 0.85rem;
+    padding: 5px 10px;
+    font-weight: 600;
+  }
+
+  /* Button styling */
+  .btn-outline-warning {
+    color: var(--diwali-orange);
+    border-color: var(--diwali-orange);
+  }
+
+  .btn-outline-warning:hover {
+    background: linear-gradient(135deg, var(--diwali-orange), var(--diwali-gold));
+    color: #1a1a2e;
+    border-color: var(--diwali-gold);
+  }
+
+  .btn-outline-success {
+    color: var(--diwali-green);
+  }
+
+  .btn-outline-success:hover {
+    background-color: var(--diwali-green);
+    border-color: var(--diwali-green);
+    color: white;
+  }
+/* ---------------------------------------------
+   MOBILE + TABLET RESPONSIVE FIXES
+   --------------------------------------------- */
+
+@media (max-width: 992px) {
+
+  /* KPI Cards spacing */
+  .kpi-card {
+      padding: 20px 8px;
+      min-height: 160px;
+  }
+
+  /* Dashboard header becomes vertical */
+  .dashboard-header {
+      flex-direction: column;
+      text-align: center;
+      gap: 15px;
+  }
+
+  /* Refresh Button wrap fix */
+  #refreshBtn {
+      width: 100%;
+  }
+
+  /* Last Updated text center */
+  #last-updated {
+      display: block;
+      margin-top: 8px;
+  }
+
+  /* Order Filter Dropdown full width */
+  #orderFilter {
+      width: 100% !important;
+      margin-top: 8px;
+  }
+
+  /* Card header mobile layout */
+  .card-header {
+      flex-direction: column;
+      align-items: flex-start !important;
+      gap: 8px;
+  }
+}
+@media (max-width: 450px) {
+  #recent-orders {
+      grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 768px) {
+
+  /* KPI Cards - Single column on small devices */
+  .kpi-card {
+      min-height: 140px;
+  }
+
+  /* Convert Order Row to Cards */
+ 
+  #recent-orders {
+      display: grid;
+      grid-template-columns: repeat(2, 2fr);
+      gap: 14px;
+      padding: 10px;
+  }
+  }
+/* Hide table head ONLY on mobile */
+@media (max-width: 768px) {
+    table thead {
+        display: none !important;
+    }
+}
+
+@media (max-width: 768px) {
+
+    #recent-orders-table tr {
+        display: block;
+        padding: 15px;
+        background: #ffffff;
+        border-radius: 12px;
+        border-left: 5px solid var(--diwali-orange);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    #recent-orders-table td {
+        display: flex;
+        justify-content: space-between;
+        padding: 6px 0 !important;
+        border: none;
+    }
+
+    #recent-orders-table td::before {
+        content: attr(data-label);
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: var(--diwali-orange);
+        text-transform: uppercase;
+    }
+}
+
+/* Low Stock Grid Layout */
+#low-stock-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 12px;
+  padding: 12px;
+}
+
+/* Low Stock Grid Layout */
+#low-stock-list {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr); /* 7 items per row on desktop */
+  gap: 12px;
+  padding: 12px;
+}
+
+/* Tablet (max-width 1200px) → 4 items per row */
+@media (max-width: 1200px) {
+  #low-stock-list {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Small tablet (max-width 992px) → 3 items per row */
+@media (max-width: 992px) {
+  #low-stock-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Mobile landscape (max-width 768px) → 2 items per row */
+@media (max-width: 768px) {
+  #low-stock-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Mobile portrait (max-width 480px) → 1 item per row */
+@media (max-width: 480px) {
+  #low-stock-list {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+/* Item card styling */
+#low-stock-list .list-group-item {
+  display: flex !important;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start !important;
+  border-radius: 12px;
+  background: #ffffff !important;
+  border: 1px solid #e9ecef !important;
+  padding: 14px 16px !important;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+  /* Modal becomes full screen on mobile */
+  .modal-dialog {
+      width: 95% !important;
+      margin: 20px auto !important;
+  }
+
+
+/* Ultra-small screens (phones under 400px) */
+@media (max-width: 450px) {
+  .dashboard-header h2 {
+      font-size: 1.4rem !important;
+  }
+
+  .kpi-value {
+      font-size: 1.6rem !important;
+  }
+
+  .kpi-icon {
+      font-size: 2rem !important;
+  }
+}
+
+</style>
+
+<!-- JavaScript -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const refreshBtn = document.getElementById("refreshBtn");
+  const ordersTable = document.getElementById("recent-orders");
+  const lowStockList = document.getElementById("low-stock-list");
+  const lastUpdated = document.getElementById("last-updated");
+
+  // Fetch dashboard data
+  function fetchDashboardData() {
+    fetch("{% url 'inventory:dashboard_data' %}")
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById("total-users").textContent = data.total_users;
+        document.getElementById("total-products").textContent = data.total_products;
+        document.getElementById("total-orders").textContent = data.total_orders;
+        document.getElementById("total-revenue").textContent = "₹" + data.total_revenue;
+
+        // Update recent orders table
+        ordersTable.innerHTML = "";
+        data.recent_orders.forEach(order => {
+          ordersTable.innerHTML += `
+            <tr data-id="${order.id}" style="border-bottom: 1px solid #e9ecef;">
+              <td class="ps-3 fw-bold text-orange">#${order.id}</td>
+              <td>${order.full_name}</td>
+              <td>
+                <span style="background: linear-gradient(135deg, var(--diwali-orange), var(--diwali-gold)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; font-weight: 600;">
+                  ₹${order.total_amount}
+                </span>
+              </td>
+              <td>
+                <select class="form-select form-select-sm order-status" data-id="${order.id}" style="border-color: var(--diwali-orange);">
+                  <option value="pending" ${order.status === 'pending' ? 'selected' : ''}>Pending</option>
+                  <option value="confirmed" ${order.status === 'confirmed' ? 'selected' : ''}>Confirmed</option>
+                </select>
+              </td>
+<td>${formatDateSafe(order.created_at)}</td>
+              <td class="pe-3">
+                <button class="btn btn-sm btn-outline-warning view-details" data-id="${order.id}" style="border-color: var(--diwali-orange); color: var(--diwali-orange);">
+                  <i class="bi bi-eye"></i>
+                </button>
+              </td>
+            </tr>
+          `;
+        });
+
+        // Update low stock products
+        lowStockList.innerHTML = "";
+        data.low_stock_products.forEach(p => {
+          lowStockList.innerHTML += `
+            <li class="list-group-item d-flex justify-content-between align-items-center" style="background: linear-gradient(90deg, rgba(255,215,0,0.05), transparent); border-bottom: 1px solid #e9ecef;">
+              <span class="fw-500">${p.name}</span>
+              <div>
+                <span class="badge" style="background: linear-gradient(135deg, var(--diwali-red), var(--diwali-pink));">${p.stock_quantity}</span>
+                <button class="btn btn-sm btn-outline-success ms-2 add-stock-btn" data-id="${p.id}" style="border-color: var(--diwali-green); color: var(--diwali-green);">
+                  <i class="bi bi-plus"></i>
+                </button>
+              </div>
+            </li>
+          `;
+        });
+
+        lastUpdated.textContent = new Date().toLocaleTimeString();
+      });
+  }
+
+  // Refresh button click
+  refreshBtn.addEventListener("click", fetchDashboardData);
+  setInterval(fetchDashboardData, 30000);
+
+  // Change order status (Pending/Confirmed)
+  document.body.addEventListener("change", function (e) {
+    if (e.target.classList.contains("order-status")) {
+      const orderId = e.target.dataset.id;
+      const status = e.target.value;
+
+      fetch(`{% url 'inventory:update_order_status' 0 %}`.replace('0', orderId), {
+        method: "POST",
+        headers: { 
+          "Content-Type": "application/json",
+          "X-CSRFToken": "{{ csrf_token }}" 
+        },
+        body: JSON.stringify({ status })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          e.target.classList.add("status-updated");
+          setTimeout(() => e.target.classList.remove("status-updated"), 800);
+        }
+      });
+    }
+  });
+
+  // View order details
+  document.body.addEventListener("click", function (e) {
+    if (e.target.closest(".view-details")) {
+      const orderId = e.target.closest(".view-details").dataset.id;
+      fetch(`{% url 'inventory:order_details' 0 %}`.replace('0', orderId))
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            document.getElementById("orderDetailsContent").innerHTML = data.html;
+            new bootstrap.Modal(document.getElementById("orderDetailsModal")).show();
+          }
+        });
+    }
+  });
+
+  // Quick Add Stock
+  document.body.addEventListener("click", function (e) {
+    if (e.target.closest(".add-stock-btn")) {
+      const productId = e.target.closest(".add-stock-btn").dataset.id;
+      const quantity = prompt("Enter quantity to add:");
+      if (quantity && !isNaN(quantity)) {
+        fetch(`{% url 'inventory:quick_add_stock' %}`, {
+          method: "POST",
+          headers: { 
+            "Content-Type": "application/json",
+            "X-CSRFToken": "{{ csrf_token }}" 
+          },
+          body: JSON.stringify({ product_id: productId, quantity })
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) fetchDashboardData();
+        });
+      }
+    }
+  });
+document.querySelectorAll(".order-date").forEach(el => {
+    el.textContent = formatDateSafe(el.dataset.date);
+});
+
+
+  // Initial load
+  fetchDashboardData();
+});
+</script>
+{% endblock %}

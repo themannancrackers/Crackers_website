@@ -1,0 +1,206 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block hero %}{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --diwali-gold: #ffd700;
+        --diwali-deep-gold: #ffb347;
+        --diwali-red: #b30000;
+        --diwali-orange: #ff8c00;
+        --diwali-green: #228b22;
+        --diwali-blue: #1a1a2e;
+        --diwali-purple: #4b0082;
+        --diwali-pink: #ff69b4;
+    }
+
+    body {
+        background: linear-gradient(135deg, var(--diwali-blue) 0%, #16213e 50%, #0f3460 100%);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+         font-family: Georgia, "Times New Roman", Times, serif;
+        padding: 20px;
+    }
+
+    .navbar, .footer { display: none; }
+
+    .oauth-container {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 50px 40px;
+        max-width: 500px;
+        text-align: center;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .oauth-icon {
+        font-size: 4rem;
+        margin-bottom: 20px;
+        animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+
+    .oauth-title {
+        font-size: 2rem;
+        background: linear-gradient(135deg, var(--diwali-orange), var(--diwali-red));
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 15px;
+        font-weight: 700;
+    }
+
+    .oauth-subtitle {
+        color: var(--diwali-blue);
+        margin-bottom: 25px;
+        font-size: 0.95rem;
+        line-height: 1.6;
+    }
+
+    .oauth-info {
+        background: rgba(255, 179, 71, 0.1);
+        border-left: 4px solid var(--diwali-orange);
+        padding: 15px 20px;
+        margin-bottom: 30px;
+        border-radius: 8px;
+        text-align: left;
+        color: #333;
+        font-size: 0.9rem;
+    }
+
+    .oauth-button {
+        background: linear-gradient(135deg, var(--diwali-orange), var(--diwali-red));
+        color: white;
+        padding: 14px 40px;
+        border: none;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(255, 140, 0, 0.3);
+        width: 100%;
+        margin-bottom: 15px;
+    }
+
+    .oauth-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(255, 140, 0, 0.4);
+    }
+
+    .oauth-button-secondary {
+        background: transparent;
+        color: var(--diwali-orange);
+        border: 2px solid var(--diwali-orange);
+        padding: 12px 40px;
+        border-radius: 10px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        width: 100%;
+    }
+
+    .oauth-button-secondary:hover {
+        background: rgba(255, 140, 0, 0.1);
+    }
+
+    .oauth-providers {
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px solid #eee;
+    }
+
+    .oauth-provider-icon {
+        width: 20px;
+        height: 20px;
+        margin-right: 8px;
+        vertical-align: middle;
+    }
+
+    .loading-spinner {
+        display: none;
+        width: 20px;
+        height: 20px;
+        border: 3px solid rgba(255, 140, 0, 0.3);
+        border-radius: 50%;
+        border-top-color: var(--diwali-orange);
+        animation: spin 1s linear infinite;
+        margin-right: 8px;
+    }
+
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 576px) {
+        .oauth-container {
+            padding: 30px 20px;
+            max-width: 90%;
+        }
+
+        .oauth-title { font-size: 1.5rem; }
+
+        .oauth-button {
+            padding: 12px 20px;
+            font-size: 0.9rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="oauth-container">
+    <div class="oauth-icon">🔐</div>
+    <h1 class="oauth-title">Connecting Your Account</h1>
+    <p class="oauth-subtitle">Sign in securely using your Google account.</p>
+    
+    <div class="oauth-info">
+        <strong>What happens next?</strong>
+        <p style="margin: 8px 0 0 0;">
+            We'll verify your Google account and check your role.
+            If you’re an admin, you’ll be redirected to the dashboard;
+            otherwise, you’ll access your user profile.
+        </p>
+    </div>
+
+    <form method="post" action="{% url 'google_login' %}">
+        {% csrf_token %}
+        <button type="submit" class="oauth-button" id="google-login-btn">
+            <span class="loading-spinner" id="spinner"></span>
+            <img src="{% static 'images/Google.png' %}" alt="Google" class="oauth-provider-icon">
+            Continue with Google
+        </button>
+    </form>
+
+    <a href="{% url 'account_login' %}" class="oauth-button-secondary">Use Email Instead</a>
+
+    <div class="oauth-providers">
+        <p style="color: #999; font-size: 0.85rem; margin: 0;">
+            By continuing, you agree to our Terms of Service and Privacy Policy.
+        </p>
+    </div>
+</div>
+
+<script>
+    const form = document.querySelector('form');
+    const spinner = document.getElementById('spinner');
+    const button = document.getElementById('google-login-btn');
+
+    form.addEventListener('submit', function(e) {
+        spinner.style.display = 'inline-block';
+        button.disabled = true;
+        button.style.opacity = '0.7';
+        button.innerText = 'Signing in...';
+    });
+</script>
+{% endblock %}

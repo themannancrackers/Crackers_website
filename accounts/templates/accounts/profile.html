@@ -1,0 +1,708 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary-color: #0d6efd;
+        --secondary-color: #ff6b35;
+        --accent-color: #ffcc00;
+        --dark-color: #1a1a2e;
+        --light-color: #f8f9fa;
+        --success-color: #28a745;
+    }
+    
+    body {
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+        min-height: 100vh;
+        overflow-x: hidden;
+         font-family: Georgia, "Times New Roman", Times, serif;
+    }
+    
+    /* Crackers Animation Background */
+    .crackers-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        overflow: hidden;
+    }
+    
+    .cracker {
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        pointer-events: none;
+        opacity: 0;
+    }
+    
+    .cracker::before {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        background: radial-gradient(circle, #ffcc00, #ff6b35, #ff0000);
+        animation: cracker-explode 1.5s ease-out forwards;
+    }
+    
+    @keyframes cracker-explode {
+        0% {
+            transform: scale(0);
+            opacity: 1;
+        }
+        50% {
+            opacity: 1;
+        }
+        100% {
+            transform: scale(8);
+            opacity: 0;
+        }
+    }
+    
+    .spark {
+        position: absolute;
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        background: #ffcc00;
+        box-shadow: 0 0 10px 2px #ffcc00;
+        opacity: 0;
+        animation: spark-fall 2s ease-out forwards;
+    }
+    
+    @keyframes spark-fall {
+        0% {
+            transform: translateY(0) rotate(0deg);
+            opacity: 1;
+        }
+        100% {
+            transform: translateY(100px) rotate(360deg);
+            opacity: 0;
+        }
+    }
+    
+    .firework {
+        position: absolute;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        pointer-events: none;
+        animation: firework-launch 2s ease-out forwards;
+    }
+    
+    @keyframes firework-launch {
+        0% {
+            transform: translateY(100vh) scale(0);
+            opacity: 1;
+        }
+        50% {
+            opacity: 1;
+        }
+        100% {
+            transform: translateY(0) scale(1);
+            opacity: 0;
+        }
+    }
+    
+    /* Profile Container */
+    .profile-container {
+        min-height: 100vh;
+        padding: 40px 20px;
+        position: relative;
+        z-index: 10;
+    }
+    
+    /* Profile Cards */
+    .profile-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        margin-bottom: 30px;
+        animation: card-enter 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        transition: all 0.3s ease;
+    }
+    
+    .profile-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    }
+    
+    @keyframes card-enter {
+        0% {
+            opacity: 0;
+            transform: translateY(50px) scale(0.9);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+    
+    .card-header-gradient {
+        background: linear-gradient(135deg, var(--primary-color), var(--dark-color));
+        padding: 40px 20px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        min-height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .card-header-gradient::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+        animation: shine 3s infinite linear;
+    }
+    
+    @keyframes shine {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+    
+    /* Profile Picture */
+    .profile-picture-container {
+        position: relative;
+        display: inline-block;
+    }
+    
+    .profile-picture {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid white;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        transition: all 0.3s ease;
+    }
+    
+    .profile-picture:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    }
+    
+    .profile-picture-placeholder {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 4px solid white;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        transition: all 0.3s ease;
+    }
+    
+    .profile-picture-placeholder:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    }
+    
+    .profile-picture-placeholder i {
+        font-size: 4rem;
+        color: white;
+    }
+    
+    /* User Info */
+    .user-name {
+        color: white;
+        font-weight: 700;
+        font-size: 2rem;
+        margin: 15px 0 5px;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+    
+    .user-role {
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 1.1rem;
+        margin-bottom: 20px;
+    }
+    
+    /* Buttons */
+    .btn-edit {
+        background: linear-gradient(135deg, var(--accent-color), var(--secondary-color));
+        border: none;
+        border-radius: 50px;
+        padding: 12px 30px;
+        font-weight: 600;
+        color: white;
+        box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .btn-edit::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        transition: left 0.5s;
+    }
+    
+    .btn-edit:hover::before {
+        left: 100%;
+    }
+    
+    .btn-edit:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(255, 107, 53, 0.6);
+    }
+    
+    /* Profile Details */
+    .card-body {
+        padding: 40px;
+    }
+    
+    .card-title {
+        color: var(--dark-color);
+        font-weight: 700;
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+        position: relative;
+        display: inline-block;
+    }
+    
+    .card-title::after {
+        content: '';
+        position: absolute;
+        width: 50px;
+        height: 3px;
+        background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+        bottom: -8px;
+        left: 0;
+        border-radius: 2px;
+    }
+    
+    .detail-row {
+        padding: 15px 0;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        animation: fadeInUp 0.6s ease-out forwards;
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    
+    .detail-row:hover {
+        background: rgba(13, 110, 253, 0.05);
+        padding-left: 10px;
+        border-radius: 8px;
+    }
+    
+    @keyframes fadeInUp {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .detail-label {
+        font-weight: 600;
+        color: var(--dark-color);
+        font-size: 1rem;
+    }
+    
+    .detail-value {
+        color: #6c757d;
+        font-size: 1rem;
+    }
+    
+    .detail-value.empty {
+        color: #adb5bd;
+        font-style: italic;
+    }
+    
+    /* Celebration Badge */
+    .celebration-badge {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background: linear-gradient(135deg, var(--accent-color), var(--secondary-color));
+        color: white;
+        padding: 8px 15px;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 0.8rem;
+        box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
+        animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
+        }
+        50% {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.6);
+        }
+        100% {
+            transform: scale(1);
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
+        }
+    }
+    
+    /* Stats Cards */
+    .stats-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        padding: 20px;
+        text-align: center;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        animation: card-enter 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    
+    .stats-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+    
+    .stats-icon {
+        font-size: 2.5rem;
+        margin-bottom: 15px;
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    
+    .stats-number {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--dark-color);
+        margin-bottom: 5px;
+    }
+    
+    .stats-label {
+        color: #6c757d;
+        font-size: 0.9rem;
+    }
+    
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+        .profile-container {
+            padding: 20px 15px;
+        }
+        
+        .card-body {
+            padding: 30px 20px;
+        }
+        
+        .user-name {
+            font-size: 1.5rem;
+        }
+        
+        .profile-picture,
+        .profile-picture-placeholder {
+            width: 120px;
+            height: 120px;
+        }
+        
+        .profile-picture-placeholder i {
+            font-size: 3rem;
+        }
+        
+        .btn-edit {
+            padding: 10px 25px;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .profile-container {
+            padding: 15px 10px;
+        }
+        
+        .card-body {
+            padding: 20px 15px;
+        }
+        
+        .user-name {
+            font-size: 1.3rem;
+        }
+        
+        .profile-picture,
+        .profile-picture-placeholder {
+            width: 100px;
+            height: 100px;
+        }
+        
+        .profile-picture-placeholder i {
+            font-size: 2.5rem;
+        }
+        
+        .detail-label, .detail-value {
+            font-size: 0.9rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Crackers Animation Container -->
+<div class="crackers-container" id="crackersContainer"></div>
+
+<div class="profile-container">
+    <div class="container">
+        <div class="row">
+            <!-- Profile Card -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="profile-card">
+                    <div class="card-header-gradient">
+                        <div class="profile-picture-container">
+                            {% if user.profile_picture %}
+                                <img src="{{ user.profile_picture.url }}" alt="Profile Picture" class="profile-picture">
+                            {% else %}
+                                <div class="profile-picture-placeholder">
+                                    <i class="bi bi-person-fill"></i>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <h3 class="user-name">{{ user.get_full_name|default:user.email }}</h3>
+                        <p class="user-role">{{ user.get_role_display }}</p>
+                        <a href="{% url 'accounts:profile_update' %}" class="btn btn-edit">
+                            <i class="bi bi-pencil-square me-2"></i> Edit Profile
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Details Card -->
+            <div class="col-lg-8 col-md-6">
+                <div class="profile-card">
+                    <div class="card-body">
+                        <h4 class="card-title">Profile Details</h4>
+                        <div class="detail-row" style="animation-delay: 0.1s">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <h6 class="detail-label">Full Name</h6>
+                                </div>
+                                <div class="col-sm-8">
+                                    <span class="detail-value {% if not user.get_full_name %}empty{% endif %}">
+                                        {{ user.get_full_name|default:"Not set" }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="detail-row" style="animation-delay: 0.2s">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <h6 class="detail-label">Email</h6>
+                                </div>
+                                <div class="col-sm-8">
+                                    <span class="detail-value">{{ user.email }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="detail-row" style="animation-delay: 0.3s">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <h6 class="detail-label">Phone</h6>
+                                </div>
+                                <div class="col-sm-8">
+                                    <span class="detail-value {% if not user.phone_number %}empty{% endif %}">
+                                        {{ user.phone_number|default:"Not set" }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="detail-row" style="animation-delay: 0.4s">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <h6 class="detail-label">Address</h6>
+                                </div>
+                                <div class="col-sm-8">
+                                    <span class="detail-value {% if not user.address %}empty{% endif %}">
+                                        {{ user.address|default:"Not set"|linebreaks }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="detail-row" style="animation-delay: 0.6s">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <h6 class="detail-label">Member Since</h6>
+                                </div>
+                                <div class="col-sm-8">
+                                    <span class="detail-value">{{ user.date_joined|date:"F j, Y" }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Crackers animation
+        const crackersContainer = document.getElementById('crackersContainer');
+        
+        function createCracker() {
+            const cracker = document.createElement('div');
+            cracker.classList.add('cracker');
+            
+            // Random position
+            const posX = Math.random() * 100;
+            const posY = Math.random() * 100;
+            
+            cracker.style.left = `${posX}%`;
+            cracker.style.top = `${posY}%`;
+            
+            // Random delay
+            const delay = Math.random() * 5;
+            cracker.style.animationDelay = `${delay}s`;
+            
+            crackersContainer.appendChild(cracker);
+            
+            // Create sparks after cracker explosion
+            setTimeout(() => {
+                createSparks(posX, posY);
+            }, 800);
+            
+            // Remove cracker after animation
+            setTimeout(() => {
+                cracker.remove();
+            }, 1500);
+        }
+        
+        function createSparks(x, y) {
+            const sparkCount = 8 + Math.floor(Math.random() * 8);
+            
+            for (let i = 0; i < sparkCount; i++) {
+                const spark = document.createElement('div');
+                spark.classList.add('spark');
+                
+                spark.style.left = `${x}%`;
+                spark.style.top = `${y}%`;
+                
+                // Random direction and distance
+                const angle = Math.random() * Math.PI * 2;
+                const distance = 20 + Math.random() * 30;
+                const endX = x + Math.cos(angle) * distance;
+                const endY = y + Math.sin(angle) * distance;
+                
+                spark.style.setProperty('--end-x', `${endX}%`);
+                spark.style.setProperty('--end-y', `${endY}%`);
+                
+                // Random delay and duration
+                const delay = Math.random() * 0.5;
+                const duration = 1 + Math.random() * 1;
+                
+                spark.style.animationDelay = `${delay}s`;
+                spark.style.animationDuration = `${duration}s`;
+                
+                crackersContainer.appendChild(spark);
+                
+                // Remove spark after animation
+                setTimeout(() => {
+                    spark.remove();
+                }, (delay + duration) * 1000);
+            }
+        }
+        
+        function createFirework() {
+            const firework = document.createElement('div');
+            firework.classList.add('firework');
+            
+            // Random position and color
+            const posX = Math.random() * 100;
+            const colors = ['#ffcc00', '#ff6b35', '#0d6efd', '#28a745', '#dc3545'];
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            
+            firework.style.left = `${posX}%`;
+            firework.style.background = color;
+            firework.style.boxShadow = `0 0 10px 2px ${color}`;
+            
+            // Random delay and duration
+            const delay = Math.random() * 2;
+            const duration = 1 + Math.random() * 1;
+            
+            firework.style.animationDelay = `${delay}s`;
+            firework.style.animationDuration = `${duration}s`;
+            
+            crackersContainer.appendChild(firework);
+            
+            // Remove firework after animation
+            setTimeout(() => {
+                firework.remove();
+            }, (delay + duration) * 1000);
+        }
+        
+        // Create crackers and fireworks periodically
+        setInterval(createCracker, 1200);
+        setInterval(createFirework, 1800);
+        
+        // Animate stats cards on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                }
+            });
+        }, observerOptions);
+        
+        // Observe all animated elements
+        document.querySelectorAll('.stats-card, .detail-row').forEach(el => {
+            observer.observe(el);
+        });
+        
+        // Add celebration when clicking profile picture
+        const profilePicture = document.querySelector('.profile-picture, .profile-picture-placeholder');
+        if (profilePicture) {
+            profilePicture.addEventListener('click', function() {
+                for (let i = 0; i < 10; i++) {
+                    setTimeout(() => {
+                        createCracker();
+                        createFirework();
+                    }, i * 100);
+                }
+            });
+        }
+        
+        // Add hover celebration for edit button
+        const editButton = document.querySelector('.btn-edit');
+        if (editButton) {
+            editButton.addEventListener('mouseenter', function() {
+                createCracker();
+                createFirework();
+            });
+        }
+    });
+</script>
+{% endblock %}

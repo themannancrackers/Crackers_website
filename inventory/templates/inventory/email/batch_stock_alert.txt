@@ -1,0 +1,54 @@
+LOW STOCK ALERT - THE MANNAN CRACKERS
+================================================================================
+
+INVENTORY ALERT
+================================================================================
+
+{{ total_items }} product(s) have fallen below the minimum stock threshold of 10 units.
+Immediate attention is required to replenish inventory.
+
+================================================================================
+LOW STOCK ITEMS
+================================================================================
+
+Product Name                    Category              Current Stock  Below Threshold
+-------------------------------------------------------------------------------------------------
+{% for item in items %}
+{{ item.name|truncatewords:5 }}                     {{ item.category|truncatewords:3 }}                    {{ item.current_stock }} units        -{{ item.shortage }} units
+{% endfor %}
+
+================================================================================
+ACTION REQUIRED
+================================================================================
+
+Please review the above items and take appropriate replenishment actions.
+Contact your suppliers to ensure timely stock replenishment and avoid stockouts.
+
+IMPORTANT:
+- Products with 0 stock should be prioritized for immediate reorder
+- Products with 1-4 units in stock require urgent attention
+- All other low stock items should be reordered within the next business week
+
+================================================================================
+ALERT DETAILS
+================================================================================
+
+Alert Generated: {{ timestamp|date:"d-m-Y H:i:s" }} IST
+Alert Type: Automated Low Stock Inventory Alert
+Priority: High - Requires Immediate Review
+Total Items Affected: {{ total_items }}
+
+================================================================================
+CONTACT INFORMATION
+================================================================================
+
+The Mannan Crackers
+📍 Sivakasi, Tamil Nadu
+📧 themannancrackers@gmail.com
+
+Note: This is an automated alert. Please do not reply to this email.
+For inquiries, contact the inventory management team.
+
+================================================================================
+End of Alert
+================================================================================

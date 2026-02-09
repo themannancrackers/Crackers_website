@@ -1,0 +1,273 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<style>
+/* -----------------------------------------------------------
+   PREMIUM SAFETY PAGE DESIGN (Modern • Clean • Corporate)
+   Custom-designed | Superior mobile & desktop layouts
+------------------------------------------------------------ */
+
+/* GLOBAL SETTINGS */
+body {
+    background: #f2f6ff; /* Soft premium background */
+     font-family: Georgia, "Times New Roman", Times, serif;
+    color: #333;
+    margin: 0;
+}
+
+/* MAIN WRAPPER */
+.safety-page {
+    max-width: 1100px;
+    margin: 40px auto 80px;
+    padding: 0 20px;
+}
+
+/* -----------------------------------------------------------
+   TITLE & DESCRIPTION
+------------------------------------------------------------ */
+
+.safety-title {
+    text-align: center;
+    font-size: 44px;
+    font-weight: 800;
+    background: linear-gradient(90deg, #ff7a00, #ff2e00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+}
+
+.safety-subtext {
+    font-size: 20px;
+    line-height: 1.8;
+    text-align: center;
+    max-width: 850px;
+    margin: 20px auto 0;
+    color: #444;
+}
+
+/* -----------------------------------------------------------
+   SECTION HEADINGS
+------------------------------------------------------------ */
+
+.section-heading {
+    font-size: 32px;
+    font-weight: 800;
+    margin-top: 60px;
+    color: #1a1a1a;
+    letter-spacing: -0.3px;
+}
+
+.heading-underline {
+    width: 80px;
+    height: 5px;
+    background: linear-gradient(90deg, #ff3b3b, #ff0000);
+    border-radius: 10px;
+    margin: 10px 0 25px;
+}
+
+/* -----------------------------------------------------------
+   GRID LAYOUT — 2 Columns on Desktop, 1 Column on Mobile
+------------------------------------------------------------ */
+
+.tips-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+}
+
+@media (max-width: 900px) {
+    .tips-wrapper {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* -----------------------------------------------------------
+   TIP CARDS (Modern Glassmorphism)
+------------------------------------------------------------ */
+
+.tip-card {
+    background: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(14px);
+    border-radius: 20px;
+    padding: 26px 24px;
+    display: flex;
+    gap: 20px;
+    border: 1px solid rgba(255,255,255,0.35);
+    box-shadow: 0 10px 28px rgba(0,0,0,0.08);
+    transition: all 0.25s ease;
+}
+
+.tip-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.12);
+}
+
+/* ICON BOX */
+
+.tip-icon {
+    width: 65px;
+    height: 65px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+/* ✔ GREEN */
+.tip-icon.green {
+    background: #e9ffe9;
+}
+.tip-icon.green i {
+    color: #17a946;
+    font-size: 36px;
+}
+
+/* ✖ RED */
+.tip-icon.red {
+    background: #ffe9e9;
+}
+.tip-icon.red i {
+    color: #d1252c;
+    font-size: 36px;
+}
+
+/* TEXT */
+
+.tip-text {
+    font-size: 18px;
+    color: #222;
+    font-weight: 500;
+    line-height: 1.7;
+}
+
+/* -----------------------------------------------------------
+   RESPONSIVE TWEAKS
+------------------------------------------------------------ */
+
+@media (max-width: 768px) {
+    .safety-title {
+        font-size: 30px;
+    }
+
+    .safety-subtext {
+        font-size: 16px;
+        line-height: 1.7;
+    }
+
+    .tip-card {
+        padding: 20px 16px;
+        border-radius: 16px;
+    }
+
+    .tip-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 12px;
+    }
+
+    .tip-icon i {
+        font-size: 26px !important;
+    }
+
+    .tip-text {
+        font-size: 15px;
+    }
+
+    .section-heading {
+        text-align: center;
+        font-size: 24px;
+    }
+
+    .heading-underline {
+        margin: 8px auto 20px;
+    }
+}
+
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="safety-page">
+
+<h2 class="section-heading">Do's</h2>
+<div class="heading-underline"></div>
+
+<div class="tips-wrapper">
+
+    <div class="tip-card">
+        <div class="tip-icon green"><i class="bi bi-check-circle-fill"></i></div>
+        <div class="tip-text">Showcase fireworks in accordance with the cautions and directions specified on the packaging.</div>
+    </div>
+
+    <div class="tip-card">
+        <div class="tip-icon green"><i class="bi bi-check-circle-fill"></i></div>
+        <div class="tip-text">Purchase fireworks exclusively from the manufacturer or an authorized dealer.</div>
+    </div>
+
+    <div class="tip-card">
+        <div class="tip-icon green"><i class="bi bi-check-circle-fill"></i></div>
+        <div class="tip-text">It is crucial to consistently adhere to the safety guidelines indicated on the fireworks.</div>
+    </div>
+
+    <div class="tip-card">
+        <div class="tip-icon green"><i class="bi bi-check-circle-fill"></i></div>
+        <div class="tip-text">Utilize an incense stick to ignite the fireworks.</div>
+    </div>
+
+    <div class="tip-card">
+        <div class="tip-icon green"><i class="bi bi-check-circle-fill"></i></div>
+        <div class="tip-text">It is imperative to consistently wear eye protection when igniting fireworks.</div>
+    </div>
+
+    <div class="tip-card">
+        <div class="tip-icon green"><i class="bi bi-check-circle-fill"></i></div>
+        <div class="tip-text">Keep a container of water or a garden hose readily available in case of fire or any other incident.</div>
+    </div>
+
+</div>
+
+    <!-- ========================= DON'TS ========================= -->
+<h2 class="section-heading">Don'ts</h2>
+<div class="heading-underline"></div>
+
+<div class="tips-wrapper">
+
+    <div class="tip-card">
+        <div class="tip-icon red"><i class="bi bi-x-circle-fill"></i></div>
+        <div class="tip-text">Avoid attempting to re-ignite or handle fireworks that have not fully ignited.</div>
+    </div>
+
+    <div class="tip-card">
+        <div class="tip-icon red"><i class="bi bi-x-circle-fill"></i></div>
+        <div class="tip-text">Avoid shooting fireworks in metal or glass containers.</div>
+    </div>
+
+    <div class="tip-card">
+        <div class="tip-icon red"><i class="bi bi-x-circle-fill"></i></div>
+        <div class="tip-text">Avoid aiming or hurling fireworks at another individual.</div>
+    </div>
+
+    <div class="tip-card">
+        <div class="tip-icon red"><i class="bi bi-x-circle-fill"></i></div>
+        <div class="tip-text">Refrain from wearing loose clothing while handling fireworks.</div>
+    </div>
+
+    <div class="tip-card">
+        <div class="tip-icon red"><i class="bi bi-x-circle-fill"></i></div>
+        <div class="tip-text">Avoid carrying fireworks in your pockets.</div>
+    </div>
+
+    <div class="tip-card">
+        <div class="tip-icon red"><i class="bi bi-x-circle-fill"></i></div>
+        <div class="tip-text">Following a fireworks display, refrain from picking up any remaining fireworks, as they may still be active.</div>
+    </div>
+
+</div>
+
+
+</div>
+
+{% endblock %}

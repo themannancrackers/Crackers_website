@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Batch Low Stock Alert - The Mannan Crackers</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            color: #333;
+            background-color: #f5f5f5;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .header {
+            background: linear-gradient(135deg, #FF6B35 0%, #FF8C00 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .header .subtitle {
+            font-size: 14px;
+            margin-top: 5px;
+            opacity: 0.9;
+        }
+        .content {
+            padding: 30px 20px;
+        }
+        .alert-box {
+            background-color: #FFF3E0;
+            border-left: 4px solid #FF8C00;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+        .alert-box .alert-title {
+            font-weight: bold;
+            color: #E65100;
+            margin-bottom: 5px;
+        }
+        .alert-box .alert-message {
+            color: #555;
+            font-size: 14px;
+        }
+        .items-section {
+            margin-top: 25px;
+        }
+        .items-section h2 {
+            color: #333;
+            font-size: 18px;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #FF8C00;
+            padding-bottom: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table th {
+            background-color: #F5F5F5;
+            color: #333;
+            padding: 12px;
+            text-align: left;
+            font-weight: bold;
+            border-bottom: 2px solid #FF8C00;
+            font-size: 13px;
+        }
+        table td {
+            padding: 12px;
+            border-bottom: 1px solid #E0E0E0;
+            font-size: 13px;
+        }
+        table tr:hover {
+            background-color: #FAFAFA;
+        }
+        .stock-critical {
+            color: #D32F2F;
+            font-weight: bold;
+        }
+        .stock-warning {
+            color: #F57C00;
+            font-weight: bold;
+        }
+        .action-required {
+            background-color: #FFF9C4;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 20px;
+            font-size: 13px;
+            color: #555;
+        }
+        .action-required strong {
+            color: #F57C00;
+        }
+        .footer {
+            background-color: #F5F5F5;
+            padding: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #888;
+            border-top: 1px solid #E0E0E0;
+        }
+        .footer p {
+            margin: 5px 0;
+        }
+        .business-info {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #E0E0E0;
+            text-align: center;
+            font-size: 12px;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>📦 Low Stock Alert</h1>
+            <div class="subtitle">The Mannan Crackers Inventory Management</div>
+        </div>
+
+        <!-- Content -->
+        <div class="content">
+            <!-- Alert Box -->
+            <div class="alert-box">
+                <div class="alert-title">⚠️ Inventory Alert</div>
+                <div class="alert-message">
+                    {{ total_items }} product(s) have fallen below the minimum stock threshold of 10 units. 
+                    Immediate attention is required to replenish inventory.
+                </div>
+            </div>
+
+            <!-- Summary Stats -->
+            <div style="background-color: #E8F5E9; padding: 15px; border-radius: 4px; margin-bottom: 20px; text-align: center;">
+                <div style="font-size: 24px; font-weight: bold; color: #2E7D32;">{{ total_items }}</div>
+                <div style="font-size: 13px; color: #558B2F;">Product(s) Below Threshold</div>
+            </div>
+
+            <!-- Items Table -->
+            <div class="items-section">
+                <h2>📋 Low Stock Items</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Product Name</th>
+                            <th>Category</th>
+                            <th>Current Stock</th>
+                            <th>Units Below Threshold</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in items %}
+                        <tr>
+                            <td><strong>{{ item.name }}</strong></td>
+                            <td>{{ item.category }}</td>
+                            <td>
+                                <span {% if item.current_stock == 0 %}class="stock-critical"{% elif item.current_stock < 5 %}class="stock-warning"{% endif %}>
+                                    {{ item.current_stock }} units
+                                </span>
+                            </td>
+                            <td>
+                                <span style="background-color: #FFEBEE; padding: 4px 8px; border-radius: 3px; color: #C62828;">
+                                    -{{ item.shortage }} units
+                                </span>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Action Required -->
+            <div class="action-required">
+                <strong>🚀 Action Required:</strong><br>
+                Please review the above items and take appropriate replenishment actions. 
+                Contact your suppliers to ensure timely stock replenishment and avoid stockouts.
+            </div>
+
+            <!-- Alert Reference -->
+            <div style="margin-top: 20px; padding: 15px; background-color: #F3E5F5; border-radius: 4px; font-size: 12px; color: #6A1B9A;">
+                <strong>Alert Generated:</strong> {{ timestamp|date:"d-m-Y H:i:s" }} IST<br>
+                <strong>Alert Type:</strong> Automated Low Stock Inventory Alert<br>
+                <strong>Priority:</strong> High - Requires Immediate Review
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p><strong>The Mannan Crackers</strong></p>
+            <p>🏢 Sivakasi, Tamil Nadu | 📧 themannancrackers@gmail.com</p>
+            <div class="business-info">
+                This is an automated alert. Please do not reply to this email.<br>
+                For inquiries, contact the inventory management team.
+            </div>
+        </div>
+    </div>
+</body>
+</html>

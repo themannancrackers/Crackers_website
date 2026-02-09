@@ -1,0 +1,443 @@
+{% load static %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --diwali-gold: #ffd700;
+        --diwali-orange: #ff8c00;
+        --diwali-red: #ff3b3b;
+        --diwali-purple: #5d00b8;
+        --dark-bg: #050818;
+        --light-text: #f8f9fa;
+    }
+
+    /* Animated night background */
+    body {
+        min-height: 100vh;
+        margin: 0;
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: Georgia, "Times New Roman", Times, serif;
+        background: radial-gradient(circle at 0% 0%, #2b1a4a, #050818 55%, #02030a 100%);
+        color: var(--light-text);
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Soft glow blobs */
+    body::before,
+    body::after {
+        content: "";
+        position: fixed;
+        width: 360px;
+        height: 360px;
+        border-radius: 50%;
+        filter: blur(60px);
+        opacity: 0.22;
+        z-index: -1;
+    }
+
+    body::before {
+        top: -80px;
+        left: -80px;
+        background: radial-gradient(circle, #ffcf7d, transparent 70%);
+    }
+
+    body::after {
+        bottom: -120px;
+        right: -100px;
+        background: radial-gradient(circle, #7f5dff, transparent 70%);
+    }
+
+    /* Glass error card */
+    .error-container {
+        background: linear-gradient(135deg,
+                rgba(255, 255, 255, 0.16),
+                rgba(255, 255, 255, 0.04));
+        border-radius: 26px;
+        padding: 44px 38px 36px;
+        text-align: center;
+        max-width: 640px;
+        width: 100%;
+        box-shadow:
+            0 28px 70px rgba(0, 0, 0, 0.8),
+            0 0 0 1px rgba(255, 255, 255, 0.06);
+        backdrop-filter: blur(22px);
+        -webkit-backdrop-filter: blur(22px);
+        position: relative;
+        overflow: hidden;
+        animation: slideIn 0.6s ease-out;
+    }
+
+    /* Animated conic border */
+    .error-container::before {
+        content: "";
+        position: absolute;
+        inset: -2px;
+        border-radius: inherit;
+        padding: 2px;
+        background: conic-gradient(from 0deg,
+                #ffcf7d,
+                #ff8c00,
+                #ff3b3b,
+                #ffcf7d);
+        -webkit-mask:
+            linear-gradient(#000 0 0) content-box,
+            linear-gradient(#000 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        opacity: 0.6;
+        animation: borderGlow 7s linear infinite;
+    }
+
+    @keyframes borderGlow {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateY(30px) scale(0.97);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+    /* Icon + code + text */
+    .error-icon {
+        font-size: 4.4rem;
+        margin-bottom: 12px;
+        animation: bounce 2s ease-in-out infinite;
+        filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.6));
+    }
+
+    @keyframes bounce {
+
+        0%,
+        100% {
+            transform: translateY(0);
+        }
+
+        50% {
+            transform: translateY(-10px);
+        }
+    }
+
+    .error-code {
+        font-size: 3.1rem;
+        font-weight: 900;
+        background: linear-gradient(135deg, var(--diwali-gold), var(--diwali-orange));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin: 5px 0 8px;
+        letter-spacing: 0.2em;
+    }
+
+    .error-title {
+        font-size: 1.7rem;
+        color: var(--diwali-gold);
+        font-weight: 800;
+        margin-bottom: 10px;
+    }
+
+    .error-message {
+        font-size: 1.02rem;
+        color: rgba(240, 240, 240, 0.9);
+        line-height: 1.6;
+        margin-bottom: 20px;
+    }
+
+    /* Details block */
+    .error-details {
+        background: rgba(5, 8, 20, 0.92);
+        border-left: 4px solid var(--diwali-orange);
+        padding: 14px 16px;
+        border-radius: 12px;
+        margin: 20px 0;
+        text-align: left;
+        font-size: 0.95rem;
+        color: rgba(235, 235, 235, 0.95);
+    }
+
+    .error-details strong {
+        color: var(--diwali-gold);
+        display: block;
+        margin-bottom: 4px;
+    }
+
+    /* Suggestions list */
+    .error-suggestions {
+        text-align: left;
+        background: rgba(255, 215, 0, 0.06);
+        border-radius: 14px;
+        padding: 18px 18px 16px;
+        margin: 22px 0 8px;
+        border: 1px solid rgba(255, 215, 0, 0.7);
+    }
+
+    .error-suggestions h4 {
+        color: var(--diwali-orange);
+        margin-top: 0;
+        margin-bottom: 8px;
+        font-weight: 700;
+    }
+
+    .error-suggestions ul {
+        margin: 0;
+        padding-left: 0;
+        list-style: none;
+    }
+
+    .error-suggestions li {
+        color: rgba(235, 235, 235, 0.9);
+        margin-bottom: 6px;
+        position: relative;
+        padding-left: 22px;
+        font-size: 0.94rem;
+    }
+
+    .error-suggestions li::before {
+        content: "✨";
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+
+    /* Actions */
+    .error-actions {
+        display: flex;
+        gap: 14px;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-top: 26px;
+    }
+
+    .btn-retry,
+    .btn-home {
+        border: none;
+        padding: 11px 30px;
+        font-size: 0.96rem;
+        font-weight: 700;
+        border-radius: 999px;
+        cursor: pointer;
+        transition: all 0.25s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        white-space: nowrap;
+    }
+
+    .btn-retry {
+        background: linear-gradient(135deg, var(--diwali-orange), var(--diwali-red));
+        color: white;
+        box-shadow: 0 8px 22px rgba(255, 140, 0, 0.55);
+    }
+
+    .btn-retry:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 30px rgba(255, 140, 0, 0.75);
+        color: white;
+    }
+
+    .btn-home {
+        background: linear-gradient(135deg, var(--diwali-purple), #7b1fa2);
+        color: white;
+        box-shadow: 0 8px 22px rgba(75, 0, 130, 0.6);
+    }
+
+    .btn-home:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 30px rgba(75, 0, 130, 0.8);
+        color: white;
+    }
+
+    /* Floating emojis */
+    .diwali-decoration {
+        font-size: 1.9rem;
+        margin: 0 6px;
+        animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+
+        0%,
+        100% {
+            transform: translateY(0px);
+        }
+
+        50% {
+            transform: translateY(-8px);
+        }
+    }
+
+    .error-decoration-top,
+    .error-decoration-bottom {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+    }
+
+    .error-decoration-top {
+        margin-bottom: 12px;
+    }
+
+    .error-decoration-bottom {
+        margin-top: 16px;
+        opacity: 0.7;
+    }
+
+    /* Mobile */
+    @media (max-width: 600px) {
+        .error-container {
+            padding: 32px 22px 26px;
+            border-radius: 22px;
+        }
+
+        .error-code {
+            font-size: 2.4rem;
+            letter-spacing: 0.16em;
+        }
+
+        .error-title {
+            font-size: 1.35rem;
+        }
+
+        .error-message {
+            font-size: 0.98rem;
+        }
+
+        .error-actions {
+            flex-direction: column;
+        }
+
+        .btn-retry,
+        .btn-home {
+            width: 90%;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="error-container">
+    <!-- Decorative Elements -->
+    <div class="error-decoration-top">
+        <div class="diwali-decoration" style="animation-delay: 0s;">🪔</div>
+        <div class="diwali-decoration" style="animation-delay: 0.5s;">✨</div>
+        <div class="diwali-decoration" style="animation-delay: 1s;">🎆</div>
+    </div>
+
+    <!-- Error Icon -->
+    <div class="error-icon">
+        {% if error_code == '404' %}
+        🔍
+        {% elif error_code == '500' %}
+        ⚠️
+        {% elif error_code == 'connection' %}
+        📡
+        {% else %}
+        😔
+        {% endif %}
+    </div>
+
+    <!-- Error Code -->
+    <div class="error-code">{{ error_code }}</div>
+
+    <!-- Error Title -->
+    <h1 class="error-title">{{ error_title }}</h1>
+
+    <!-- Error Message -->
+    <p class="error-message">{{ error_message }}</p>
+
+    <!-- Error Details (if provided) -->
+    {% if error_details %}
+    <div class="error-details">
+        <strong>📋 Details:</strong>
+        {{ error_details }}
+    </div>
+    {% endif %}
+
+    <!-- Helpful Suggestions -->
+    <div class="error-suggestions">
+        <h4>💡 What you can do:</h4>
+        <ul>
+            {% if error_code == '404' %}
+            <li>Check if the URL is correct</li>
+            <li>Return to the home page and navigate again</li>
+            <li>Contact support if the problem persists</li>
+            {% elif error_code == '500' %}
+            <li>Try refreshing the page</li>
+            <li>Clear your browser cache and cookies</li>
+            <li>Come back in a few moments</li>
+            <li>Contact support if the problem continues</li>
+            {% elif error_code == 'connection' %}
+            <li>Check your internet connection</li>
+            <li>Try disabling your VPN or proxy</li>
+            <li>Refresh the page when connection is restored</li>
+            <li>Try again in a few moments</li>
+            {% else %}
+            <li>Try refreshing the page</li>
+            <li>Go back to the home page</li>
+            <li>Clear your browser cache</li>
+            <li>Contact support for assistance</li>
+            {% endif %}
+        </ul>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="error-actions">
+        <button class="btn-retry" onclick="handleGoBack()">
+            ← Go Back
+        </button>
+
+        <a href="{% url 'home' %}" class="btn-home">
+            🏠 Return to Home
+        </a>
+    </div>
+
+    <!-- Decorative Elements -->
+    <div class="error-decoration-bottom">
+        <div class="diwali-decoration" style="animation-delay: 0s;">🎇</div>
+        <div class="diwali-decoration" style="animation-delay: 0.5s;">💫</div>
+        <div class="diwali-decoration" style="animation-delay: 1s;">🌟</div>
+    </div>
+</div>
+
+<script>
+    function handleGoBack() {
+        // If there is a previous page in history, go back
+        if (window.history.length > 1) {
+            window.history.back();
+        } else {
+            // No history (opened directly / new tab) → go to home
+            window.location.href = "{% url 'home' %}";
+        }
+    }
+
+    // Existing code…
+    if (window.errorData) {
+        console.error('Error occurred:', window.errorData);
+    }
+
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'r' || event.key === 'R') {
+            window.location.reload();
+        }
+    });
+</script>
+
+{% endblock %}

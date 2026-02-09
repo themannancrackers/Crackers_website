@@ -1,0 +1,19 @@
+Thank you for your order, {{ customer_name }}!
+
+Order Details:
+{% for item in cart_items %}
+- {{ item.name }} ({{ item.quantity }}x) @ {{ item.price }} each = {{ item.total }}
+{% endfor %}
+
+Order Total: {{ order_total }}
+
+Delivery Information:
+Delivery Address:
+{{ delivery_address }}
+
+Contact Details:
+Phone: {{ phone }}
+Email: {{ email }}
+
+If you have any questions about your order, please contact us.
+Thank you for choosing The Mannan Crackers!
