@@ -3862,6 +3862,13 @@
             const amountEle = row.querySelector(".amount-val");
             const totalEle = row.querySelector(".row-total-val");
 
+            // ✨ INITIALIZE DISCOUNT AND AMOUNT FOR QUANTITY 1 ON PAGE LOAD
+            const initDiscount = (mrp * 0.80).toFixed(2);
+            const initAmount = (mrp * 0.20).toFixed(2);
+            discountEle.textContent = initDiscount;
+            amountEle.textContent = initAmount;
+            totalEle.textContent = initAmount; // For qty 1, total = amount
+
             qtyInput.addEventListener("input", function () {
                 const qty = parseInt(qtyInput.value) || 0;
 
@@ -3902,6 +3909,13 @@
             }
 
             const discountEle = box.querySelector(".mobile-discount");
+
+            // ✨ INITIALIZE DISCOUNT AND AMOUNT FOR QUANTITY 1 ON PAGE LOAD
+            const initDiscount = (mrp * 0.80).toFixed(2);
+            const initAmount = (mrp * 0.20).toFixed(2);
+            discountEle.textContent = `Discount: ₹${initDiscount}`;
+            amountEle.textContent = `₹${initAmount}`;
+            totalEle.textContent = initAmount; // For qty 1, total = amount
 
             qtyInput.addEventListener("input", function () {
                 const qty = parseInt(qtyInput.value) || 0;
