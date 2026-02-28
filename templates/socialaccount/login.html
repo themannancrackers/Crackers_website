@@ -22,11 +22,14 @@
         display: flex;
         align-items: center;
         justify-content: center;
-         font-family: Georgia, "Times New Roman", Times, serif;
+        font-family: Georgia, "Times New Roman", Times, serif;
         padding: 20px;
     }
 
-    .navbar, .footer { display: none; }
+    .navbar,
+    .footer {
+        display: none;
+    }
 
     .oauth-container {
         background: rgba(255, 255, 255, 0.95);
@@ -46,8 +49,15 @@
     }
 
     @keyframes bounce {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-10px); }
+
+        0%,
+        100% {
+            transform: translateY(0);
+        }
+
+        50% {
+            transform: translateY(-10px);
+        }
     }
 
     .oauth-title {
@@ -139,7 +149,9 @@
     }
 
     @keyframes spin {
-        to { transform: rotate(360deg); }
+        to {
+            transform: rotate(360deg);
+        }
     }
 
     @media (max-width: 576px) {
@@ -148,7 +160,9 @@
             max-width: 90%;
         }
 
-        .oauth-title { font-size: 1.5rem; }
+        .oauth-title {
+            font-size: 1.5rem;
+        }
 
         .oauth-button {
             padding: 12px 20px;
@@ -163,7 +177,7 @@
     <div class="oauth-icon">🔐</div>
     <h1 class="oauth-title">Connecting Your Account</h1>
     <p class="oauth-subtitle">Sign in securely using your Google account.</p>
-    
+
     <div class="oauth-info">
         <strong>What happens next?</strong>
         <p style="margin: 8px 0 0 0;">
@@ -181,9 +195,6 @@
             Continue with Google
         </button>
     </form>
-
-    <a href="{% url 'account_login' %}" class="oauth-button-secondary">Use Email Instead</a>
-
     <div class="oauth-providers">
         <p style="color: #999; font-size: 0.85rem; margin: 0;">
             By continuing, you agree to our Terms of Service and Privacy Policy.
@@ -196,7 +207,7 @@
     const spinner = document.getElementById('spinner');
     const button = document.getElementById('google-login-btn');
 
-    form.addEventListener('submit', function(e) {
+    form.addEventListener('submit', function (e) {
         spinner.style.display = 'inline-block';
         button.disabled = true;
         button.style.opacity = '0.7';
