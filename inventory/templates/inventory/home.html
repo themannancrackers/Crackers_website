@@ -2086,6 +2086,143 @@
     <span class="cart-items-count">(0 items)</span>
 </div>
 
+<!-- ========================================== -->
+<!-- 📊 ANALYTICS STRIP (BOTTOM STICKY) -->
+<!-- ========================================== -->
+<div class="analytics-strip" id="analyticsStrip" style="display: none;">
+    <div class="analytics-item">
+        <i class="bi bi-box-seam"></i>
+        <div>
+            <span class="analytics-label">Products</span>
+            <span class="analytics-value" id="analytics-products">0</span>
+        </div>
+    </div>
+    <div class="analytics-item text-success">
+        <i class="bi bi-piggy-bank"></i>
+        <div>
+            <span class="analytics-label">You Save</span>
+            <span class="analytics-value">₹<span id="analytics-savings">0.00</span></span>
+        </div>
+    </div>
+    <div class="analytics-item text-warning">
+        <i class="bi bi-wallet2"></i>
+        <div>
+            <span class="analytics-label">Total</span>
+            <span class="analytics-value">₹<span id="analytics-total">0.00</span></span>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* 📊 Analytics Strip Styling */
+    .analytics-strip {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 1040;
+        background: linear-gradient(135deg, rgba(20, 20, 30, 0.95), rgba(10, 10, 15, 0.98));
+        border: 1px solid rgba(255, 215, 0, 0.2);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), 0 0 15px rgba(255, 140, 0, 0.15);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-radius: 50px;
+        padding: 10px 25px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 30px;
+        transition: all 0.3s ease;
+        width: max-content;
+        max-width: 95vw;
+    }
+
+    .analytics-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: #e0e0e0;
+    }
+
+    .analytics-item i {
+        font-size: 1.5rem;
+        color: #ffd700;
+        text-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+    }
+
+    .analytics-item.text-success i {
+        color: #00d2ff;
+        /* Switch to a bright cyan/blue for savings to match diwali vibe */
+        text-shadow: 0 0 10px rgba(0, 210, 255, 0.4);
+    }
+
+    .analytics-item.text-success .analytics-value {
+        color: #00d2ff;
+    }
+
+    .analytics-item.text-warning i {
+        color: #ff8c00;
+        text-shadow: 0 0 10px rgba(255, 140, 0, 0.4);
+    }
+
+    .analytics-item.text-warning .analytics-value {
+        color: #ff8c00;
+    }
+
+    .analytics-label {
+        display: block;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: rgba(255, 255, 255, 0.6);
+        line-height: 1;
+        margin-bottom: 2px;
+    }
+
+    .analytics-value {
+        display: block;
+        font-size: 1.1rem;
+        font-weight: 700;
+        line-height: 1;
+        white-space: nowrap;
+    }
+
+    /* Mobile Adjustments for Analytics Strip */
+    @media (max-width: 768px) {
+        .analytics-strip {
+            bottom: 10px;
+            padding: 8px 15px;
+            gap: 15px;
+            border-radius: 12px;
+            /* Switch to pill shape on mobile */
+            width: calc(100% - 20px);
+            justify-content: space-around;
+            bottom: 80px;
+            /* Above floating cart if it's there */
+        }
+
+        .analytics-item {
+            flex-direction: column;
+            gap: 4px;
+            text-align: center;
+        }
+
+        .analytics-item i {
+            font-size: 1.2rem;
+            margin-bottom: 2px;
+        }
+
+        .analytics-label {
+            font-size: 0.65rem;
+            margin-bottom: 0;
+        }
+
+        .analytics-value {
+            font-size: 0.9rem;
+        }
+    }
+</style>
+
 
 {% load static %}
 <!-- Debug the image -->
@@ -3780,6 +3917,11 @@
             row.querySelector(".mobile-name")?.textContent.trim() ||
             "Unknown Item";
 
+        const imgSrc =
+            row.querySelector(".img-col img")?.src ||
+            row.querySelector(".mobile-img img")?.src ||
+            "";
+
         let existing = cart.find(i => i.id == productId);
 
         if (qty == 0) {
@@ -3790,11 +3932,13 @@
             existing.amount = parseFloat(amount);
             existing.discount = parseFloat(mrp * 0.80);
             existing.mrp = parseFloat(mrp);
+            existing.image = imgSrc;
         }
         else {
             cart.push({
                 id: productId,
                 name: name,
+                image: imgSrc,
                 quantity: qty,
                 mrp: parseFloat(mrp),
                 discount: parseFloat(mrp * 0.80),
@@ -3812,9 +3956,27 @@
         const total = cart.reduce((s, i) => s + i.amount * i.quantity, 0);
         const count = cart.reduce((s, i) => s + i.quantity, 0);
 
+        // Calculate total savings
+        const totalMrp = cart.reduce((s, i) => s + (i.mrp || (i.amount / 0.20)) * i.quantity, 0);
+        const savings = totalMrp - total;
+
+        // Update floating cart
         document.getElementById("cart-total").textContent = total.toFixed(2);
         document.querySelector(".cart-items-count").textContent = `(${count} items)`;
+
+        // Update modal subtotal
         document.getElementById("modalSubtotal").textContent = total.toFixed(2);
+
+        // Update Analytics Strip
+        const analyticsStrip = document.getElementById("analyticsStrip");
+        if (count > 0) {
+            analyticsStrip.style.display = 'flex';
+            document.getElementById("analytics-products").textContent = count;
+            document.getElementById("analytics-savings").textContent = savings.toFixed(2);
+            document.getElementById("analytics-total").textContent = total.toFixed(2);
+        } else {
+            analyticsStrip.style.display = 'none';
+        }
 
         updateCartModal();
         updateMinOrderAlert(); // Check minimum order requirement
@@ -3837,23 +3999,41 @@
             return;
         }
 
-        cartItems.innerHTML = cart.map(item => `
-        <div class="cart-item d-flex justify-content-between align-items-center mb-3 p-3 border rounded">
-            <div>
-                <h6 class="mb-1">${item.name}</h6>
-                <small class="text-muted">
-                    MRP: ₹${item.mrp} | Discount: ₹${item.discount} | Amount: ₹${item.amount}
-                    <br>Qty: ${item.quantity}
-                </small>
+        cartItems.innerHTML = cart.map(item => {
+            const itemMrp = item.mrp || (item.amount / 0.20);
+            const itemTotal = item.amount * item.quantity;
+            const itemOriginalTotal = itemMrp * item.quantity;
+            const itemSavings = itemOriginalTotal - itemTotal;
+
+            return `
+            <div class="cart-item d-flex justify-content-between align-items-center mb-3 p-3 border rounded" style="background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1) !important;">
+                <div style="flex: 1; display: flex; gap: 14px; align-items: center;">
+                    ${item.image ? `<img src="${item.image}" alt="${item.name}" style="width: 55px; height: 55px; object-fit: cover; border-radius: 8px; border: 1px solid rgba(255,215,0,0.3); flex-shrink: 0;">` : `<div style="width: 55px; height: 55px; border-radius: 8px; border: 1px solid rgba(255,215,0,0.3); display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.05); flex-shrink: 0;"><i class="bi bi-image text-muted"></i></div>`}
+                    <div style="flex: 1;">
+                        <h6 class="mb-1 text-light fw-bold" style="font-size: 1.05rem;">${item.name}</h6>
+                        <div class="d-flex align-items-center gap-2 mt-2">
+                            <div class="input-group input-group-sm" style="width: 80px;">
+                                <input type="number" class="form-control text-center cart-qty-input" 
+                                       value="${item.quantity}" min="1" data-id="${item.id}"
+                                       style="background: rgba(255,215,0,0.1); color: #ffd700; border: 1px solid rgba(255,215,0,0.3); font-weight: bold; border-radius: 6px; padding: 0.1rem 0.3rem;">
+                            </div>
+                            <span style="color: #bbb; font-size: 0.85rem;">× ₹${item.amount.toFixed(2)}</span>
+                        </div>
+                        <div class="mt-1" style="font-size: 0.8rem;">
+                            <span class="text-decoration-line-through text-muted me-2">MRP: ₹${itemOriginalTotal.toFixed(2)}</span>
+                            <span style="color: #00d2ff;"><i class="bi bi-tag-fill me-1"></i>Saved: ₹${itemSavings.toFixed(2)}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex flex-column align-items-end gap-2 ms-3">
+                    <div class="fw-bold" style="color: #ffcf7d; font-size: 1.15rem;">₹${itemTotal.toFixed(2)}</div>
+                    <button class="btn btn-sm remove-item" data-id="${item.id}" style="background: rgba(220, 53, 69, 0.15); color: #ff6b6b; border: 1px solid rgba(220, 53, 69, 0.3); border-radius: 8px;" title="Remove Item">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </div>
             </div>
-            <div class="d-flex align-items-center gap-3">
-                <span class="fw-bold">₹${(item.amount * item.quantity).toFixed(2)}</span>
-                <button class="btn btn-sm btn-outline-danger remove-item" data-id="${item.id}">
-                    <i class="bi bi-trash"></i>
-                </button>
-            </div>
-        </div>
-    `).join("");
+            `;
+        }).join("");
 
         document.querySelectorAll(".remove-item").forEach(btn => {
             btn.addEventListener("click", function () {
@@ -3867,6 +4047,42 @@
                 // Reset qty in mobile card if exists
                 const mob = document.querySelector(`.mobile-product-item[data-product-id="${id}"] .qty-input`);
                 if (mob) mob.value = 0;
+
+                updateCartDisplay();
+            });
+        });
+
+        // 🔄 Event listener for quantity input changes IN the modal
+        document.querySelectorAll('.cart-qty-input').forEach(input => {
+            input.addEventListener('change', function () {
+                const id = this.dataset.id;
+                let newQty = parseInt(this.value) || 0;
+
+                // Prevent negative or zero from this input directly unless using trash
+                if (newQty < 1) {
+                    newQty = 1;
+                    this.value = 1;
+                }
+
+                // Update global cart logic
+                const cartItem = cart.find(i => i.id == id);
+                if (cartItem) {
+                    cartItem.quantity = newQty;
+                }
+
+                // Sync the main page grid inputs
+                const desktopRow = document.querySelector(`tr[data-product-id="${id}"] .qty-input`);
+                if (desktopRow) {
+                    desktopRow.value = newQty;
+                    // Trigger total math for that row too
+                    desktopRow.dispatchEvent(new Event('input'));
+                }
+
+                const mobileRow = document.querySelector(`.mobile-product-item[data-product-id="${id}"] .qty-input`);
+                if (mobileRow) {
+                    mobileRow.value = newQty;
+                    mobileRow.dispatchEvent(new Event('input'));
+                }
 
                 updateCartDisplay();
             });

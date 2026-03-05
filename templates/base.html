@@ -134,14 +134,11 @@
         .navbar-brand {
             font-weight: 700;
             font-size: 1.4rem;
-            background: linear-gradient(to right, var(--diwali-gold), #ffffff);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
             display: flex;
             align-items: center;
             gap: 12px;
             margin-left: -12px;
+            text-decoration: none;
         }
 
         .navbar-logo {
@@ -160,6 +157,29 @@
         .navbar-brand:hover .navbar-logo {
             transform: scale(1.08);
             box-shadow: 0 5px 15px rgba(255, 215, 0, 0.5);
+        }
+
+        .brand-text-glow {
+            background: linear-gradient(to right, var(--diwali-gold), #ffffff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: textGlow 2.5s infinite ease-in-out;
+            display: inline-block;
+        }
+
+        @keyframes textGlow {
+            0% {
+                filter: drop-shadow(0 0 2px rgba(255, 215, 0, 0.5));
+            }
+
+            50% {
+                filter: drop-shadow(0 0 12px rgba(255, 215, 0, 1)) drop-shadow(0 0 22px rgba(255, 140, 0, 0.8));
+            }
+
+            100% {
+                filter: drop-shadow(0 0 2px rgba(255, 215, 0, 0.5));
+            }
         }
 
         .navbar {
@@ -930,15 +950,15 @@
                     </div>
                     <div class="top-contact-card">
                         <div class="top-contact-title">Order Confirm</div>
-                        <div class="top-contact-phone">+91 96777 51008</div>
+                        <div class="top-contact-phone">+91 96777 51006</div>
                     </div>
                     <div class="top-contact-card">
                         <div class="top-contact-title">Payment Confirm</div>
-                        <div class="top-contact-phone">+91 96777 51008</div>
+                        <div class="top-contact-phone">+91 82202 01205</div>
                     </div>
                     <div class="top-contact-card">
                         <div class="top-contact-title">Dispatch Details</div>
-                        <div class="top-contact-phone">+91 96777 51008</div>
+                        <div class="top-contact-phone">+91 91235 17649</div>
                     </div>
                 </div>
             </div>
@@ -950,7 +970,7 @@
 
                 <a class="navbar-brand" href="{% url 'inventory:home' %}">
                     <img src="{% static 'images/kannan_logo.png' %}" alt="The Mannan Crackers Logo"
-                        class="navbar-logo">The Mannan Crackers
+                        class="navbar-logo"><span class="brand-text-glow">The Mannan Crackers</span>
                 </a>
 
                 <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navMenu">
@@ -1077,7 +1097,7 @@
                 <div class="bank-details-box">
                     <div class="bank-details-ico"><i class="bi bi-telephone-fill"></i></div>
                     <div>
-                       <h6>PhonePe</h6>
+                        <h6>PhonePe</h6>
                         <p>+91 82202 010205</p>
                         <h6>Gpay</h6>
                         <p>+91 75021 75121, +91 91235 17649</p>
@@ -1088,10 +1108,10 @@
                 <div class="bank-details-box">
                     <div class="bank-details-ico"><i class="bi bi-building"></i></div>
                     <div>
-                        <h6>Varun Kumar</h6>
-                        <p class="secondary">A/c No: 1197155000304044</p>
+                        <h6>Karthikeyan</h6>
+                        <p class="secondary">A/c No: 1234115000006712</p>
                         <p>Karur Vysya Bank</p>
-                        <p class="secondary">KVBL0001197</p>
+                        <p class="secondary">KVBL0001234</p>
                         <p class="tertiary">TIRUPPUR - MAIN</p>
                     </div>
                 </div>
@@ -1183,7 +1203,7 @@
                             <h6>Customer Support</h6>
                             <p>
                                 <a href="mailto:themannancrackers@gmail.com"
-                                style="text-decoration: none; color: inherit;">
+                                    style="text-decoration: none; color: inherit;">
                                     themannancrackers@gmail.com
                                 </a>
                             </p>
@@ -1198,10 +1218,8 @@
                         <div>
                             <h6>Store Location</h6>
                             <p>
-                                <a href="https://maps.app.goo.gl/wsbUxzTGtAc7oXEe7"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                style="text-decoration: none; color: inherit;">
+                                <a href="https://maps.app.goo.gl/wsbUxzTGtAc7oXEe7" target="_blank"
+                                    rel="noopener noreferrer" style="text-decoration: none; color: inherit;">
                                     The Mannan Crackers, Sivakasi
                                 </a>
                             </p>
@@ -1215,10 +1233,8 @@
                         <div>
                             <h6>Follow Us</h6>
                             <p>
-                                <a href="https://www.instagram.com/the_mannan_crackers/"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                style="text-decoration: none; color: inherit;">
+                                <a href="https://www.instagram.com/the_mannan_crackers/" target="_blank"
+                                    rel="noopener noreferrer" style="text-decoration: none; color: inherit;">
                                     @the_mannan_crackers
                                 </a>
                             </p>
