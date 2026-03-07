@@ -15,7 +15,7 @@ load_dotenv(BASE_DIR / ".env")
 # SECURITY
 # ---------------------------------------------------------------------
 SECRET_KEY = os.getenv("SECRET_KEY", "django-insecure-dev-key-change-in-production")
-DEBUG = os.getenv("DEBUG", "True") == "True"
+DEBUG = os.getenv("DEBUG", "False") == "False"
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "*").split(",")
 CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS", "").split(",") if os.getenv("CSRF_TRUSTED_ORIGINS") else []
 
@@ -254,4 +254,3 @@ WHATSAPP_NOTIFICATIONS_ENABLED = os.getenv("WHATSAPP_NOTIFICATIONS_ENABLED", "Tr
 
 # Optional: Enable Celery for async notification sending
 WHATSAPP_USE_CELERY = os.getenv("WHATSAPP_USE_CELERY", "False") == "True"
-

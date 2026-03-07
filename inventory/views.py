@@ -179,8 +179,8 @@ def checkout(request):
             # Calculate total amount first
             total_amount = sum(float(item['price']) * item['quantity'] for item in cart_items.values())
             
-            # Validate minimum order amount (3000)
-            MIN_ORDER_AMOUNT = 3000
+            # Validate minimum order amount (2500)
+            MIN_ORDER_AMOUNT = 2500
             if total_amount < MIN_ORDER_AMOUNT:
                 return utils.handle_api_error(
                     'minimum_order',
@@ -802,20 +802,20 @@ def get_quick_order_lists(request):
         ]
         
         # Populate lists with actual products ensuring minimum price per list
-        # Default minimum is ₹3000, but Family Celebration Pack & Kids Delight Collection require ₹3500
+        # Default minimum is ₹2500, but Family Celebration Pack & Kids Delight Collection require ₹3500
         MIN_PACK_AMOUNTS = {
-            1: 3000,  # Premium Diwali Package
+            1: 2500,  # Premium Diwali Package
             2: 3500,  # Family Celebration Pack
             3: 3500,  # Kids Delight Collection
-            4: 3000,  # Festive Sparkler Set
-            5: 3000,  # Grand Celebration Bundle
+            4: 2500,  # Festive Sparkler Set
+            5: 2500,  # Grand Celebration Bundle
         }
         
         # Get all products sorted by price descending for better selection
         all_products_sorted = Product.objects.filter(is_active=True).order_by('-price')
         
         for quick_list in quick_order_lists:
-            MIN_PACK_AMOUNT = MIN_PACK_AMOUNTS.get(quick_list['id'], 3000)
+            MIN_PACK_AMOUNT = MIN_PACK_AMOUNTS.get(quick_list['id'], 2500)
             selected_products = []
             list_total = 0
             
@@ -976,7 +976,7 @@ def quick_order_checkout(request, list_id):
                 )
         
         # Check minimum order amount
-        MIN_ORDER_AMOUNT = 3000
+        MIN_ORDER_AMOUNT = 2500
         if total_amount < MIN_ORDER_AMOUNT:
             return utils.handle_api_error(
                 'minimum_order',

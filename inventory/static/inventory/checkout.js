@@ -1,15 +1,15 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Get CSRF token from window variable (set in base.html)
-    
+
     // Minimum order amount constant
-    const MIN_ORDER_AMOUNT = 3000;
+    const MIN_ORDER_AMOUNT = 2500;
 
     // Get checkout elements
     const checkoutForm = document.getElementById('checkoutForm');
     const checkoutButton = document.getElementById('proceedToCheckout');
 
     // Handle checkout process
-    checkoutButton?.addEventListener('click', async function() {
+    checkoutButton?.addEventListener('click', async function () {
         if (!checkoutForm.checkValidity()) {
             checkoutForm.classList.add('was-validated');
             return;
@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
             showToast('Your cart is empty!', 'warning');
             return;
         }
-        
+
         // Validate minimum order amount
         const cartTotal = window.cart.reduce((total, item) => total + (item.price * item.quantity), 0);
         if (cartTotal < MIN_ORDER_AMOUNT) {
@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (data.success) {
                 // Show success message
                 showDiwaliSuccess(data.orderSummary.total);
-                
+
                 // Clear cart
                 cartItems = {};
                 updateCartTotal();

@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const productGrid = document.getElementById('product-grid');
     const cartTotalElements = document.querySelectorAll('#cart-total');
     const cartItemsCount = document.querySelector('.cart-items-count');
@@ -8,9 +8,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const checkoutButton = document.getElementById('proceedToCheckout');
     let totalCartAmount = 0;
     let cartItems = {};
-    
+
     // Minimum order amount constant
-    const MIN_ORDER_AMOUNT = 3000;
+    const MIN_ORDER_AMOUNT = 2500;
 
     /* -------------------- 🧮 CORE CART UTILITIES -------------------- */
     function updateAllCartTotals(amount) {
@@ -18,11 +18,11 @@ document.addEventListener('DOMContentLoaded', function() {
             element.textContent = amount.toFixed(2);
         });
         modalSubtotal.textContent = amount.toFixed(2);
-        
+
         // Update checkout button state based on minimum amount
         updateCheckoutButtonState(amount);
     }
-    
+
     function updateCheckoutButtonState(amount) {
         if (checkoutButton) {
             if (amount < MIN_ORDER_AMOUNT) {
@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     /* -------------------- 🔢 QUANTITY CONTROLS -------------------- */
-    productGrid.addEventListener('click', function(e) {
+    productGrid.addEventListener('click', function (e) {
         if (e.target.classList.contains('decrease-qty') || e.target.classList.contains('increase-qty')) {
             const card = e.target.closest('.product-card');
             const input = card.querySelector('.quantity-input');
@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    productGrid.addEventListener('input', function(e) {
+    productGrid.addEventListener('input', function (e) {
         if (e.target.classList.contains('quantity-input')) {
             const card = e.target.closest('.product-card');
             const maxStock = parseInt(e.target.max);
@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     /* -------------------- 🛒 ADD TO CART LOGIC -------------------- */
-    productGrid.addEventListener('click', async function(e) {
+    productGrid.addEventListener('click', async function (e) {
         if (e.target.classList.contains('add-to-cart') || e.target.parentElement.classList.contains('add-to-cart')) {
             const card = e.target.closest('.product-card');
             const productId = card.dataset.productId;
@@ -174,7 +174,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     /* -------------------- ❌ REMOVE CART ITEM -------------------- */
-    cartItemsContainer.addEventListener('click', function(e) {
+    cartItemsContainer.addEventListener('click', function (e) {
         if (e.target.classList.contains('remove-item') || e.target.closest('.remove-item')) {
             const cartItem = e.target.closest('.cart-item');
             const itemId = cartItem.dataset.id;

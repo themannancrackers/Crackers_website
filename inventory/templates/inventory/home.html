@@ -2264,8 +2264,8 @@
                             <i class="bi bi-exclamation-triangle-fill" style="font-size: 1.2rem; color: #856404;"></i>
                             <div>
                                 <strong>Minimum Order Required!</strong>
-                                <p class="mb-0 mt-1">You need to add ₹<span id="shortfallAmount">0.00</span> more items
-                                    to reach the minimum order of ₹3000</p>
+                                <p class="mb-0 text-muted" style="font-size: 0.95rem;">You need
+                                    to reach the minimum order of ₹2500</p>
                             </div>
                         </div>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -3489,9 +3489,9 @@
 <div class="container mt-4">
     <!-- 🎇 DIWALI SALES BANNER WITH DYNAMIC YEAR -->
     <div class="diwali-sales-banner">
-        <h1 class="diwali-banner-title">
-            Diwali sales on {{ now.year }} Upto 80% off Minimum order 3000 rupees only
-        </h1>
+        <marquee behavior="alternate" direction="up" width="80%">
+            Diwali sales on {{ now.year }} Upto 80% off Minimum order 2500 rupees only
+        </marquee>
     </div>
 
     <!-- 🔶 CATEGORY TABLES (SPARKLER ITEMS, FLOWER POTS, etc.) -->
@@ -3588,9 +3588,18 @@
                         {% if product.content %}{{ product.content }}{% else %}1 BOX{% endif %}
                     </div>
 
-                    <div class="mobile-price-row">
-                        <span class="mobile-mrp">₹{{ product.price }}</span>
-                        <span class="mobile-our amount-val">₹0</span>
+                    <div class="mobile-price-row"
+                        style="display: flex; flex-direction: column; gap: 4px; margin-top: 8px;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span class="mobile-mrp"
+                                style="text-decoration: line-through; color: #ff5252; font-size: 0.95rem; font-weight: 600;">MRP:
+                                ₹{{ product.price }}</span>
+                            <span class="mobile-discount-display"
+                                style="color: #4CAF50; font-size: 0.95rem; font-weight: 700;">Discount: ₹0.00</span>
+                        </div>
+                        <div style="color: #00e676; font-size: 1.3rem; font-weight: 800;">
+                            ₹<span class="mobile-our amount-val">0.00</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -4012,16 +4021,22 @@
                     <div style="flex: 1;">
                         <h6 class="mb-1 text-light fw-bold" style="font-size: 1.05rem;">${item.name}</h6>
                         <div class="d-flex align-items-center gap-2 mt-2">
-                            <div class="input-group input-group-sm" style="width: 80px;">
-                                <input type="number" class="form-control text-center cart-qty-input" 
+                            <div class="input-group input-group-sm" style="width: 100px; flex-wrap: nowrap;">
+                                <button class="btn btn-sm cart-qty-btn minus" type="button" data-id="${item.id}" style="background: rgba(255,215,0,0.1); border: 1px solid rgba(255,215,0,0.3); color: #ffd700; border-radius: 6px 0 0 6px; padding: 0 8px;">
+                                    <b>-</b>
+                                </button>
+                                <input type="number" class="form-control text-center cart-qty-input px-1" 
                                        value="${item.quantity}" min="1" data-id="${item.id}"
-                                       style="background: rgba(255,215,0,0.1); color: #ffd700; border: 1px solid rgba(255,215,0,0.3); font-weight: bold; border-radius: 6px; padding: 0.1rem 0.3rem;">
+                                       style="background: rgba(255,215,0,0.1); color: #ffd700; border-top: 1px solid rgba(255,215,0,0.3); border-bottom: 1px solid rgba(255,215,0,0.3); border-left: none; border-right: none; font-weight: bold; border-radius: 0; box-shadow: none;">
+                                <button class="btn btn-sm cart-qty-btn plus" type="button" data-id="${item.id}" style="background: rgba(255,215,0,0.1); border: 1px solid rgba(255,215,0,0.3); color: #ffd700; border-radius: 0 6px 6px 0; padding: 0 8px;">
+                                    <b>+</b>
+                                </button>
                             </div>
-                            <span style="color: #bbb; font-size: 0.85rem;">× ₹${item.amount.toFixed(2)}</span>
+                            <span style="color: #ffffff; font-size: 0.95rem; font-weight: 500;">× ₹${item.amount.toFixed(2)}</span>
                         </div>
-                        <div class="mt-1" style="font-size: 0.8rem;">
-                            <span class="text-decoration-line-through text-muted me-2">MRP: ₹${itemOriginalTotal.toFixed(2)}</span>
-                            <span style="color: #00d2ff;"><i class="bi bi-tag-fill me-1"></i>Saved: ₹${itemSavings.toFixed(2)}</span>
+                        <div class="mt-1" style="font-size: 0.9rem;">
+                            <span class="text-decoration-line-through me-2" style="color: #e0e0e0;">MRP: ₹${itemOriginalTotal.toFixed(2)}</span>
+                            <span style="color: #00d2ff; font-weight: 600;"><i class="bi bi-tag-fill me-1"></i>Saved: ₹${itemSavings.toFixed(2)}</span>
                         </div>
                     </div>
                 </div>
@@ -4087,6 +4102,28 @@
                 updateCartDisplay();
             });
         });
+
+        // Event listeners for +/- buttons in cart
+        document.querySelectorAll('.cart-qty-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                const id = this.dataset.id;
+                const input = document.querySelector(`.cart-qty-input[data-id="${id}"]`);
+                if (!input) return;
+
+                let currentQty = parseInt(input.value) || 1;
+
+                if (this.classList.contains('plus')) {
+                    currentQty += 1;
+                } else if (this.classList.contains('minus')) {
+                    currentQty -= 1;
+                }
+
+                if (currentQty < 1) currentQty = 1;
+
+                input.value = currentQty;
+                input.dispatchEvent(new Event('change'));
+            });
+        });
     }
 
     // =====================================================
@@ -4139,24 +4176,17 @@
             const amountEle = box.querySelector(".amount-val");
             const totalEle = box.querySelector(".row-total-val");
 
-            // Create discount span dynamically for mobile
-            if (!box.querySelector(".mobile-discount")) {
-                const discountTag = document.createElement("div");
-                discountTag.style.color = "#ff5252";
-                discountTag.style.fontWeight = "700";
-                discountTag.style.marginTop = "4px";
-                discountTag.classList.add("mobile-discount");
-                box.querySelector(".mobile-info").appendChild(discountTag);
-            }
-
-            const discountEle = box.querySelector(".mobile-discount");
+            const topMrpEle = box.querySelector(".mobile-mrp");
+            const discountEle = box.querySelector(".mobile-discount-display");
 
             // ✨ INITIALIZE DISCOUNT AND AMOUNT FOR QUANTITY 1 ON PAGE LOAD
             const initDiscount = (mrp * 0.80).toFixed(2);
             const initAmount = (mrp * 0.20).toFixed(2);
             const initQty = parseInt(qtyInput.value) || 0;
+
             discountEle.textContent = `Discount: ₹${initDiscount}`;
-            amountEle.textContent = `₹${initAmount}`;
+            topMrpEle.textContent = `MRP: ₹${mrp.toFixed(2)}`;
+            amountEle.textContent = `${initAmount}`;
             totalEle.textContent = (initAmount * initQty).toFixed(2); // Initial total based on qty
 
             qtyInput.addEventListener("input", function () {
@@ -4167,7 +4197,8 @@
                 const total = (amount * qty).toFixed(2);
 
                 discountEle.textContent = `Discount: ₹${discount}`;
-                amountEle.textContent = `₹${amount}`;
+                topMrpEle.textContent = `MRP: ₹${mrp.toFixed(2)}`;
+                amountEle.textContent = `${amount}`;
                 totalEle.textContent = total;
 
                 updateCart(box.dataset.productId, box, qty, amount, mrp);
@@ -4393,7 +4424,7 @@
 
     // =====================================================
 
-    const MIN_ORDER_AMOUNT = 3000;
+    const MIN_ORDER_AMOUNT = 2500;
 
     document.addEventListener("DOMContentLoaded", function () {
 
@@ -4594,5 +4625,4 @@
     }
 
 </script>
-
 {% endblock %}
