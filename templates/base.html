@@ -1,1358 +1,1433 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <title>The Mannan Crackers - Premium Crackers</title>
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
-    {% load static %}
-    <style>
-        :root {
-            --primary-color: #0d6efd;
-            --secondary-color: #ff6b35;
-            --accent-color: #ffcc00;
-            --dark-color: #1a1a2e;
-            --light-color: #f8f9fa;
-            --diwali-gold: #ffd700;
-            --diwali-deep-gold: #ffb347;
-            --diwali-red: #b30000;
-            --diwali-orange: #ff8c00;
-            --diwali-green: #228b22;
-            --diwali-blue: #1a1a2e;
-            --diwali-purple: #4b0082;
-            --diwali-pink: #ff69b4;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: Georgia, "Times New Roman", Times, serif;
-            background: #ffffff;
-            margin: 0;
-        }
-
-        /* ========================= TOP CONTACT STRIP ========================= */
-        .top-contact-strip {
-            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460) !important;
-            padding: 18px 0 10px;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.04);
-        }
-
-        .top-contact-row {
-            display: flex;
-            justify-content: center;
-            gap: 18px;
-            flex-wrap: wrap;
-        }
-
-        .top-contact-card {
-            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460) !important;
-            border-radius: 12px;
-            border: 1px solid rgba(255, 140, 0, 0.4);
-            padding: 10px 22px;
-            min-width: 200px;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
-            text-align: center;
-        }
-
-        .top-contact-title {
-            font-weight: 700;
-            color: #e4cb5b;
-            font-size: 0.95rem;
-        }
-
-        .top-contact-phone {
-            font-weight: 700;
-            color: #ffffff;
-            font-size: 0.95rem;
-        }
-
-        /* ============================= CONTACT STRIP GRID (RESPONSIVE) ============================= */
-
-        /* Desktop: 4 in a row (default) */
-        @media (min-width: 993px) {
-            .top-contact-row {
-                display: flex;
-                justify-content: space-between;
-                gap: 20px;
-            }
-
-            .top-contact-card {
-                flex: 1;
-            }
-        }
-
-        /* Tablet & Mobile → 2×2 layout */
-        @media (max-width: 992px) {
-            .top-contact-row {
-                display: grid;
-                grid-template-columns: repeat(2, 1fr);
-                gap: 15px;
-            }
-
-            .top-contact-card {
-                width: 100%;
-            }
-        }
-
-        /* Small mobiles */
-        @media (max-width: 480px) {
-            .top-contact-row {
-                gap: 10px;
-            }
-
-            .top-contact-card {
-                padding: 8px 10px;
-            }
-
-            .top-contact-title,
-            .top-contact-phone {
-                font-size: 0.85rem;
-            }
-        }
-
-        /* =============================== HEADER / NAVBAR =============================== */
-        .header-main {
-            background: #ffffff;
-            position: sticky;
-            top: 0;
-            z-index: 999;
-            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        .navbar {
-            padding: 10px 0;
-            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460) !important;
-            border-bottom: 3px solid var(--diwali-gold);
-        }
-
-        .navbar-brand {
-            font-weight: 700;
-            font-size: 1.4rem;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-left: -12px;
-            text-decoration: none;
-        }
-
-        .navbar-logo {
-            height: 50px;
-            width: 50px;
-            object-fit: contain;
-            border-radius: 50%;
-            background: #ffffff;
-            padding: 5px;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
-            border: 2px solid var(--diwali-gold);
-            flex-shrink: 0;
-            filter: drop-shadow(0 2px 6px rgba(255, 215, 0, 0.4));
-        }
-
-        .navbar-brand:hover .navbar-logo {
-            transform: scale(1.08);
-            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.5);
-        }
-
-        .brand-text-glow {
-            background: linear-gradient(to right, var(--diwali-gold), #ffffff);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: textGlow 2.5s infinite ease-in-out;
-            display: inline-block;
-        }
-
-        @keyframes textGlow {
-            0% {
-                filter: drop-shadow(0 0 2px rgba(255, 215, 0, 0.5));
-            }
-
-            50% {
-                filter: drop-shadow(0 0 12px rgba(255, 215, 0, 1)) drop-shadow(0 0 22px rgba(255, 140, 0, 0.8));
-            }
-
-            100% {
-                filter: drop-shadow(0 0 2px rgba(255, 215, 0, 0.5));
-            }
-        }
-
-        .navbar {
-            padding: 10px 0;
-            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460) !important;
-            border-bottom: 3px solid var(--diwali-gold);
-            text-align: center;
-            /* flex-wrap: nowrap;  <-- remove or comment this */
-        }
-
-
-        .navbar-nav .nav-item {
-            flex-shrink: 0;
-        }
-
-        .navbar-nav .nav-link {
-            padding: 8px 12px !important;
-            font-size: 0.95rem;
-            white-space: nowrap;
-        }
-
-        /* Mobile navbar refinements */
-        @media (max-width: 576px) {
-            .navbar-brand {
-                font-size: 1.1rem;
-                gap: 8px;
-                margin-left: -6px;
-            }
-
-            .navbar-logo {
-                height: 40px;
-                width: 40px;
-                padding: 3px;
-                border-radius: 50%;
-            }
-
-            .navbar-nav .nav-link {
-                padding: 10px 0;
-                width: 100%;
-            }
-        }
-
-        /* =============================== BANK DETAILS SECTION =============================== */
-        .bank-details-section {
-            padding: 60px 0;
-            background: linear-gradient(135deg, #f8f9fa, #ffffff);
-            margin-bottom: 0;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 2.2rem;
-            font-weight: 800;
-            color: #1a1a2e;
-            margin-bottom: 50px;
-            background: linear-gradient(to right, var(--diwali-gold), #ff8c00);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: 1px;
-        }
-
-        .bank-details-row {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-        }
-
-        .bank-details-box:first-child {
-            grid-row: span 2;
-            align-self: center;
-        }
-
-        @media (max-width: 768px) {
-            .bank-details-box:first-child {
-                grid-row: span 1;
-            }
-        }
-
-        .bank-details-box {
-            display: flex;
-            align-items: flex-start;
-            gap: 16px;
-            background: #ffffff;
-            padding: 28px;
-            border-radius: 16px;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-            border: 2px solid rgba(255, 215, 0, 0.15);
-            transition: 0.35s;
-        }
-
-        .bank-details-box:first-child {
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            padding: 35px;
-        }
-
-        .bank-details-box:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 28px rgba(255, 140, 0, 0.15);
-            border-color: rgba(255, 215, 0, 0.4);
-        }
-
-        .bank-details-ico {
-            background: linear-gradient(135deg, var(--diwali-gold), #ff8c00);
-            color: #ffffff;
-            width: 56px;
-            height: 56px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 26px;
-            flex-shrink: 0;
-            box-shadow: 0 4px 12px rgba(255, 140, 0, 0.25);
-        }
-
-        .bank-details-box:first-child .bank-details-ico {
-            width: 70px;
-            height: 70px;
-            font-size: 32px;
-            border-radius: 16px;
-        }
-
-        .bank-details-box h6 {
-            margin: 0 0 8px 0;
-            font-weight: 800;
-            font-size: 1.1rem;
-            color: #1a1a2e;
-            letter-spacing: 0.5px;
-        }
-
-        .bank-details-box:first-child h6 {
-            font-size: 1.3rem;
-            margin-bottom: 10px;
-        }
-
-        .bank-details-box p {
-            margin: 6px 0;
-            font-size: 0.95rem;
-            color: #555555;
-            font-weight: 600;
-        }
-
-        .bank-details-box p.secondary {
-            color: var(--diwali-gold);
-            font-weight: 700;
-            font-size: 0.9rem;
-        }
-
-        .bank-details-box:first-child p {
-            margin: 8px 0;
-            font-size: 1rem;
-            font-weight: 700;
-        }
-
-        .bank-details-box:first-child p.secondary {
-            font-size: 0.95rem;
-            color: var(--diwali-gold);
-        }
-
-        .bank-details-box p.tertiary {
-            color: #999999;
-            font-size: 0.85rem;
-            font-weight: 500;
-        }
-
-        /* Responsive Bank Details */
-        @media (max-width: 768px) {
-            .section-title {
-                font-size: 1.8rem;
-                margin-bottom: 35px;
-            }
-
-            .bank-details-row {
-                gap: 20px;
-            }
-
-            .bank-details-box {
-                padding: 20px;
-            }
-
-            .bank-details-ico {
-                width: 48px;
-                height: 48px;
-                font-size: 22px;
-            }
-
-            .bank-details-box h6 {
-                font-size: 1rem;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .bank-details-section {
-                padding: 40px 0;
-            }
-
-            .section-title {
-                font-size: 1.5rem;
-                margin-bottom: 25px;
-            }
-
-            .bank-details-row {
-                grid-template-columns: 1fr;
-                gap: 15px;
-            }
-
-            .bank-details-box {
-                padding: 16px;
-            }
-
-            .bank-details-box h6 {
-                font-size: 0.95rem;
-            }
-
-            .bank-details-box p {
-                font-size: 0.9rem;
-            }
-        }
-
-        /* =============================== FOOTER =============================== */
-        .premium-footer {
-            margin-top: 50px;
-            background: #001326;
-            color: #e0e6ed;
-            font-family: 'Segoe UI', sans-serif;
-        }
-
-        .footer-top-strip {
-            background: linear-gradient(90deg, var(--diwali-gold), #ffb347, var(--diwali-gold));
-            padding: 22px 0;
-            color: #001326;
-            box-shadow: 0 3px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        .footer-top-row {
-            display: flex;
-            justify-content: center;
-            gap: 35px;
-            flex-wrap: wrap;
-        }
-
-        .footer-top-box {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            background: rgba(255, 255, 255, 0.15);
-            padding: 12px 20px;
-            border-radius: 14px;
-            backdrop-filter: blur(5px);
-            transition: 0.3s;
-        }
-
-        .footer-top-box:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
-        }
-
-        .footer-top-ico {
-            background: white;
-            color: #ff6600;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-        }
-
-        .footer-main-area {
-            padding: 55px 0;
-            background: #00213d;
-            border-top: 2px solid #ffb300;
-        }
-
-        .footer-main-area h4,
-        .footer-main-area h5 {
-            color: #ffd700;
-            font-weight: 700;
-            margin-bottom: 18px;
-        }
-
-        .footer-brand-section {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 15px;
-        }
-
-        .footer-brand-logo {
-            height: 50px;
-            width: 50px;
-            object-fit: contain;
-            border-radius: 50%;
-            background: #ffffff;
-            padding: 4px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-            border: 2px solid var(--diwali-gold);
-        }
-
-        .footer-brand-name {
-            font-weight: 700;
-            font-size: 1.3rem;
-            background: linear-gradient(to right, var(--diwali-gold), #ffffff);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .footer-desc {
-            line-height: 1.8;
-            font-size: 15px;
-        }
-
-        .footer-menu {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .footer-menu li {
-            margin: 10px 0;
-        }
-
-        .footer-menu li a {
-            color: #dce7f5;
-            font-size: 16px;
-            text-decoration: none;
-            transition: 0.3s;
-        }
-
-        .footer-menu li a:hover {
-            color: #ffd700;
-            padding-left: 5px;
-        }
-
-        .footer-map iframe {
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        .footer-bottom {
-            background: #000d1a;
-            text-align: center;
-            padding: 15px 0;
-            font-size: 14px;
-            color: #9fb2c7;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        /* Footer responsive */
-        @media (max-width: 576px) {
-            .footer-main-area .col-md-4 {
-                text-align: center;
-                margin-bottom: 25px;
-            }
-        }
-
-        @media (min-width: 576px) and (max-width: 992px) {
-            .footer-main-area .row>div {
-                text-align: center;
-                margin-bottom: 20px;
-            }
-        }
-
-        /* ========================== ROCKET BACK TO TOP ========================== */
-        .rocket-btn {
-            position: fixed;
-            bottom: 145px;
-            right: 25px;
-            width: 55px;
-            height: 55px;
-            border-radius: 50%;
-            background: url("{% static 'images/Cart.png' %}");
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            color: #fff;
-            font-size: 26px;
-            border: none;
-            cursor: pointer;
-            z-index: 9999;
-            box-shadow: 0 0 15px rgba(255, 193, 7, 0.7);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: 0.3s ease;
-            opacity: 0;
-            visibility: hidden;
-            animation: rocketLaunch 1.3s infinite ease-in-out;
-        }
-
-        .rocket-btn.show {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .rocket-btn:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 0 25px rgba(255, 140, 0, 1);
-        }
-
-        @keyframes rocketLaunch {
-            0% {
-                transform: translateY(0);
-            }
-
-            50% {
-                transform: translateY(-12px);
-            }
-
-            100% {
-                transform: translateY(0);
-            }
-        }
-
-        @media (max-width: 576px) {
-            .rocket-btn {
-                width: 48px;
-                height: 48px;
-                bottom: 140px;
-                right: 36px;
-            }
-
-            .rocket-btn svg {
-                width: 25px;
-            }
-        }
-
-        @media (min-width: 576px) and (max-width: 992px) {
-            .rocket-btn {
-                width: 52px;
-                height: 52px;
-                bottom: 140px;
-                right: 36px;
-            }
-        }
-
-        /* ========================== WHATSAPP FLOAT BUTTON ========================== */
-        .whatsapp-float {
-            position: fixed;
-            bottom: 25px;
-            left: 25px;
-            width: 40px;
-            height: 40px;
-            background: #25D366;
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 32px;
-            z-index: 99999;
-            text-decoration: none;
-            box-shadow: 0 0 25px rgba(37, 211, 102, 0.6);
-            transition: 0.3s ease;
-            animation: whatsappGlow 2s infinite ease-in-out;
-        }
-
-        .whatsapp-float:hover {
-            transform: scale(1.12);
-            box-shadow: 0 0 35px rgba(37, 211, 102, 1);
-        }
-
-        @keyframes whatsappGlow {
-            0% {
-                box-shadow: 0 0 10px #25d366;
-            }
-
-            50% {
-                box-shadow: 0 0 25px #25d366;
-            }
-
-            100% {
-                box-shadow: 0 0 10px #25d366;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .whatsapp-float {
-                width: 40px;
-                height: 40px;
-                bottom: 15px;
-                left: 15px;
-                font-size: 26px;
-            }
-        }
-
-        /* ========================== ORDER NOW FLOATING BUTTON ========================== */
-        .order-now-btn {
-            position: fixed;
-            bottom: 5px;
-            right: 20px;
-            z-index: 9999;
-            animation: floatUp 2.5s infinite ease-in-out;
-        }
-
-        .order-now-btn img {
-            width: 105px;
-            height: auto;
-            filter: drop-shadow(0 0 8px rgba(255, 115, 0, 0.9));
-        }
-
-        @keyframes floatUp {
-            0% {
-                transform: translateY(0);
-            }
-
-            50% {
-                transform: translateY(-12px);
-            }
-
-            100% {
-                transform: translateY(0);
-            }
-        }
-
-        @media (max-width: 576px) {
-            .order-now-btn img {
-                width: 70px;
-            }
-
-            .order-now-btn {
-                bottom: 8px;
-                right: 12px;
-            }
-        }
-
-        /* =========================
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <title>The Mannan Crackers - Premium Crackers</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet" />
+  {% load static %}
+  <style>
+    :root {
+      --primary-color: #0d6efd;
+      --secondary-color: #ff6b35;
+      --accent-color: #ffcc00;
+      --dark-color: #1a1a2e;
+      --light-color: #f8f9fa;
+      --diwali-gold: #ffd700;
+      --diwali-deep-gold: #ffb347;
+      --diwali-red: #b30000;
+      --diwali-orange: #ff8c00;
+      --diwali-green: #228b22;
+      --diwali-blue: #1a1a2e;
+      --diwali-purple: #4b0082;
+      --diwali-pink: #ff69b4;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Georgia, "Times New Roman", Times, serif;
+      background: #ffffff;
+      margin: 0;
+    }
+
+    /* ========================= TOP CONTACT STRIP ========================= */
+    .top-contact-strip {
+      background: linear-gradient(135deg,
+          #1a1a2e,
+          #16213e,
+          #0f3460) !important;
+      padding: 18px 0 10px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+    }
+
+    .top-contact-row {
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .top-contact-card {
+      background: linear-gradient(135deg,
+          #1a1a2e,
+          #16213e,
+          #0f3460) !important;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 140, 0, 0.4);
+      padding: 10px 22px;
+      min-width: 200px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+      text-align: center;
+    }
+
+    .top-contact-title {
+      font-weight: 700;
+      color: #e4cb5b;
+      font-size: 0.95rem;
+    }
+
+    .top-contact-phone {
+      font-weight: 700;
+      color: #ffffff;
+      font-size: 0.95rem;
+    }
+
+    /* ============================= CONTACT STRIP GRID (RESPONSIVE) ============================= */
+
+    /* Desktop: 4 in a row (default) */
+    @media (min-width: 993px) {
+      .top-contact-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+      }
+
+      .top-contact-card {
+        flex: 1;
+      }
+    }
+
+    /* Tablet & Mobile → 2×2 layout */
+    @media (max-width: 992px) {
+      .top-contact-row {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+      }
+
+      .top-contact-card {
+        width: 100%;
+      }
+    }
+
+    /* Small mobiles */
+    @media (max-width: 480px) {
+      .top-contact-row {
+        gap: 10px;
+      }
+
+      .top-contact-card {
+        padding: 8px 10px;
+      }
+
+      .top-contact-title,
+      .top-contact-phone {
+        font-size: 0.85rem;
+      }
+    }
+
+    /* =============================== HEADER / NAVBAR =============================== */
+    .header-main {
+      background: #ffffff;
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar {
+      padding: 10px 0;
+      background: linear-gradient(135deg,
+          #1a1a2e,
+          #16213e,
+          #0f3460) !important;
+      border-bottom: 3px solid var(--diwali-gold);
+    }
+
+    .navbar-brand {
+      font-weight: 700;
+      font-size: 1.4rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-left: -12px;
+      text-decoration: none;
+    }
+
+    .navbar-logo {
+      height: 50px;
+      width: 50px;
+      object-fit: contain;
+      border-radius: 50%;
+      background: #ffffff;
+      padding: 5px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+      border: 2px solid var(--diwali-gold);
+      flex-shrink: 0;
+      filter: drop-shadow(0 2px 6px rgba(255, 215, 0, 0.4));
+    }
+
+    .navbar-brand:hover .navbar-logo {
+      transform: scale(1.08);
+      box-shadow: 0 5px 15px rgba(255, 215, 0, 0.5);
+    }
+
+    .brand-text-glow {
+      background: linear-gradient(to right, var(--diwali-gold), #ffffff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: textGlow 2.5s infinite ease-in-out;
+      display: inline-block;
+    }
+
+    @keyframes textGlow {
+      0% {
+        filter: drop-shadow(0 0 2px rgba(255, 215, 0, 0.5));
+      }
+
+      50% {
+        filter: drop-shadow(0 0 12px rgba(255, 215, 0, 1)) drop-shadow(0 0 22px rgba(255, 140, 0, 0.8));
+      }
+
+      100% {
+        filter: drop-shadow(0 0 2px rgba(255, 215, 0, 0.5));
+      }
+    }
+
+    .navbar {
+      padding: 10px 0;
+      background: linear-gradient(135deg,
+          #1a1a2e,
+          #16213e,
+          #0f3460) !important;
+      border-bottom: 3px solid var(--diwali-gold);
+      text-align: center;
+      /* flex-wrap: nowrap;  <-- remove or comment this */
+    }
+
+    .navbar-nav .nav-item {
+      flex-shrink: 0;
+    }
+
+    .navbar-nav .nav-link {
+      padding: 8px 12px !important;
+      font-size: 0.95rem;
+      white-space: nowrap;
+    }
+
+    /* Mobile navbar refinements */
+    @media (max-width: 576px) {
+      .navbar-brand {
+        font-size: 1.1rem;
+        gap: 8px;
+        margin-left: -6px;
+      }
+
+      .navbar-logo {
+        height: 40px;
+        width: 40px;
+        padding: 3px;
+        border-radius: 50%;
+      }
+
+      .navbar-nav .nav-link {
+        padding: 10px 0;
+        width: 100%;
+      }
+    }
+
+    /* =============================== BANK DETAILS SECTION =============================== */
+    .bank-details-section {
+      padding: 60px 0;
+      background: linear-gradient(135deg, #f8f9fa, #ffffff);
+      margin-bottom: 0;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: #1a1a2e;
+      margin-bottom: 50px;
+      background: linear-gradient(to right, var(--diwali-gold), #ff8c00);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 1px;
+    }
+
+    .bank-details-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+    }
+
+    .bank-details-box:first-child {
+      grid-row: span 2;
+      align-self: center;
+    }
+
+    @media (max-width: 768px) {
+      .bank-details-box:first-child {
+        grid-row: span 1;
+      }
+    }
+
+    .bank-details-box {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      background: #ffffff;
+      padding: 28px;
+      border-radius: 16px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+      border: 2px solid rgba(255, 215, 0, 0.15);
+      transition: 0.35s;
+    }
+
+    .bank-details-box:first-child {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 35px;
+    }
+
+    .bank-details-box:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 28px rgba(255, 140, 0, 0.15);
+      border-color: rgba(255, 215, 0, 0.4);
+    }
+
+    .bank-details-ico {
+      background: linear-gradient(135deg, var(--diwali-gold), #ff8c00);
+      color: #ffffff;
+      width: 56px;
+      height: 56px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(255, 140, 0, 0.25);
+    }
+
+    .bank-details-box:first-child .bank-details-ico {
+      width: 70px;
+      height: 70px;
+      font-size: 32px;
+      border-radius: 16px;
+    }
+
+    /* Media query for floating elements on smaller screens */
+    @media (max-width: 576px) {
+      .floating-cart {
+        bottom: 65px;
+        right: 15px;
+        padding: 10px 14px;
+        z-index: 9998;
+      }
+
+      .card-body {
+        padding: 15px;
+      }
+
+      .card-title {
+        font-size: 1.1rem;
+      }
+
+      .price {
+        font-size: 1.1rem;
+      }
+
+      .whatsapp-float {
+        bottom: 65px;
+        left: 15px;
+        z-index: 9998;
+      }
+
+      .rocket-btn {
+        bottom: 110px;
+        right: 15px;
+        z-index: 9998;
+      }
+
+      .order-now-btn {
+        bottom: 12px;
+        right: 15px;
+        z-index: 9999;
+      }
+    }
+
+    .bank-details-box h6 {
+      margin: 0 0 8px 0;
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: #1a1a2e;
+      letter-spacing: 0.5px;
+    }
+
+    .bank-details-box:first-child h6 {
+      font-size: 1.3rem;
+      margin-bottom: 10px;
+    }
+
+    .bank-details-box p {
+      margin: 6px 0;
+      font-size: 0.95rem;
+      color: #555555;
+      font-weight: 600;
+    }
+
+    .bank-details-box p.secondary {
+      color: var(--diwali-gold);
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+
+    .bank-details-box:first-child p {
+      margin: 8px 0;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    .bank-details-box:first-child p.secondary {
+      font-size: 0.95rem;
+      color: var(--diwali-gold);
+    }
+
+    .bank-details-box p.tertiary {
+      color: #999999;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    /* Responsive Bank Details */
+    @media (max-width: 768px) {
+      .section-title {
+        font-size: 1.8rem;
+        margin-bottom: 35px;
+      }
+
+      .bank-details-row {
+        gap: 20px;
+      }
+
+      .bank-details-box {
+        padding: 20px;
+      }
+
+      .bank-details-ico {
+        width: 48px;
+        height: 48px;
+        font-size: 22px;
+      }
+
+      .bank-details-box h6 {
+        font-size: 1rem;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .bank-details-section {
+        padding: 40px 0;
+      }
+
+      .section-title {
+        font-size: 1.5rem;
+        margin-bottom: 25px;
+      }
+
+      .bank-details-row {
+        grid-template-columns: 1fr;
+        gap: 15px;
+      }
+
+      .bank-details-box {
+        padding: 16px;
+      }
+
+      .bank-details-box h6 {
+        font-size: 0.95rem;
+      }
+
+      .bank-details-box p {
+        font-size: 0.9rem;
+      }
+    }
+
+    /* =============================== FOOTER =============================== */
+    .premium-footer {
+      margin-top: 50px;
+      background: #001326;
+      color: #e0e6ed;
+      font-family: "Segoe UI", sans-serif;
+    }
+
+    .footer-top-strip {
+      background: linear-gradient(90deg,
+          var(--diwali-gold),
+          #ffb347,
+          var(--diwali-gold));
+      padding: 22px 0;
+      color: #001326;
+      box-shadow: 0 3px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .footer-top-row {
+      display: flex;
+      justify-content: center;
+      gap: 35px;
+      flex-wrap: wrap;
+    }
+
+    .footer-top-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(255, 255, 255, 0.15);
+      padding: 12px 20px;
+      border-radius: 14px;
+      backdrop-filter: blur(5px);
+      transition: 0.3s;
+    }
+
+    .footer-top-box:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+    }
+
+    .footer-top-ico {
+      background: white;
+      color: #ff6600;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    .footer-main-area {
+      padding: 55px 0;
+      background: #00213d;
+      border-top: 2px solid #ffb300;
+    }
+
+    .footer-main-area h4,
+    .footer-main-area h5 {
+      color: #ffd700;
+      font-weight: 700;
+      margin-bottom: 18px;
+    }
+
+    .footer-brand-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 15px;
+    }
+
+    .footer-brand-logo {
+      height: 50px;
+      width: 50px;
+      object-fit: contain;
+      border-radius: 50%;
+      background: #ffffff;
+      padding: 4px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      border: 2px solid var(--diwali-gold);
+    }
+
+    .footer-brand-name {
+      font-weight: 700;
+      font-size: 1.3rem;
+      background: linear-gradient(to right, var(--diwali-gold), #ffffff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .footer-desc {
+      line-height: 1.8;
+      font-size: 15px;
+    }
+
+    .footer-menu {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .footer-menu li {
+      margin: 10px 0;
+    }
+
+    .footer-menu li a {
+      color: #dce7f5;
+      font-size: 16px;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    .footer-menu li a:hover {
+      color: #ffd700;
+      padding-left: 5px;
+    }
+
+    .footer-map iframe {
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .footer-bottom {
+      background: #000d1a;
+      text-align: center;
+      padding: 15px 0;
+      font-size: 14px;
+      color: #9fb2c7;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* Footer responsive */
+    @media (max-width: 576px) {
+      .footer-main-area .col-md-4 {
+        text-align: center;
+        margin-bottom: 25px;
+      }
+    }
+
+    @media (min-width: 576px) and (max-width: 992px) {
+      .footer-main-area .row>div {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+    }
+
+    /* ========================== ROCKET BACK TO TOP ========================== */
+    .rocket-btn {
+      position: fixed;
+      bottom: 145px;
+      right: 25px;
+      width: 55px;
+      height: 55px;
+      border-radius: 50%;
+      background: url("{% static 'images/Cart.png' %}");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      color: #fff;
+      font-size: 26px;
+      border: none;
+      cursor: pointer;
+      z-index: 9999;
+      box-shadow: 0 0 15px rgba(255, 193, 7, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: 0.3s ease;
+      opacity: 0;
+      visibility: hidden;
+      animation: rocketLaunch 1.3s infinite ease-in-out;
+    }
+
+    .rocket-btn.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .rocket-btn:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 0 25px rgba(255, 140, 0, 1);
+    }
+
+    @keyframes rocketLaunch {
+      0% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-12px);
+      }
+
+      100% {
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 576px) {
+      .rocket-btn {
+        width: 48px;
+        height: 48px;
+        bottom: 140px;
+        right: 36px;
+      }
+
+      .rocket-btn svg {
+        width: 25px;
+      }
+    }
+
+    @media (min-width: 576px) and (max-width: 992px) {
+      .rocket-btn {
+        width: 52px;
+        height: 52px;
+        bottom: 140px;
+        right: 36px;
+      }
+    }
+
+    /* ========================== WHATSAPP FLOAT BUTTON ========================== */
+    .whatsapp-float {
+      position: fixed;
+      bottom: 25px;
+      left: 25px;
+      width: 40px;
+      height: 40px;
+      background: #25d366;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 32px;
+      z-index: 99999;
+      text-decoration: none;
+      box-shadow: 0 0 25px rgba(37, 211, 102, 0.6);
+      transition: 0.3s ease;
+      animation: whatsappGlow 2s infinite ease-in-out;
+    }
+
+    .whatsapp-float:hover {
+      transform: scale(1.12);
+      box-shadow: 0 0 35px rgba(37, 211, 102, 1);
+    }
+
+    @keyframes whatsappGlow {
+      0% {
+        box-shadow: 0 0 10px #25d366;
+      }
+
+      50% {
+        box-shadow: 0 0 25px #25d366;
+      }
+
+      100% {
+        box-shadow: 0 0 10px #25d366;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .whatsapp-float {
+        width: 40px;
+        height: 40px;
+        bottom: 15px;
+        left: 15px;
+        font-size: 26px;
+      }
+    }
+
+    /* ========================== ORDER NOW FLOATING BUTTON ========================== */
+    .order-now-btn {
+      position: fixed;
+      bottom: 5px;
+      right: 20px;
+      z-index: 9999;
+      animation: floatUp 2.5s infinite ease-in-out;
+    }
+
+    .order-now-btn img {
+      width: 105px;
+      height: auto;
+      filter: drop-shadow(0 0 8px rgba(255, 115, 0, 0.9));
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-12px);
+      }
+
+      100% {
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 576px) {
+      .order-now-btn img {
+        width: 70px;
+      }
+
+      .order-now-btn {
+        bottom: 8px;
+        right: 12px;
+      }
+    }
+
+    /* =========================
    FOOTER TOP STRIP BASE
    ========================= */
-        .footer-top-strip {
-            background: linear-gradient(90deg, var(--diwali-gold), #ffb347, var(--diwali-gold));
-            padding: 20px 0;
-            color: #001326;
-            box-shadow: 0 3px 20px rgba(0, 0, 0, 0.2);
-        }
+    .footer-top-strip {
+      background: linear-gradient(90deg,
+          var(--diwali-gold),
+          #ffb347,
+          var(--diwali-gold));
+      padding: 20px 0;
+      color: #001326;
+      box-shadow: 0 3px 20px rgba(0, 0, 0, 0.2);
+    }
 
-        .footer-top-row {
-            display: flex;
-            justify-content: center;
-            gap: 24px;
-            flex-wrap: wrap;
-        }
+    .footer-top-row {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
 
-        .footer-top-box {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            background: rgba(0, 19, 38, 0.15);
-            padding: 12px 18px;
-            border-radius: 14px;
-            backdrop-filter: blur(5px);
-            transition: 0.3s;
-            min-width: 220px;
-        }
+    .footer-top-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(0, 19, 38, 0.15);
+      padding: 12px 18px;
+      border-radius: 14px;
+      backdrop-filter: blur(5px);
+      transition: 0.3s;
+      min-width: 220px;
+    }
 
-        .footer-top-box:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 0 18px rgba(255, 215, 0, 0.6);
-        }
+    .footer-top-box:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 0 18px rgba(255, 215, 0, 0.6);
+    }
 
-        .footer-top-ico {
-            background: #001326;
-            color: var(--diwali-gold);
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-        }
+    .footer-top-ico {
+      background: #001326;
+      color: var(--diwali-gold);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
 
-        .footer-top-box h6 {
-            margin: 0;
-            font-weight: 700;
-            font-size: 0.95rem;
-            color: #001326;
-        }
+    .footer-top-box h6 {
+      margin: 0;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: #001326;
+    }
 
-        .footer-top-box p {
-            margin: 0;
-            font-size: 0.9rem;
-            color: #001326;
-        }
+    .footer-top-box p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: #001326;
+    }
 
-        /* =========================
+    /* =========================
    DESKTOP (≥ 992px)
    3 in a row, centered
    ========================= */
-        @media (min-width: 992px) {
-            .footer-top-row {
-                display: flex;
-                justify-content: center;
-                gap: 30px;
-            }
+    @media (min-width: 992px) {
+      .footer-top-row {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+      }
 
-            .footer-top-box {
-                flex: 0 0 auto;
-            }
-        }
+      .footer-top-box {
+        flex: 0 0 auto;
+      }
+    }
 
-        /* =========================
+    /* =========================
    TABLET (576px – 991px)
    2 + 1 layout using grid
    ========================= */
-        @media (min-width: 576px) and (max-width: 991px) {
-            .footer-top-row {
-                display: grid;
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-                gap: 18px 20px;
-            }
+    @media (min-width: 576px) and (max-width: 991px) {
+      .footer-top-row {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px 20px;
+      }
 
-            .footer-top-box {
-                width: 100%;
-                justify-content: flex-start;
-            }
-        }
+      .footer-top-box {
+        width: 100%;
+        justify-content: flex-start;
+      }
+    }
 
-        /* =========================
+    /* =========================
    MOBILE (≤ 575px)
    Single column
    ========================= */
-        @media (max-width: 575px) {
-            .footer-top-row {
-                display: grid;
-                grid-template-columns: 1fr;
-                gap: 12px;
-            }
+    @media (max-width: 575px) {
+      .footer-top-row {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
 
-            .footer-top-box {
-                width: 100%;
-                padding: 10px 14px;
-            }
+      .footer-top-box {
+        width: 100%;
+        padding: 10px 14px;
+      }
 
-            .footer-top-ico {
-                width: 36px;
-                height: 36px;
-                font-size: 18px;
-            }
+      .footer-top-ico {
+        width: 36px;
+        height: 36px;
+        font-size: 18px;
+      }
 
-            .footer-top-box h6 {
-                font-size: 0.9rem;
-            }
+      .footer-top-box h6 {
+        font-size: 0.9rem;
+      }
 
-            .footer-top-box p {
-                font-size: 0.85rem;
-            }
-        }
+      .footer-top-box p {
+        font-size: 0.85rem;
+      }
+    }
 
-        .header-main {
-            transition: transform 0.35s ease-in-out;
-        }
+    .header-main {
+      transition: transform 0.35s ease-in-out;
+    }
 
-        /* Dropdown Common Styles */
-        .dropdown-menu {
-            border-radius: 10px !important;
-            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460) !important;
-            border: none;
-            padding: 8px 0;
-            box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.12);
-            animation: dropdownFade 0.25s ease-in-out;
-            min-width: 180px;
-        }
+    /* Dropdown Common Styles */
+    .dropdown-menu {
+      border-radius: 10px !important;
+      background: linear-gradient(135deg,
+          #1a1a2e,
+          #16213e,
+          #0f3460) !important;
+      border: none;
+      padding: 8px 0;
+      box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.12);
+      animation: dropdownFade 0.25s ease-in-out;
+      min-width: 180px;
+    }
 
-        /* Dropdown Item */
-        .dropdown-item {
-            padding: 10px 18px;
-            font-size: 15px;
-            font-weight: 500;
-            color: #cccccc;
-            /* Gray 700 */
-            transition: 0.25s;
-            border-radius: 6px;
-            text-align: center;
-        }
+    /* Dropdown Item */
+    .dropdown-item {
+      padding: 10px 18px;
+      font-size: 15px;
+      font-weight: 500;
+      color: #cccccc;
+      /* Gray 700 */
+      transition: 0.25s;
+      border-radius: 6px;
+      text-align: center;
+    }
 
-        /* Hover */
-        .dropdown-item:hover {
-            background: rgba(255, 255, 255, 0.1);
-            /* Gray-100 */
-            color: #ffffff;
-            /* Gray-900 */
-            transform: translateX(3px);
-        }
+    /* Hover */
+    .dropdown-item:hover {
+      background: rgba(255, 255, 255, 0.1);
+      /* Gray-100 */
+      color: #ffffff;
+      /* Gray-900 */
+      transform: translateX(3px);
+    }
 
-        /* Logout item = red */
-        .dropdown-item.text-danger {
-            color: #dc2626 !important;
-            /* red-600 */
-            font-weight: 600;
-        }
+    /* Logout item = red */
+    .dropdown-item.text-danger {
+      color: #dc2626 !important;
+      /* red-600 */
+      font-weight: 600;
+    }
 
-        .dropdown-item.text-danger:hover {
-            background: rgba(255, 255, 255, 0.1) !important;
-            /* red-100 */
-            color: #b91c1c !important;
-            /* red-700 */
-        }
+    .dropdown-item.text-danger:hover {
+      background: rgba(255, 255, 255, 0.1) !important;
+      /* red-100 */
+      color: #b91c1c !important;
+      /* red-700 */
+    }
 
-        /* Dropdown animation */
-        @keyframes dropdownFade {
-            0% {
-                opacity: 0;
-                transform: translateY(-6px);
-            }
+    /* Dropdown animation */
+    @keyframes dropdownFade {
+      0% {
+        opacity: 0;
+        transform: translateY(-6px);
+      }
 
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
 
-        /* ================= MOBILE SWIPE CAROUSEL FOR BANK DETAILS ================= */
-        @media (max-width: 576px) {
+    /* ================= MOBILE SWIPE CAROUSEL FOR BANK DETAILS ================= */
+    @media (max-width: 576px) {
 
-            /* Hide grid version on mobile */
-            .bank-details-grid {
-                display: none !important;
-            }
+      /* Hide grid version on mobile */
+      .bank-details-grid {
+        display: none !important;
+      }
 
-            /* Show mobile carousel */
-            .bank-details-carousel {
-                display: block !important;
-                padding: 0 10px;
-            }
+      /* Show mobile carousel */
+      .bank-details-carousel {
+        display: block !important;
+        padding: 0 10px;
+      }
 
-            .carousel-item {
-                padding: 10px 5px;
-            }
+      .carousel-item {
+        padding: 10px 5px;
+      }
 
-            .carousel-indicators [data-bs-target] {
-                width: 10px;
-                height: 10px;
-                border-radius: 50%;
-                background-color: var(--diwali-gold);
-            }
-        }
+      .carousel-indicators [data-bs-target] {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: var(--diwali-gold);
+      }
+    }
 
-        /* Desktop/Tablet show normal grid */
-        @media (min-width: 577px) {
-            .bank-details-carousel {
-                display: none !important;
-            }
-        }
-    </style>
+    /* Desktop/Tablet show normal grid */
+    @media (min-width: 577px) {
+      .bank-details-carousel {
+        display: none !important;
+      }
+    }
 
-    {# extra per-page CSS will be injected here #}
-    {% block extra_css %}{% endblock %}
+    /* Floating buttons overlap fix for mobile small screens */
+    @media (max-width: 576px) {
+      .whatsapp-float {
+        bottom: 75px !important;
+        left: 15px !important;
+        z-index: 9997 !important;
+      }
+
+      .rocket-btn {
+        bottom: 125px !important;
+        right: 15px !important;
+        z-index: 9997 !important;
+      }
+
+      .order-now-btn {
+        bottom: 18px !important;
+        right: 15px !important;
+        z-index: 9999 !important;
+      }
+    }
+  </style>
+
+  {# extra per-page CSS will be injected here #}
+  {% block extra_css %}{% endblock %}
 </head>
 
 <body>
+  {% if user.is_authenticated %}
+  <header class="header-main">
+    <!-- TOP CONTACT STRIP -->
+    <div class="top-contact-strip">
+      <div class="container">
+        <div class="top-contact-row">
+          <div class="top-contact-card">
+            <div class="top-contact-title">Customer Support</div>
+            <div class="top-contact-phone">+91 96777 51008</div>
+          </div>
+          <div class="top-contact-card">
+            <div class="top-contact-title">Order Confirm</div>
+            <div class="top-contact-phone">+91 96777 51006</div>
+          </div>
+          <div class="top-contact-card">
+            <div class="top-contact-title">Payment Confirm</div>
+            <div class="top-contact-phone">+91 82202 01205</div>
+          </div>
+          <div class="top-contact-card">
+            <div class="top-contact-title">Dispatch Details</div>
+            <div class="top-contact-phone">+91 91235 17649</div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-    {% if user.is_authenticated %}
-    <header class="header-main">
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+      <div class="container">
+        <a class="navbar-brand" href="{% url 'inventory:home' %}">
+          <img src="{% static 'images/kannan_logo.png' %}" alt="The Mannan Crackers Logo" class="navbar-logo" /><span
+            class="brand-text-glow">The Mannan Crackers</span>
+        </a>
 
-        <!-- TOP CONTACT STRIP -->
-        <div class="top-contact-strip">
-            <div class="container">
-                <div class="top-contact-row">
-                    <div class="top-contact-card">
-                        <div class="top-contact-title">Customer Support</div>
-                        <div class="top-contact-phone">+91 96777 51008</div>
-                    </div>
-                    <div class="top-contact-card">
-                        <div class="top-contact-title">Order Confirm</div>
-                        <div class="top-contact-phone">+91 96777 51006</div>
-                    </div>
-                    <div class="top-contact-card">
-                        <div class="top-contact-title">Payment Confirm</div>
-                        <div class="top-contact-phone">+91 82202 01205</div>
-                    </div>
-                    <div class="top-contact-card">
-                        <div class="top-contact-title">Dispatch Details</div>
-                        <div class="top-contact-phone">+91 91235 17649</div>
-                    </div>
-                </div>
-            </div>
+        <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navMenu">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navMenu">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'inventory:home' %}">
+                <i class="bi bi-house-fill"></i> Home
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'inventory:about' %}">
+                <i class="bi bi-info-circle-fill"></i> About Us
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'inventory:customer_orders' %}">
+                <i class="bi bi-bag"></i> My Orders
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'inventory:safety' %}">
+                <i class="bi bi-shield-check"></i> Safety Tips
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'inventory:contact' %}">
+                <i class="bi bi-telephone-fill"></i> Contact Us
+              </a>
+            </li>
+
+            {% if user.is_authenticated and user.role == 'admin' %}
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                <i class="bi bi-shield-lock-fill"></i> Admin
+              </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a class="dropdown-item" href="{% url 'inventory:admin_dashboard' %}">Dashboard</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="{% url 'admin:accounts_customuser_changelist' %}">Users</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="{% url 'inventory:staff_inventory' %}">Products</a>
+                </li>
+              </ul>
+            </li>
+            {% elif user.is_authenticated and user.role == 'staff' %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'inventory:staff_inventory' %}">
+                <i class="bi bi-box"></i> Inventory
+              </a>
+            </li>
+            {% endif %}
+          </ul>
+
+          <!-- USER DROPDOWN -->
+          <ul class="navbar-nav">
+            {% if user.is_authenticated %}
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                <i class="bi bi-person-circle"></i> {{ user.email }}
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li>
+                  <a class="dropdown-item" href="{% url 'accounts:profile' %}">My Profile</a>
+                </li>
+                <li>
+                  <a class="dropdown-item text-danger" href="{% url 'account_logout' %}">Logout</a>
+                </li>
+              </ul>
+            </li>
+            {% else %}
+            <li>
+              <a class="btn btn-outline-light" href="{% url 'account_login' %}">Login</a>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+  {% endif %} {# ===================== PAGE CONTENT ===================== #}
+  {% block content %}{% endblock %}
+
+  <!-- Rocket Back to Top -->
+  <button id="backToTop" class="rocket-btn">
+    <svg width="34" height="34" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="32,4 22,20 42,20" fill="#ff4d4d" />
+      <rect x="27" y="20" width="10" height="24" rx="2" fill="#ffd700" />
+      <rect x="27" y="24" width="10" height="3" fill="#ff6b35" />
+      <rect x="27" y="30" width="10" height="3" fill="#ff6b35" />
+      <rect x="27" y="36" width="10" height="3" fill="#ff6b35" />
+      <rect x="31" y="44" width="2" height="16" fill="#b5651d" />
+      <polygon points="32,60 26,52 32,54 38,52" fill="#ff8c00" />
+      <polygon points="32,60 28,54 32,56 36,54" fill="#ffd700" />
+    </svg>
+  </button>
+
+  {% if request.resolver_match.url_name != 'home' and user.is_authenticated %}
+  <div class="cracker-bg"></div>
+  <a href="{% url 'inventory:home' %}" class="order-now-btn">
+    <img src="{% static 'images/quick_order.png' %}" alt="Quick order" />
+  </a>
+  {% endif %} {% if user.is_authenticated %}
+  <!-- Bank Details Section -->
+  <section class="bank-details-section">
+    <div class="container">
+      <h2 class="section-title">Bank Details</h2>
+
+      <!-- ================= DESKTOP/TABLET GRID ================= -->
+      <div class="bank-details-row bank-details-grid">
+        <!-- Box 1 -->
+        <div class="bank-details-box">
+          <div class="bank-details-ico">
+            <i class="bi bi-telephone-fill"></i>
+          </div>
+          <div>
+            <h6>PhonePe</h6>
+            <p>+91 82202 010205</p>
+            <h6>Gpay</h6>
+            <p>+91 75021 75121, +91 91235 17649</p>
+          </div>
         </div>
 
-        <!-- NAVBAR -->
-        <nav class="navbar navbar-expand-lg navbar-dark">
-            <div class="container">
+        <!-- Box 2 -->
+        <div class="bank-details-box">
+          <div class="bank-details-ico"><i class="bi bi-building"></i></div>
+          <div>
+            <h6>Karthikeyan</h6>
+            <p class="secondary">A/c No: 1234115000006712</p>
+            <p>Karur Vysya Bank</p>
+            <p class="secondary">KVBL0001234</p>
+            <p class="tertiary">TIRUPPUR - MAIN</p>
+          </div>
+        </div>
+      </div>
 
-                <a class="navbar-brand" href="{% url 'inventory:home' %}">
-                    <img src="{% static 'images/kannan_logo.png' %}" alt="The Mannan Crackers Logo"
-                        class="navbar-logo"><span class="brand-text-glow">The Mannan Crackers</span>
+      <!-- ================= MOBILE SWIPE CAROUSEL ================= -->
+      <div id="bankCarousel" class="carousel slide bank-details-carousel" data-bs-ride="carousel">
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <div class="bank-details-box">
+              <div class="bank-details-ico">
+                <i class="bi bi-telephone-fill"></i>
+              </div>
+              <div>
+                <h6>PhonePe</h6>
+                <p>+91 82202 010205</p>
+                <h6>Gpay</h6>
+                <p>+91 75021 75121, +91 91235 17649</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="carousel-item">
+            <div class="bank-details-box">
+              <div class="bank-details-ico">
+                <i class="bi bi-building"></i>
+              </div>
+              <div>
+                <h6>Varun Kumar</h6>
+                <p class="secondary">A/c No: 1197155000304044</p>
+                <p>Karur Vysya Bank</p>
+                <p class="secondary">KVBL0001197</p>
+                <p class="tertiary">TIRUPPUR - MAIN</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="carousel-item">
+            <div class="bank-details-box">
+              <div class="bank-details-ico"><i class="bi bi-bank2"></i></div>
+              <div>
+                <h6>Varun Kumar</h6>
+                <p class="secondary">A/c No: 1197155000304044</p>
+                <p>Karur Vysya Bank</p>
+                <p class="secondary">KVBL0001197</p>
+                <p class="tertiary">TIRUPPUR - MAIN</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="carousel-item">
+            <div class="bank-details-box">
+              <div class="bank-details-ico">
+                <i class="bi bi-credit-card-2-front"></i>
+              </div>
+              <div>
+                <h6>Varun Kumar</h6>
+                <p class="secondary">A/c No: 1197155000304044</p>
+                <p>Karur Vysya Bank</p>
+                <p class="secondary">KVBL0001197</p>
+                <p class="tertiary">TIRUPPUR - MAIN</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dots -->
+        <div class="carousel-indicators">
+          <button type="button" data-bs-target="#bankCarousel" data-bs-slide-to="0" class="active"></button>
+          <button type="button" data-bs-target="#bankCarousel" data-bs-slide-to="1"></button>
+          <button type="button" data-bs-target="#bankCarousel" data-bs-slide-to="2"></button>
+          <button type="button" data-bs-target="#bankCarousel" data-bs-slide-to="3"></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer style="font-family: Georgia, &quot;Times New Roman&quot;, Times, serif" class="premium-footer">
+    <div class="footer-top-strip">
+      <div class="container">
+        <div class="footer-top-row">
+          <div class="footer-top-box">
+            <div class="footer-top-ico">
+              <i class="bi bi-telephone-fill"></i>
+            </div>
+            <div>
+              <h6>Customer Support</h6>
+              <p>
+                <a href="mailto:themannancrackers@gmail.com" style="text-decoration: none; color: inherit">
+                  themannancrackers@gmail.com
                 </a>
-
-                <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navMenu">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <div class="collapse navbar-collapse" id="navMenu">
-
-                    <ul class="navbar-nav me-auto">
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'inventory:home' %}">
-                                <i class="bi bi-house-fill"></i> Home
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'inventory:about' %}">
-                                <i class="bi bi-info-circle-fill"></i> About Us
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'inventory:customer_orders' %}">
-                                <i class="bi bi-bag"></i> My Orders
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'inventory:safety' %}">
-                                <i class="bi bi-shield-check"></i> Safety Tips
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'inventory:contact' %}">
-                                <i class="bi bi-telephone-fill"></i> Contact Us
-                            </a>
-                        </li>
-
-                        {% if user.is_authenticated and user.role == 'admin' %}
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                                <i class="bi bi-shield-lock-fill"></i> Admin
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="{% url 'inventory:admin_dashboard' %}">Dashboard</a>
-                                </li>
-                                <li><a class="dropdown-item"
-                                        href="{% url 'admin:accounts_customuser_changelist' %}">Users</a></li>
-                                <li><a class="dropdown-item" href="{% url 'inventory:staff_inventory' %}">Products</a>
-                                </li>
-                            </ul>
-                        </li>
-                        {% elif user.is_authenticated and user.role == 'staff' %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'inventory:staff_inventory' %}">
-                                <i class="bi bi-box"></i> Inventory
-                            </a>
-                        </li>
-                        {% endif %}
-
-                    </ul>
-
-                    <!-- USER DROPDOWN -->
-                    <ul class="navbar-nav">
-                        {% if user.is_authenticated %}
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                                <i class="bi bi-person-circle"></i> {{ user.email }}
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                                <li><a class="dropdown-item" href="{% url 'accounts:profile' %}">My Profile</a></li>
-                                <li><a class="dropdown-item text-danger" href="{% url 'account_logout' %}">Logout</a>
-                                </li>
-                            </ul>
-                        </li>
-                        {% else %}
-                        <li><a class="btn btn-outline-light" href="{% url 'account_login' %}">Login</a></li>
-                        {% endif %}
-                    </ul>
-
-                </div>
+              </p>
             </div>
-        </nav>
+          </div>
 
-    </header>
-    {% endif %}
-
-    {# ===================== PAGE CONTENT ===================== #}
-    {% block content %}{% endblock %}
-
-    <!-- Rocket Back to Top -->
-    <button id="backToTop" class="rocket-btn">
-        <svg width="34" height="34" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <polygon points="32,4 22,20 42,20" fill="#ff4d4d" />
-            <rect x="27" y="20" width="10" height="24" rx="2" fill="#ffd700" />
-            <rect x="27" y="24" width="10" height="3" fill="#ff6b35" />
-            <rect x="27" y="30" width="10" height="3" fill="#ff6b35" />
-            <rect x="27" y="36" width="10" height="3" fill="#ff6b35" />
-            <rect x="31" y="44" width="2" height="16" fill="#b5651d" />
-            <polygon points="32,60 26,52 32,54 38,52" fill="#ff8c00" />
-            <polygon points="32,60 28,54 32,56 36,54" fill="#ffd700" />
-        </svg>
-    </button>
-
-    {% if request.resolver_match.url_name != 'home' and user.is_authenticated %}
-    <div class="cracker-bg"></div>
-    <a href="{% url 'inventory:home' %}" class="order-now-btn">
-        <img src="{% static 'images/quick_order.png' %}" alt="Quick order">
-    </a>
-    {% endif %}
-
-    {% if user.is_authenticated %}
-    <!-- Bank Details Section -->
-    <section class="bank-details-section">
-        <div class="container">
-            <h2 class="section-title">Bank Details</h2>
-
-            <!-- ================= DESKTOP/TABLET GRID ================= -->
-            <div class="bank-details-row bank-details-grid">
-
-                <!-- Box 1 -->
-                <div class="bank-details-box">
-                    <div class="bank-details-ico"><i class="bi bi-telephone-fill"></i></div>
-                    <div>
-                        <h6>PhonePe</h6>
-                        <p>+91 82202 010205</p>
-                        <h6>Gpay</h6>
-                        <p>+91 75021 75121, +91 91235 17649</p>
-                    </div>
-                </div>
-
-                <!-- Box 2 -->
-                <div class="bank-details-box">
-                    <div class="bank-details-ico"><i class="bi bi-building"></i></div>
-                    <div>
-                        <h6>Karthikeyan</h6>
-                        <p class="secondary">A/c No: 1234115000006712</p>
-                        <p>Karur Vysya Bank</p>
-                        <p class="secondary">KVBL0001234</p>
-                        <p class="tertiary">TIRUPPUR - MAIN</p>
-                    </div>
-                </div>
+          <div class="footer-top-box">
+            <div class="footer-top-ico">
+              <i class="bi bi-geo-alt-fill"></i>
             </div>
-
-            <!-- ================= MOBILE SWIPE CAROUSEL ================= -->
-            <div id="bankCarousel" class="carousel slide bank-details-carousel" data-bs-ride="carousel">
-
-                <div class="carousel-inner">
-
-                    <div class="carousel-item active">
-                        <div class="bank-details-box">
-                            <div class="bank-details-ico"><i class="bi bi-telephone-fill"></i></div>
-                            <div>
-                                <h6>PhonePe</h6>
-                                <p>+91 82202 010205</p>
-                                <h6>Gpay</h6>
-                                <p>+91 75021 75121, +91 91235 17649</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="carousel-item">
-                        <div class="bank-details-box">
-                            <div class="bank-details-ico"><i class="bi bi-building"></i></div>
-                            <div>
-                                <h6>Varun Kumar</h6>
-                                <p class="secondary">A/c No: 1197155000304044</p>
-                                <p>Karur Vysya Bank</p>
-                                <p class="secondary">KVBL0001197</p>
-                                <p class="tertiary">TIRUPPUR - MAIN</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="carousel-item">
-                        <div class="bank-details-box">
-                            <div class="bank-details-ico"><i class="bi bi-bank2"></i></div>
-                            <div>
-                                <h6>Varun Kumar</h6>
-                                <p class="secondary">A/c No: 1197155000304044</p>
-                                <p>Karur Vysya Bank</p>
-                                <p class="secondary">KVBL0001197</p>
-                                <p class="tertiary">TIRUPPUR - MAIN</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="carousel-item">
-                        <div class="bank-details-box">
-                            <div class="bank-details-ico"><i class="bi bi-credit-card-2-front"></i></div>
-                            <div>
-                                <h6>Varun Kumar</h6>
-                                <p class="secondary">A/c No: 1197155000304044</p>
-                                <p>Karur Vysya Bank</p>
-                                <p class="secondary">KVBL0001197</p>
-                                <p class="tertiary">TIRUPPUR - MAIN</p>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
-                <!-- Dots -->
-                <div class="carousel-indicators">
-                    <button type="button" data-bs-target="#bankCarousel" data-bs-slide-to="0" class="active"></button>
-                    <button type="button" data-bs-target="#bankCarousel" data-bs-slide-to="1"></button>
-                    <button type="button" data-bs-target="#bankCarousel" data-bs-slide-to="2"></button>
-                    <button type="button" data-bs-target="#bankCarousel" data-bs-slide-to="3"></button>
-                </div>
-
+            <div>
+              <h6>Store Location</h6>
+              <p>
+                <a href="https://maps.app.goo.gl/wsbUxzTGtAc7oXEe7" target="_blank" rel="noopener noreferrer"
+                  style="text-decoration: none; color: inherit">
+                  The Mannan Crackers, Sivakasi
+                </a>
+              </p>
             </div>
+          </div>
 
+          <div class="footer-top-box">
+            <div class="footer-top-ico">
+              <i class="bi bi-instagram"></i>
+            </div>
+            <div>
+              <h6>Follow Us</h6>
+              <p>
+                <a href="https://www.instagram.com/the_mannan_crackers/" target="_blank" rel="noopener noreferrer"
+                  style="text-decoration: none; color: inherit">
+                  @the_mannan_crackers
+                </a>
+              </p>
+            </div>
+          </div>
         </div>
+      </div>
+    </div>
 
-    </section>
-
-    <footer style="font-family: Georgia, 'Times New Roman', Times, serif;" class="premium-footer">
-
-        <div class="footer-top-strip">
-            <div class="container">
-                <div class="footer-top-row">
-
-                    <div class="footer-top-box">
-                        <div class="footer-top-ico">
-                            <i class="bi bi-telephone-fill"></i>
-                        </div>
-                        <div>
-                            <h6>Customer Support</h6>
-                            <p>
-                                <a href="mailto:themannancrackers@gmail.com"
-                                    style="text-decoration: none; color: inherit;">
-                                    themannancrackers@gmail.com
-                                </a>
-                            </p>
-                        </div>
-                    </div>
-
-
-                    <div class="footer-top-box">
-                        <div class="footer-top-ico">
-                            <i class="bi bi-geo-alt-fill"></i>
-                        </div>
-                        <div>
-                            <h6>Store Location</h6>
-                            <p>
-                                <a href="https://maps.app.goo.gl/wsbUxzTGtAc7oXEe7" target="_blank"
-                                    rel="noopener noreferrer" style="text-decoration: none; color: inherit;">
-                                    The Mannan Crackers, Sivakasi
-                                </a>
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="footer-top-box">
-                        <div class="footer-top-ico">
-                            <i class="bi bi-instagram"></i>
-                        </div>
-                        <div>
-                            <h6>Follow Us</h6>
-                            <p>
-                                <a href="https://www.instagram.com/the_mannan_crackers/" target="_blank"
-                                    rel="noopener noreferrer" style="text-decoration: none; color: inherit;">
-                                    @the_mannan_crackers
-                                </a>
-                            </p>
-                        </div>
-                    </div>
-
-                </div>
+    <div class="footer-main-area">
+      <div class="container">
+        <div class="row g-4">
+          <div class="col-md-4">
+            <div class="footer-brand-section">
+              <img src="{% static 'images/kannan_logo.png' %}" alt="The Mannan Crackers Logo"
+                class="footer-brand-logo" />
+              <div class="footer-brand-name">The Mannan Crackers</div>
             </div>
-        </div>
+            <p class="footer-desc">
+              Premium crackers at best prices. Safe handling, trusted quality
+              & fast delivery.
+            </p>
+          </div>
 
-        <div class="footer-main-area">
-            <div class="container">
-                <div class="row g-4">
+          <div class="col-md-4">
+            <h5>Quick Links</h5>
+            <ul class="footer-menu">
+              {% if user.is_authenticated %}
+              <li>
+                <a href="{% url 'inventory:home' %}"><i class="bi bi-house-fill"></i> Home</a>
+              </li>
+              <li>
+                <a href="{% url 'inventory:about' %}"><i class="bi bi-info-circle-fill"></i> About Us</a>
+              </li>
+              <li>
+                <a href="{% url 'inventory:customer_orders' %}"><i class="bi bi-bag-check-fill"></i> My Orders</a>
+              </li>
+              <li>
+                <a href="{% url 'inventory:safety' %}"><i class="bi bi-shield-check"></i> Safety Tips</a>
+              </li>
+              <li>
+                <a href="{% url 'inventory:contact' %}"><i class="bi bi-telephone-fill"></i> Contact Us</a>
+              </li>
+              {% if user.is_staff %}
+              <li>
+                <a href="{% url 'inventory:admin_dashboard' %}"><i class="bi bi-speedometer"></i> Admin Dashboard</a>
+              </li>
+              {% endif %} {% endif %}
+            </ul>
+          </div>
 
-                    <div class="col-md-4">
-                        <div class="footer-brand-section">
-                            <img src="{% static 'images/kannan_logo.png' %}" alt="The Mannan Crackers Logo"
-                                class="footer-brand-logo">
-                            <div class="footer-brand-name">The Mannan Crackers</div>
-                        </div>
-                        <p class="footer-desc">
-                            Premium crackers at best prices.
-                            Safe handling, trusted quality & fast delivery.
-                        </p>
-                    </div>
-
-                    <div class="col-md-4">
-                        <h5>Quick Links</h5>
-                        <ul class="footer-menu">
-                            {% if user.is_authenticated %}
-                            <li><a href="{% url 'inventory:home' %}"><i class="bi bi-house-fill"></i> Home</a></li>
-                            <li><a href="{% url 'inventory:about' %}"><i class="bi bi-info-circle-fill"></i> About
-                                    Us</a></li>
-                            <li><a href="{% url 'inventory:customer_orders' %}"><i class="bi bi-bag-check-fill"></i> My
-                                    Orders</a></li>
-                            <li><a href="{% url 'inventory:safety' %}"><i class="bi bi-shield-check"></i> Safety
-                                    Tips</a></li>
-                            <li><a href="{% url 'inventory:contact' %}"><i class="bi bi-telephone-fill"></i> Contact
-                                    Us</a></li>
-                            {% if user.is_staff %}
-                            <li><a href="{% url 'inventory:admin_dashboard' %}"><i class="bi bi-speedometer"></i> Admin
-                                    Dashboard</a></li>
-                            {% endif %}
-                            {% endif %}
-                        </ul>
-                    </div>
-
-                    <div class="col-md-4">
-                        <h5>Reach Us</h5>
-                        <div class="footer-map">
-                            <iframe
-                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d62969.99610824452!2d77.75142291763581!3d9.454264267407781!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3b06cee43d812d0d%3A0x8ce12e9dcdaa2a2c!2sSivakasi%2C%20Tamil%20Nadu!5e0!3m2!1sen!2sin!4v1770658533045!5m2!1sen!2sin"
-                                width="100%" height="180" style="border:0; border-radius:12px;" allowfullscreen=""
-                                loading="lazy" referrerpolicy="no-referrer-when-downgrade">
-                            </iframe>
-                        </div>
-                    </div>
-
-                </div>
+          <div class="col-md-4">
+            <h5>Reach Us</h5>
+            <div class="footer-map">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d62969.99610824452!2d77.75142291763581!3d9.454264267407781!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3b06cee43d812d0d%3A0x8ce12e9dcdaa2a2c!2sSivakasi%2C%20Tamil%20Nadu!5e0!3m2!1sen!2sin!4v1770658533045!5m2!1sen!2sin"
+                width="100%" height="180" style="border: 0; border-radius: 12px" allowfullscreen="" loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade">
+              </iframe>
             </div>
+          </div>
         </div>
+      </div>
+    </div>
 
-        <div class="footer-bottom">
-            © {% now "Y" %} The Mannan Crackers • Designed by Auronix with Passion and ❤️
-        </div>
-    </footer>
-    {% endif %}
-    {% if user.is_authenticated %}
-    <a href="https://wa.me/919000011111" class="whatsapp-float" target="_blank">
-        <i class="bi bi-whatsapp"></i>
-    </a>
-    {% endif %}
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <div class="footer-bottom">
+      © {% now "Y" %} The Mannan Crackers • Designed by Auronix with Passion
+      and ❤️
+    </div>
+  </footer>
+  {% endif %} {% if user.is_authenticated %}
+  <a href="https://wa.me/919000011111" class="whatsapp-float" target="_blank">
+    <i class="bi bi-whatsapp"></i>
+  </a>
+  {% endif %}
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    {% block extra_js %}{% endblock %}
+  {% block extra_js %}{% endblock %}
 
-    <script>
-        // Show / hide rocket
-        window.addEventListener("scroll", function () {
-            const btn = document.getElementById("backToTop");
-            if (!btn) return;
-            if (window.scrollY > 300) {
-                btn.classList.add("show");
-            } else {
-                btn.classList.remove("show");
-            }
-        });
+  <script>
+    // Show / hide rocket
+    window.addEventListener("scroll", function () {
+      const btn = document.getElementById("backToTop");
+      if (!btn) return;
+      if (window.scrollY > 300) {
+        btn.classList.add("show");
+      } else {
+        btn.classList.remove("show");
+      }
+    });
 
-        // Scroll to top
-        const rocketBtn = document.getElementById("backToTop");
-        if (rocketBtn) {
-            rocketBtn.addEventListener("click", function () {
-                window.scrollTo({ top: 0, behavior: "smooth" });
-                this.style.boxShadow = "0 0 40px #ff4500, 0 0 80px #ff8c00";
-                setTimeout(() => {
-                    this.style.boxShadow = "0 0 15px rgba(255, 193, 7, 0.7)";
-                }, 600);
-            });
-        }
-    </script>
-    <script>
-        const header = document.querySelector(".header-main");
+    // Scroll to top
+    const rocketBtn = document.getElementById("backToTop");
+    if (rocketBtn) {
+      rocketBtn.addEventListener("click", function () {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        this.style.boxShadow = "0 0 40px #ff4500, 0 0 80px #ff8c00";
+        setTimeout(() => {
+          this.style.boxShadow = "0 0 15px rgba(255, 193, 7, 0.7)";
+        }, 600);
+      });
+    }
+  </script>
+  <script>
+    const header = document.querySelector(".header-main");
 
-        window.addEventListener("scroll", function () {
-            let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+    window.addEventListener("scroll", function () {
+      let currentScroll =
+        window.pageYOffset || document.documentElement.scrollTop;
 
-            if (currentScroll <= 10) {
-                // At the top → show navbar
-                header.style.transform = "translateY(0)";
-            } else {
-                // Scrolling anywhere (up or down) → hide navbar
-                header.style.transform = "translateY(-100%)";
-            }
-        });
-    </script>
-
-
-
+      if (currentScroll <= 10) {
+        // At the top → show navbar
+        header.style.transform = "translateY(0)";
+      } else {
+        // Scrolling anywhere (up or down) → hide navbar
+        header.style.transform = "translateY(-100%)";
+      }
+    });
+  </script>
 </body>
 
 </html>
