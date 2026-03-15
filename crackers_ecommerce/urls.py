@@ -20,6 +20,15 @@ from django.conf import settings
 from django.conf.urls.static import static
 from inventory.views import home, handle_404, handle_500, handle_403, handle_400, handle_connection_error, handle_maintenance, serve_media
 
+from django.views.generic import TemplateView
+from django.contrib.sitemaps.views import sitemap
+from inventory.sitemaps import ProductSitemap, StaticViewSitemap
+
+sitemaps = {
+    'products': ProductSitemap,
+    'static': StaticViewSitemap,
+}
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
@@ -27,6 +36,10 @@ urlpatterns = [
     path('inventory/', include('inventory.urls', namespace='inventory')),
     path('', home, name='home'),  # Home page
     
+    # SEO
+    path('robots.txt', TemplateView.as_view(template_name="robots.txt", content_type="text/plain")),
+    path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
+
     # Error pages
     path('error/404/', handle_404, name='error_404'),
     path('error/500/', handle_500, name='error_500'),

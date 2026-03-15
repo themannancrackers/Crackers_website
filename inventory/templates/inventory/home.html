@@ -1,4 +1,6 @@
-{% extends 'base.html' %} {% load static %} {% block extra_css %}
+{% extends 'base.html' %}
+{% load static %}
+{% block extra_css %}
 <style>
     :root {
         --primary-color: #0d6efd;
@@ -21,19 +23,7 @@
         background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
         min-height: 100vh;
         overflow-x: hidden;
-        font-family: Georgia, "Times New Roman", Times, serif;
-    }
-
-    /* Hide default number input arrows/spinners */
-    input[type="number"]::-webkit-inner-spin-button,
-    input[type="number"]::-webkit-outer-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-    }
-
-    input[type="number"] {
-        -moz-appearance: textfield;
-        appearance: textfield;
+         font-family: Georgia, "Times New Roman", Times, serif;
     }
 
     /* 🔶 KANNAN STYLE ORDER HEADER (TOP TEXT + SUMMARY STRIP) */
@@ -258,7 +248,6 @@
 
         .kannan-order-table .name-col {
             font-size: 0.85rem;
-            white-space: normal;
         }
     }
 
@@ -277,6 +266,8 @@
             justify-content: center;
         }
     }
+
+
 
     /* -------------------- 🌟 FESTIVE FIREWORKS BACKGROUND -------------------- */
     .crackers-container {
@@ -300,7 +291,7 @@
     }
 
     .cracker::before {
-        content: "";
+        content: '';
         position: absolute;
         width: 100%;
         height: 100%;
@@ -385,9 +376,7 @@
     }
 
     .page-title {
-        background: linear-gradient(135deg,
-                var(--accent-color),
-                var(--secondary-color));
+        background: linear-gradient(135deg, var(--accent-color), var(--secondary-color));
         -webkit-background-clip: text;
         background-clip: text;
         -webkit-text-fill-color: transparent;
@@ -439,9 +428,7 @@
         position: absolute;
         top: 15px;
         right: 15px;
-        background: linear-gradient(135deg,
-                var(--accent-color),
-                var(--secondary-color));
+        background: linear-gradient(135deg, var(--accent-color), var(--secondary-color));
         color: #fff;
         padding: 8px 15px;
         border-radius: 50px;
@@ -503,9 +490,7 @@
         position: fixed;
         bottom: 30px;
         right: 30px;
-        background: linear-gradient(135deg,
-                var(--accent-color),
-                var(--secondary-color));
+        background: linear-gradient(135deg, var(--accent-color), var(--secondary-color));
         color: white;
         padding: 15px 20px;
         border-radius: 50px;
@@ -590,9 +575,7 @@
     .diya-glow {
         font-size: 4rem;
         color: var(--diwali-orange);
-        text-shadow:
-            0 0 20px #ffb347,
-            0 0 40px #ffcc00;
+        text-shadow: 0 0 20px #ffb347, 0 0 40px #ffcc00;
         animation: flicker 1.5s infinite ease-in-out;
     }
 
@@ -691,9 +674,7 @@
         }
 
         100% {
-            text-shadow:
-                0 0 20px #ffd700,
-                0 0 30px #ff6b35;
+            text-shadow: 0 0 20px #ffd700, 0 0 30px #ff6b35;
         }
     }
 
@@ -838,9 +819,7 @@
         padding: 10px;
         border: none;
         border-radius: 8px;
-        background: linear-gradient(135deg,
-                var(--diwali-orange),
-                var(--diwali-red));
+        background: linear-gradient(135deg, var(--diwali-orange), var(--diwali-red));
         color: white;
         font-weight: 700;
         cursor: pointer;
@@ -899,9 +878,7 @@
     }
 
     .quick-order-summary {
-        background: linear-gradient(135deg,
-                rgba(255, 215, 0, 0.1),
-                rgba(255, 140, 0, 0.1));
+        background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 140, 0, 0.1));
         border: 2px solid var(--diwali-gold);
         border-radius: 10px;
         padding: 20px;
@@ -965,7 +942,7 @@
 
     /* Underline animation */
     .category-btn::after {
-        content: "";
+        content: '';
         position: absolute;
         left: 0;
         bottom: -3px;
@@ -1003,7 +980,7 @@
 
     /* Subtle glass gloss reflection */
     .category-btn::before {
-        content: "";
+        content: '';
         position: absolute;
         top: 0;
         left: -10%;
@@ -1015,9 +992,7 @@
                 rgba(255, 255, 255, 0) 100%);
         opacity: 0;
         transform: translateX(-30%);
-        transition:
-            opacity 0.4s ease,
-            transform 0.5s ease;
+        transition: opacity 0.4s ease, transform 0.5s ease;
         pointer-events: none;
     }
 
@@ -1077,7 +1052,7 @@
 
     /* Gold underline — hidden by default */
     .category-btn::after {
-        content: "";
+        content: '';
         position: absolute;
         left: 0;
         bottom: -3px;
@@ -1114,7 +1089,7 @@
 
     /* Subtle glossy overlay on hover/active */
     .category-btn::before {
-        content: "";
+        content: '';
         position: absolute;
         top: 0;
         left: -5%;
@@ -1126,9 +1101,7 @@
                 rgba(255, 255, 255, 0) 100%);
         opacity: 0;
         transform: translateX(-50%);
-        transition:
-            opacity 0.3s ease,
-            transform 0.5s ease;
+        transition: opacity 0.3s ease, transform 0.5s ease;
         pointer-events: none;
     }
 
@@ -1223,6 +1196,7 @@
         }
     }
 
+
     .category-nav {
         display: flex;
         flex-wrap: nowrap;
@@ -1241,9 +1215,7 @@
     }
 
     .category-btn {
-        background: radial-gradient(circle at top left,
-                var(--diwali-gold),
-                var(--diwali-orange));
+        background: radial-gradient(circle at top left, var(--diwali-gold), var(--diwali-orange));
         color: #1a1a2e;
         border: none;
         border-radius: 50px;
@@ -1259,9 +1231,7 @@
 
     .category-btn:hover {
         transform: translateY(-2px);
-        background: linear-gradient(135deg,
-                var(--diwali-deep-gold),
-                var(--diwali-orange));
+        background: linear-gradient(135deg, var(--diwali-deep-gold), var(--diwali-orange));
         color: #fff;
         box-shadow: 0 4px 15px rgba(255, 193, 7, 0.5);
     }
@@ -1272,9 +1242,7 @@
     }
 
     .category-btn.active {
-        background: linear-gradient(135deg,
-                var(--diwali-red),
-                var(--diwali-orange));
+        background: linear-gradient(135deg, var(--diwali-red), var(--diwali-orange));
         color: #fff;
         box-shadow: 0 0 20px rgba(255, 107, 53, 0.8);
     }
@@ -1292,7 +1260,7 @@
 
         .category-subheader::before,
         .category-subheader::after {
-            content: "";
+            content: '';
             position: absolute;
             top: 0;
             bottom: 0;
@@ -1319,9 +1287,7 @@
             height: 40px;
             border: none;
             border-radius: 50%;
-            background: linear-gradient(135deg,
-                    var(--diwali-gold),
-                    var(--diwali-orange));
+            background: linear-gradient(135deg, var(--diwali-gold), var(--diwali-orange));
             color: #1a1a2e;
             font-size: 24px;
             line-height: 1;
@@ -1335,9 +1301,7 @@
         }
 
         .nav-scroll-btn:hover {
-            background: linear-gradient(135deg,
-                    var(--diwali-deep-gold),
-                    var(--diwali-orange));
+            background: linear-gradient(135deg, var(--diwali-deep-gold), var(--diwali-orange));
             transform: translateY(-50%) scale(1.1);
         }
 
@@ -1374,9 +1338,7 @@
 
         .category-btn {
             flex: 0 0 auto;
-            background: linear-gradient(135deg,
-                    var(--accent-color),
-                    var(--secondary-color));
+            background: linear-gradient(135deg, var(--accent-color), var(--secondary-color));
             color: #fff;
             padding: 10px 20px;
             border-radius: 30px;
@@ -1391,9 +1353,7 @@
         .category-btn.active {
             opacity: 1;
             transform: scale(1);
-            background: linear-gradient(135deg,
-                    var(--diwali-deep-gold),
-                    var(--diwali-orange));
+            background: linear-gradient(135deg, var(--diwali-deep-gold), var(--diwali-orange));
             box-shadow: 0 4px 15px rgba(255, 140, 0, 0.6);
         }
 
@@ -1407,9 +1367,7 @@
 
         .category-btn:active {
             transform: scale(0.96);
-            background: linear-gradient(135deg,
-                    var(--secondary-color),
-                    var(--diwali-orange));
+            background: linear-gradient(135deg, var(--secondary-color), var(--diwali-orange));
         }
 
         .category-btn.active {
@@ -1420,7 +1378,7 @@
         /* Left & Right Fade Shadows */
         .category-subheader::before,
         .category-subheader::after {
-            content: "";
+            content: '';
             position: absolute;
             top: 0;
             width: 30px;
@@ -1432,16 +1390,12 @@
 
         .category-subheader::before {
             left: 0;
-            background: linear-gradient(to right,
-                    rgba(26, 26, 46, 1) 40%,
-                    rgba(26, 26, 46, 0));
+            background: linear-gradient(to right, rgba(26, 26, 46, 1) 40%, rgba(26, 26, 46, 0));
         }
 
         .category-subheader::after {
             right: 0;
-            background: linear-gradient(to left,
-                    rgba(26, 26, 46, 1) 40%,
-                    rgba(26, 26, 46, 0));
+            background: linear-gradient(to left, rgba(26, 26, 46, 1) 40%, rgba(26, 26, 46, 0));
         }
     }
 
@@ -1457,6 +1411,7 @@
             padding: 10px 22px;
         }
     }
+
 
     /* -------------------- 📱 RESPONSIVE LAYOUTS -------------------- */
     @media (min-width: 1025px) {
@@ -1582,9 +1537,7 @@
             padding: 3px 6px;
             border-top-left-radius: 6px;
             border-bottom-right-radius: 6px;
-            background: linear-gradient(135deg,
-                    var(--accent-color),
-                    var(--secondary-color));
+            background: linear-gradient(135deg, var(--accent-color), var(--secondary-color));
             color: #fff;
             font-weight: 600;
             box-shadow: 0 1px 4px rgba(255, 107, 53, 0.4);
@@ -1641,9 +1594,7 @@
             height: 35px;
             width: 35px;
             border-radius: 8px;
-            background: linear-gradient(135deg,
-                    var(--accent-color),
-                    var(--secondary-color));
+            background: linear-gradient(135deg, var(--accent-color), var(--secondary-color));
             color: white;
             border: none;
             display: flex;
@@ -1829,9 +1780,7 @@
                 rgba(255, 255, 255, 0) 100%) !important;
         opacity: 0 !important;
         transform: translateX(-30%) !important;
-        transition:
-            opacity 0.4s ease,
-            transform 0.5s ease !important;
+        transition: opacity 0.4s ease, transform 0.5s ease !important;
         pointer-events: none !important;
     }
 
@@ -1909,8 +1858,7 @@
     .category-btn.active::after {
         width: 100%;
         opacity: 1;
-        box-shadow:
-            0 0 12px rgba(255, 215, 0, 0.6),
+        box-shadow: 0 0 12px rgba(255, 215, 0, 0.6),
             0 0 20px rgba(255, 140, 0, 0.4);
     }
 
@@ -2085,6 +2033,7 @@
         }
     }
 
+
     /* ======================================
    TABLET FIX (768px – 991px)
 ====================================== */
@@ -2098,12 +2047,14 @@
         }
     }
 
+
     /* ======================================
    MOBILE (≤ 767px)
    – Keep arrows
    – Keep horizontal scroll
 ====================================== */
     @media (max-width: 767px) {
+
         .category-subheader {
             position: relative !important;
             /* Removes sticky/fixed */
@@ -2120,7 +2071,10 @@
         }
     }
 </style>
-{% endblock %} {% block content %}
+{% endblock %}
+
+{% block content %}
+
 
 <div class="crackers-container" id="crackersContainer"></div>
 <!-- Banner -->
@@ -2132,146 +2086,6 @@
     <span class="cart-items-count">(0 items)</span>
 </div>
 
-<!-- ========================================== -->
-<!-- 📊 ANALYTICS STRIP (BOTTOM STICKY) -->
-<!-- ========================================== -->
-<div class="analytics-strip" id="analyticsStrip" style="display: none">
-    <div class="analytics-item">
-        <i class="bi bi-box-seam"></i>
-        <div>
-            <span class="analytics-label">Products</span>
-            <span class="analytics-value" id="analytics-products">0</span>
-        </div>
-    </div>
-    <div class="analytics-item text-success">
-        <i class="bi bi-piggy-bank"></i>
-        <div>
-            <span class="analytics-label">You Save</span>
-            <span class="analytics-value">₹<span id="analytics-savings">0.00</span></span>
-        </div>
-    </div>
-    <div class="analytics-item text-warning">
-        <i class="bi bi-wallet2"></i>
-        <div>
-            <span class="analytics-label">Total</span>
-            <span class="analytics-value">₹<span id="analytics-total">0.00</span></span>
-        </div>
-    </div>
-</div>
-
-<style>
-    /* 📊 Analytics Strip Styling */
-    .analytics-strip {
-        position: fixed;
-        bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 1040;
-        background: linear-gradient(135deg,
-                rgba(20, 20, 30, 0.95),
-                rgba(10, 10, 15, 0.98));
-        border: 1px solid rgba(255, 215, 0, 0.2);
-        box-shadow:
-            0 8px 32px rgba(0, 0, 0, 0.6),
-            0 0 15px rgba(255, 140, 0, 0.15);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border-radius: 50px;
-        padding: 10px 25px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 30px;
-        transition: all 0.3s ease;
-        width: max-content;
-        max-width: 95vw;
-    }
-
-    .analytics-item {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        color: #e0e0e0;
-    }
-
-    .analytics-item i {
-        font-size: 1.5rem;
-        color: #ffd700;
-        text-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
-    }
-
-    .analytics-item.text-success i {
-        color: #00d2ff;
-        /* Switch to a bright cyan/blue for savings to match diwali vibe */
-        text-shadow: 0 0 10px rgba(0, 210, 255, 0.4);
-    }
-
-    .analytics-item.text-success .analytics-value {
-        color: #00d2ff;
-    }
-
-    .analytics-item.text-warning i {
-        color: #ff8c00;
-        text-shadow: 0 0 10px rgba(255, 140, 0, 0.4);
-    }
-
-    .analytics-item.text-warning .analytics-value {
-        color: #ff8c00;
-    }
-
-    .analytics-label {
-        display: block;
-        font-size: 0.75rem;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        color: rgba(255, 255, 255, 0.6);
-        line-height: 1;
-        margin-bottom: 2px;
-    }
-
-    .analytics-value {
-        display: block;
-        font-size: 1.1rem;
-        font-weight: 700;
-        line-height: 1;
-        white-space: nowrap;
-    }
-
-    /* Mobile Adjustments for Analytics Strip */
-    @media (max-width: 768px) {
-        .analytics-strip {
-            bottom: 10px;
-            padding: 8px 15px;
-            gap: 15px;
-            border-radius: 12px;
-            /* Switch to pill shape on mobile */
-            width: calc(100% - 20px);
-            justify-content: space-around;
-            bottom: 80px;
-            /* Above floating cart if it's there */
-        }
-
-        .analytics-item {
-            flex-direction: column;
-            gap: 4px;
-            text-align: center;
-        }
-
-        .analytics-item i {
-            font-size: 1.2rem;
-            margin-bottom: 2px;
-        }
-
-        .analytics-label {
-            font-size: 0.65rem;
-            margin-bottom: 0;
-        }
-
-        .analytics-value {
-            font-size: 0.9rem;
-        }
-    }
-</style>
 
 {% load static %}
 <!-- Debug the image -->
@@ -2296,7 +2110,7 @@
                 <div id="cartItems" class="mb-4">
                     <!-- Cart items will be dynamically inserted here -->
                     <div class="text-center text-muted py-4">
-                        <i class="fa-solid fa-cart-plus" style="font-size: 3rem"></i>
+                        <i class="fa-solid fa-cart-plus" style="font-size: 3rem;"></i>
                         <p class="mt-2">Your cart is empty</p>
                     </div>
                 </div>
@@ -2308,14 +2122,13 @@
                     </div>
                     <!-- Minimum Order Alert -->
                     <div id="minOrderAlert" class="alert alert-warning alert-dismissible fade show mt-3" role="alert"
-                        style="display: none">
-                        <div style="display: flex; align-items: center; gap: 10px">
-                            <i class="bi bi-exclamation-triangle-fill" style="font-size: 1.2rem; color: #856404"></i>
+                        style="display: none;">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <i class="bi bi-exclamation-triangle-fill" style="font-size: 1.2rem; color: #856404;"></i>
                             <div>
                                 <strong>Minimum Order Required!</strong>
-                                <p class="mb-0 text-muted" style="font-size: 0.95rem">
-                                    You need to reach the minimum order of ₹2500
-                                </p>
+                                <p class="mb-0 mt-1">You need to add ₹<span id="shortfallAmount">0.00</span> more items
+                                    to reach the minimum order of ₹3000</p>
                             </div>
                         </div>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -2328,38 +2141,33 @@
                         <div class="col-md-6">
                             <label class="form-label">Full Name</label>
                             <input type="text" class="form-control" id="fullName" name="full_name"
-                                value="{{ user.get_full_name }}" placeholder="Enter Full Name" required />
+                                value="{{ user.get_full_name }}" placeholder="Enter Full Name" required>
                             <div class="invalid-feedback">Please enter your name</div>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Phone Number</label>
                             <input type="tel" class="form-control" id="phone" name="phone"
                                 value="{{ user.phone_number }}" pattern="[0-9]{10}"
-                                placeholder="Enter 10-digit Phone Number" required />
-                            <div class="invalid-feedback">
-                                Please enter a valid 10-digit phone number
-                            </div>
+                                placeholder="Enter 10-digit Phone Number" required>
+                            <div class="invalid-feedback">Please enter a valid 10-digit phone number</div>
                         </div>
                         <div class="col-12">
                             <label class="form-label">Email</label>
                             <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}"
-                                placeholder="Enter Email Address" required />
+                                placeholder="Enter Email Address" required>
                             <div class="invalid-feedback">Please enter a valid email</div>
                         </div>
                         <div class="col-12">
                             <label class="form-label">Delivery Address</label>
                             <textarea class="form-control" id="deliveryAddress" name="delivery_address" rows="3"
-                                placeholder="Enter Complete Delivery Address" required>
-{{ user.address }}</textarea>
-                            <div class="invalid-feedback">
-                                Please enter your delivery address
-                            </div>
+                                placeholder="Enter Complete Delivery Address" required>{{ user.address }}</textarea>
+                            <div class="invalid-feedback">Please enter your delivery address</div>
                         </div>
                         {% if user.is_authenticated %}
                         <div class="col-12">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" id="updateProfile"
-                                    name="update_profile" />
+                                    name="update_profile">
                                 <label class="form-check-label" for="updateProfile">
                                     Save these details to my profile
                                 </label>
@@ -2370,342 +2178,334 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                    Continue Shopping
-                </button>
-                <button type="button" class="btn btn-primary" id="proceedToCheckout">
-                    Proceed to Checkout
-                </button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Continue Shopping</button>
+                <button type="button" class="btn btn-primary" id="proceedToCheckout">Proceed to Checkout</button>
             </div>
         </div>
     </div>
 </div>
 <style>
-    /* Dialog width */
+ /* Dialog width */
+#cartModal .modal-dialog {
+    max-width: 1040px;
+}
+
+/* Glassy main container */
+#cartModal .modal-content {
+    border-radius: 22px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow:
+        0 26px 60px rgba(0, 0, 0, 0.65),
+        0 0 0 1px rgba(255, 255, 255, 0.04);
+    background: radial-gradient(circle at top left, #1c102a, #050814 55%, #02030a 100%);
+    color: #fefefe;
+}
+
+/* Header */
+#cartModal .modal-header {
+    border-bottom: none;
+    padding: 1rem 1.5rem;
+    background: linear-gradient(135deg, rgba(255, 140, 0, 0.28), transparent);
+}
+
+#cartModal .modal-title {
+    font-weight: 700;
+    letter-spacing: 0.04em;
+}
+
+#cartModal .btn-close {
+    filter: invert(1) grayscale(100%);
+}
+
+/* Body layout: split cart + form */
+#cartModal .modal-body {
+    padding: 1.4rem 1.6rem 1.2rem;
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.1fr);
+    gap: 1.5rem;
+}
+
+/* Left column (cart + summary) */
+#cartItems {
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.06),
+        rgba(255, 255, 255, 0.02)
+    );
+    border-radius: 18px;
+    padding: 1rem 1rem 0.9rem;
+    box-shadow:
+        0 18px 35px rgba(0, 0, 0, 0.55),
+        0 0 0 1px rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Empty cart state */
+#cartItems .text-center {
+    color: rgba(240, 240, 240, 0.75);
+}
+
+#cartItems .fa-cart-plus {
+    color: #ffcf7d;
+    text-shadow: 0 6px 16px rgba(0, 0, 0, 0.7);
+}
+
+/* Order summary container under items */
+.cart-summary-details {
+    margin-top: 0.9rem;
+    padding: 0.85rem 1rem;
+    border-radius: 16px;
+    background: radial-gradient(circle at 0 0, #ffcf7d, #ff8c00 45%, #ff6b35);
+    color: #201208;
+    box-shadow:
+        0 20px 36px rgba(0, 0, 0, 0.65),
+        0 0 0 1px rgba(255, 255, 255, 0.12);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Desktop and up: stack everything like mobile (cart items → summary → form) */
+@media (min-width: 992px) {
     #cartModal .modal-dialog {
-        max-width: 1040px;
+        max-width: 1100px;
     }
 
-    /* Glassy main container */
-    #cartModal .modal-content {
-        border-radius: 22px;
-        overflow: hidden;
-        border: 1px solid rgba(255, 255, 255, 0.06);
-        box-shadow:
-            0 26px 60px rgba(0, 0, 0, 0.65),
-            0 0 0 1px rgba(255, 255, 255, 0.04);
-        background: radial-gradient(circle at top left,
-                #1c102a,
-                #050814 55%,
-                #02030a 100%);
-        color: #fefefe;
-    }
-
-    /* Header */
-    #cartModal .modal-header {
-        border-bottom: none;
-        padding: 1rem 1.5rem;
-        background: linear-gradient(135deg, rgba(255, 140, 0, 0.28), transparent);
-    }
-
-    #cartModal .modal-title {
-        font-weight: 700;
-        letter-spacing: 0.04em;
-    }
-
-    #cartModal .btn-close {
-        filter: invert(1) grayscale(100%);
-    }
-
-    /* Body layout: split cart + form */
+    /* Use flex-column instead of 2-column grid */
     #cartModal .modal-body {
-        padding: 1.4rem 1.6rem 1.2rem;
-        display: grid;
-        grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.1fr);
-        gap: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        padding: 1.4rem 1.8rem 1.2rem;
+        gap: 1.4rem;
     }
 
-    /* Left column (cart + summary) */
+    /* Cart and summary take full width */
     #cartItems {
-        background: linear-gradient(135deg,
-                rgba(255, 255, 255, 0.06),
-                rgba(255, 255, 255, 0.02));
-        border-radius: 18px;
-        padding: 1rem 1rem 0.9rem;
-        box-shadow:
-            0 18px 35px rgba(0, 0, 0, 0.55),
-            0 0 0 1px rgba(255, 255, 255, 0.04);
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
-        position: relative;
-        overflow: hidden;
+        width: 100%;
+        padding: 1rem 1.2rem 1rem;
     }
 
-    /* Empty cart state */
-    #cartItems .text-center {
-        color: rgba(240, 240, 240, 0.75);
-    }
-
-    #cartItems .fa-cart-plus {
-        color: #ffcf7d;
-        text-shadow: 0 6px 16px rgba(0, 0, 0, 0.7);
-    }
-
-    /* Order summary container under items */
     .cart-summary-details {
+        max-width: 640;
         margin-top: 0.9rem;
-        padding: 0.85rem 1rem;
-        border-radius: 16px;
-        background: radial-gradient(circle at 0 0, #ffcf7d, #ff8c00 45%, #ff6b35);
-        color: #201208;
-        box-shadow:
-            0 20px 36px rgba(0, 0, 0, 0.65),
-            0 0 0 1px rgba(255, 255, 255, 0.12);
-        position: relative;
-        overflow: hidden;
+        align-self: stretch;
     }
 
-    /* Desktop and up: stack everything like mobile (cart items → summary → form) */
-    @media (min-width: 992px) {
-        #cartModal .modal-dialog {
-            max-width: 1100px;
-        }
-
-        /* Use flex-column instead of 2-column grid */
-        #cartModal .modal-body {
-            display: flex;
-            flex-direction: column;
-            padding: 1.4rem 1.8rem 1.2rem;
-            gap: 1.4rem;
-        }
-
-        /* Cart and summary take full width */
-        #cartItems {
-            width: 100%;
-            padding: 1rem 1.2rem 1rem;
-        }
-
-        .cart-summary-details {
-            max-width: 640;
-            margin-top: 0.9rem;
-            align-self: stretch;
-        }
-
-        /* Customer form comes below, full width but a bit narrower max for readability */
-        #checkoutForm {
-            width: 100%;
-            max-width: 780px;
-            margin: 0 auto;
-            padding: 0.95rem 1.2rem 1.2rem;
-        }
-    }
-
-    .cart-summary-details h4 {
-        font-size: 1rem;
-        font-weight: 800;
-        margin-bottom: 0.45rem;
-    }
-
-    /* Subtotal row */
-    .cart-summary-details .d-flex {
-        font-weight: 600;
-    }
-
-    /* Min order alert inside */
-    #minOrderAlert {
-        border-radius: 14px;
-        border: none;
-        background: rgba(255, 255, 255, 0.95);
-        color: #7a5303;
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.18);
-        margin-top: 0.7rem;
-    }
-
-    /* Customer details panel */
+    /* Customer form comes below, full width but a bit narrower max for readability */
     #checkoutForm {
-        background: linear-gradient(145deg,
-                rgba(255, 255, 255, 0.14),
-                rgba(255, 255, 255, 0.04));
-        border-radius: 18px;
-        padding: 1rem 1.1rem 1.2rem;
-        box-shadow:
-            0 18px 35px rgba(0, 0, 0, 0.55),
-            0 0 0 1px rgba(255, 255, 255, 0.05);
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
+        width: 100%;
+        max-width: 780px;
+        margin: 0 auto;
+        padding: 0.95rem 1.2rem 1.2rem;
+    }
+}
+
+
+.cart-summary-details h4 {
+    font-size: 1rem;
+    font-weight: 800;
+    margin-bottom: 0.45rem;
+}
+
+/* Subtotal row */
+.cart-summary-details .d-flex {
+    font-weight: 600;
+}
+
+/* Min order alert inside */
+#minOrderAlert {
+    border-radius: 14px;
+    border: none;
+    background: rgba(255, 255, 255, 0.95);
+    color: #7a5303;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.18);
+    margin-top: 0.7rem;
+}
+ /* Customer details panel */
+#checkoutForm {
+    background: linear-gradient(
+        145deg,
+        rgba(255, 255, 255, 0.14),
+        rgba(255, 255, 255, 0.04)
+    );
+    border-radius: 18px;
+    padding: 1rem 1.1rem 1.2rem;
+    box-shadow:
+        0 18px 35px rgba(0, 0, 0, 0.55),
+        0 0 0 1px rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+}
+
+#checkoutForm h4 {
+    font-size: 1rem;
+    font-weight: 800;
+    margin-bottom: 0.8rem;
+}
+
+/* Labels + inputs */
+#checkoutForm .form-label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.11em;
+    color: rgba(245, 245, 245, 0.78);
+}
+
+#checkoutForm .form-control {
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    background: rgba(5, 8, 20, 0.75);
+    color: #fefefe;
+    font-size: 0.9rem;
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.35);
+}
+
+#checkoutForm .form-control::placeholder {
+    color: rgba(200, 200, 200, 0.55);
+}
+
+#checkoutForm .form-control:focus {
+    border-color: rgba(255, 184, 108, 0.9);
+    box-shadow:
+        0 0 0 1px rgba(255, 184, 108, 0.9),
+        0 0 0 4px rgba(255, 184, 108, 0.25);
+    background: rgba(5, 8, 20, 0.95);
+}
+
+/* Checkbox */
+#checkoutForm .form-check-input {
+    border-radius: 6px;
+    background-color: rgba(5, 8, 20, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+}
+#checkoutForm .form-check-input:checked {
+    background-color: #ffcf7d;
+    border-color: #ffcf7d;
+}
+#checkoutForm .form-check-label {
+    font-size: 0.85rem;
+    color: rgba(245, 245, 245, 0.85);
+}
+
+/* Validation feedback color tweak */
+#checkoutForm .invalid-feedback {
+    font-size: 0.78rem;
+    color: #ffb0b0;
+}
+ #cartModal .modal-footer {
+    border-top: none;
+    padding: 0.85rem 1.6rem 1.1rem;
+    display: flex;
+    justify-content: space-between;
+    gap: 0.75rem;
+}
+
+/* Secondary: ghost glass */
+#cartModal .btn-secondary {
+    border-radius: 999px;
+    padding-inline: 1.2rem;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    background: rgba(5, 8, 20, 0.8);
+    color: #fefefe;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    transition: all 0.2s ease;
+}
+
+#cartModal .btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Primary: glowing pill */
+#cartModal .btn-primary#proceedToCheckout {
+    border-radius: 999px;
+    padding-inline: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    background: linear-gradient(120deg, #ffcf7d, #ff8c00, #ff6b35);
+    background-size: 220% 100%;
+    border: none;
+    box-shadow: 0 14px 32px rgba(255, 140, 0, 0.75);
+    transition:
+        background-position 0.35s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        filter 0.2s ease;
+}
+
+#cartModal .btn-primary#proceedToCheckout:hover {
+    background-position: 100% 0;
+    transform: translateY(-1px);
+    filter: brightness(1.03);
+}
+ /* Stack columns on mobile */
+@media (max-width: 767.98px) {
+    #cartModal .modal-dialog {
+        margin: 0.75rem;
     }
 
-    #checkoutForm h4 {
-        font-size: 1rem;
-        font-weight: 800;
-        margin-bottom: 0.8rem;
-    }
-
-    /* Labels + inputs */
-    #checkoutForm .form-label {
-        font-size: 0.8rem;
-        text-transform: uppercase;
-        letter-spacing: 0.11em;
-        color: rgba(245, 245, 245, 0.78);
-    }
-
-    #checkoutForm .form-control {
-        border-radius: 12px;
-        border: 1px solid rgba(255, 255, 255, 0.16);
-        background: rgba(5, 8, 20, 0.75);
-        color: #fefefe;
-        font-size: 0.9rem;
-        box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.35);
-    }
-
-    #checkoutForm .form-control::placeholder {
-        color: rgba(200, 200, 200, 0.55);
-    }
-
-    #checkoutForm .form-control:focus {
-        border-color: rgba(255, 184, 108, 0.9);
-        box-shadow:
-            0 0 0 1px rgba(255, 184, 108, 0.9),
-            0 0 0 4px rgba(255, 184, 108, 0.25);
-        background: rgba(5, 8, 20, 0.95);
-    }
-
-    /* Checkbox */
-    #checkoutForm .form-check-input {
-        border-radius: 6px;
-        background-color: rgba(5, 8, 20, 0.9);
-        border: 1px solid rgba(255, 255, 255, 0.4);
-    }
-
-    #checkoutForm .form-check-input:checked {
-        background-color: #ffcf7d;
-        border-color: #ffcf7d;
-    }
-
-    #checkoutForm .form-check-label {
-        font-size: 0.85rem;
-        color: rgba(245, 245, 245, 0.85);
-    }
-
-    /* Validation feedback color tweak */
-    #checkoutForm .invalid-feedback {
-        font-size: 0.78rem;
-        color: #ffb0b0;
+    #cartModal .modal-body {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 1.2rem;
+        padding: 1.1rem 1.1rem 1rem;
     }
 
     #cartModal .modal-footer {
-        border-top: none;
-        padding: 0.85rem 1.6rem 1.1rem;
-        display: flex;
-        justify-content: space-between;
-        gap: 0.75rem;
+        flex-direction: column-reverse;
+        align-items: stretch;
     }
 
-    /* Secondary: ghost glass */
-    #cartModal .btn-secondary {
-        border-radius: 999px;
-        padding-inline: 1.2rem;
-        border: 1px solid rgba(255, 255, 255, 0.22);
-        background: rgba(5, 8, 20, 0.8);
-        color: #fefefe;
-        font-weight: 600;
-        letter-spacing: 0.03em;
-        transition: all 0.2s ease;
-    }
-
-    #cartModal .btn-secondary:hover {
-        background: rgba(255, 255, 255, 0.08);
-        border-color: rgba(255, 255, 255, 0.5);
-    }
-
-    /* Primary: glowing pill */
+    #cartModal .btn-secondary,
     #cartModal .btn-primary#proceedToCheckout {
-        border-radius: 999px;
-        padding-inline: 1.5rem;
-        font-weight: 700;
-        letter-spacing: 0.05em;
-        background: linear-gradient(120deg, #ffcf7d, #ff8c00, #ff6b35);
-        background-size: 220% 100%;
-        border: none;
-        box-shadow: 0 14px 32px rgba(255, 140, 0, 0.75);
-        transition:
-            background-position 0.35s ease,
-            transform 0.2s ease,
-            box-shadow 0.2s ease,
-            filter 0.2s ease;
+        width: 100%;
+    }
+}
+
+/* Tablet tweaks */
+@media (min-width: 768px) and (max-width: 991.98px) {
+    #cartModal .modal-body {
+        grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.1fr);
+    }
+}
+/* Larger screens: give more width to cart side */
+@media (min-width: 992px) {
+    #cartModal .modal-dialog {
+        max-width: 1100px;
     }
 
-    #cartModal .btn-primary#proceedToCheckout:hover {
-        background-position: 100% 0;
-        transform: translateY(-1px);
-        filter: brightness(1.03);
+    #cartModal .modal-body {
+        padding: 1.4rem 1.8rem 1.2rem;
+        grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); /* wider left, narrower right */
+        gap: 1.75rem;
     }
 
-    /* Stack columns on mobile */
-    @media (max-width: 767.98px) {
-        #cartModal .modal-dialog {
-            margin: 0.75rem;
-        }
-
-        #cartModal .modal-body {
-            grid-template-columns: minmax(0, 1fr);
-            gap: 1.2rem;
-            padding: 1.1rem 1.1rem 1rem;
-        }
-
-        #cartModal .modal-footer {
-            flex-direction: column-reverse;
-            align-items: stretch;
-        }
-
-        #cartModal .btn-secondary,
-        #cartModal .btn-primary#proceedToCheckout {
-            width: 100%;
-        }
+    /* Cart container: slightly softer */
+    #cartItems {
+        padding: 1rem 1.2rem 1rem;
+        box-shadow:
+            0 16px 40px rgba(0, 0, 0, 0.55),
+            0 0 0 1px rgba(255, 255, 255, 0.04);
     }
 
-    /* Tablet tweaks */
-    @media (min-width: 768px) and (max-width: 991.98px) {
-        #cartModal .modal-body {
-            grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.1fr);
-        }
+    /* Form container: a bit tighter to look compact */
+    #checkoutForm {
+        padding: 0.9rem 1rem 1.1rem;
+        box-shadow:
+            0 16px 36px rgba(0, 0, 0, 0.5),
+            0 0 0 1px rgba(255, 255, 255, 0.04);
     }
+}
 
-    /* Larger screens: give more width to cart side */
-    @media (min-width: 992px) {
-        #cartModal .modal-dialog {
-            max-width: 1100px;
-        }
-
-        #cartModal .modal-body {
-            padding: 1.4rem 1.8rem 1.2rem;
-            grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-            /* wider left, narrower right */
-            gap: 1.75rem;
-        }
-
-        /* Cart container: slightly softer */
-        #cartItems {
-            padding: 1rem 1.2rem 1rem;
-            box-shadow:
-                0 16px 40px rgba(0, 0, 0, 0.55),
-                0 0 0 1px rgba(255, 255, 255, 0.04);
-        }
-
-        /* Form container: a bit tighter to look compact */
-        #checkoutForm {
-            padding: 0.9rem 1rem 1.1rem;
-            box-shadow:
-                0 16px 36px rgba(0, 0, 0, 0.5),
-                0 0 0 1px rgba(255, 255, 255, 0.04);
-        }
-    }
 </style>
 <!-- Quick Order Modal -->
 <div class="modal fade" id="quickOrderModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header bg-gradient" style="background: linear-gradient(135deg, #ff8c00, #ff6b35)">
+            <div class="modal-header bg-gradient" style="background: linear-gradient(135deg, #ff8c00, #ff6b35);">
                 <h5 class="modal-title text-white">
                     <i class="bi bi-lightning-fill"></i> Quick Order - Pre-Made Lists
                 </h5>
@@ -2721,6 +2521,7 @@
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 </div>
@@ -2729,7 +2530,7 @@
 <div class="modal fade" id="quickOrderDetailsModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header bg-gradient" style="background: linear-gradient(135deg, #ff8c00, #ff6b35)">
+            <div class="modal-header bg-gradient" style="background: linear-gradient(135deg, #ff8c00, #ff6b35);">
                 <h5 class="modal-title text-white" id="detailsModalTitle"></h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
@@ -2739,9 +2540,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                    Back
-                </button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Back</button>
                 <button type="button" class="btn btn-primary" id="proceedQuickOrderCheckout">
                     <i class="bi bi-check-circle"></i> Proceed to Checkout
                 </button>
@@ -2750,594 +2549,559 @@
     </div>
 </div>
 <style>
-    /* Animated background behind the cards */
-    .quick-order-slider-wrapper {
-        position: relative;
-        display: flex;
-        align-items: center;
-        gap: 0.9rem;
-        padding: 0.4rem 0;
-        background: linear-gradient(135deg, #1b1b2f, #162447, #53354a);
-        background-size: 180% 180%;
-        border-radius: 20px;
-        overflow: hidden;
-        animation: qo-gradient-flow 18s ease infinite;
-    }
+/* Animated background behind the cards */
+.quick-order-slider-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    padding: 0.4rem 0;
+    background: linear-gradient(135deg, #1b1b2f, #162447, #53354a);
+    background-size: 180% 180%;
+    border-radius: 20px;
+    overflow: hidden;
+    animation: qo-gradient-flow 18s ease infinite;
+}
 
-    /* Soft glow overlay */
-    .quick-order-slider-wrapper::before {
-        content: "";
-        position: absolute;
-        inset: -40%;
-        background:
-            radial-gradient(circle at 0 0,
-                rgba(255, 255, 255, 0.12),
-                transparent 60%),
-            radial-gradient(circle at 100% 100%,
-                rgba(255, 128, 0, 0.16),
-                transparent 55%);
-        opacity: 0.8;
-        pointer-events: none;
-    }
+/* Soft glow overlay */
+.quick-order-slider-wrapper::before {
+    content: "";
+    position: absolute;
+    inset: -40%;
+    background:
+        radial-gradient(circle at 0 0, rgba(255, 255, 255, 0.12), transparent 60%),
+        radial-gradient(circle at 100% 100%, rgba(255, 128, 0, 0.16), transparent 55%);
+    opacity: 0.8;
+    pointer-events: none;
+}
 
-    /* Put content above glow */
-    .quick-order-slider,
-    .qo-nav {
-        position: relative;
-        z-index: 1;
-    }
+/* Put content above glow */
+.quick-order-slider,
+.qo-nav {
+    position: relative;
+    z-index: 1;
+}
 
-    /* Slider track */
-    .quick-order-slider {
-        overflow: hidden;
-        display: flex;
-        scroll-behavior: smooth;
-    }
+/* Slider track */
+.quick-order-slider {
+    overflow: hidden;
+    display: flex;
+    scroll-behavior: smooth;
+}
 
-    /* Base: mobile = 1 card */
+/* Base: mobile = 1 card */
+.quick-order-slide {
+    flex: 0 0 100%;
+    padding: 0.75rem 0.3rem;
+}
+
+/* Tablet ≥ 768px: 2 cards */
+@media (min-width: 768px) {
     .quick-order-slide {
-        flex: 0 0 100%;
-        padding: 0.75rem 0.3rem;
+        flex: 0 0 50%;
     }
+}
 
-    /* Tablet ≥ 768px: 2 cards */
-    @media (min-width: 768px) {
-        .quick-order-slide {
-            flex: 0 0 50%;
-        }
+/* Laptop ≥ 992px: keep 2 cards */
+@media (min-width: 992px) {
+    .quick-order-slide {
+        flex: 0 0 50%;
     }
+}
 
-    /* Laptop ≥ 992px: keep 2 cards */
-    @media (min-width: 992px) {
-        .quick-order-slide {
-            flex: 0 0 50%;
-        }
+/* Big desktop ≥ 1400px: 3 cards */
+@media (min-width: 1400px) {
+    .quick-order-slide {
+        flex: 0 0 33.3333%;
     }
+}
 
-    /* Big desktop ≥ 1400px: 3 cards */
-    @media (min-width: 1400px) {
-        .quick-order-slide {
-            flex: 0 0 33.3333%;
-        }
-    }
+/* Background animation */
+@keyframes qo-gradient-flow {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
 
-    /* Background animation */
-    @keyframes qo-gradient-flow {
-        0% {
-            background-position: 0% 50%;
-        }
+.quick-order-card {
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 18px;
+    padding: 1rem 1.1rem;
+    box-shadow:
+        0 18px 35px rgba(0, 0, 0, 0.45),
+        0 0 0 1px rgba(255, 255, 255, 0.12);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    transform-origin: center;
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease,
+        background 0.3s ease;
+}
 
-        50% {
-            background-position: 100% 50%;
-        }
+/* Light streak */
+.quick-order-card::before {
+    content: "";
+    position: absolute;
+    top: -40%;
+    left: -60%;
+    width: 60%;
+    height: 220%;
+    background: linear-gradient(
+        120deg,
+        rgba(255, 255, 255, 0.0) 0%,
+        rgba(255, 255, 255, 0.42) 45%,
+        rgba(255, 255, 255, 0.0) 100%
+    );
+    opacity: 0;
+    transform: translateX(-40%);
+    pointer-events: none;
+}
 
-        100% {
-            background-position: 0% 50%;
-        }
+/* Accent ring */
+.quick-order-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 0 0 1px rgba(255, 127, 80, 0.08);
+    pointer-events: none;
+}
+
+/* Hover micro motion */
+.quick-order-card:hover {
+    transform: translateY(-4px) scale(1.01);
+    box-shadow:
+        0 22px 45px rgba(0, 0, 0, 0.65),
+        0 0 0 1px rgba(255, 255, 255, 0.16);
+}
+
+.quick-order-card:hover::before {
+    opacity: 1;
+    transform: translateX(220%);
+    transition: transform 0.7s ease-out, opacity 0.3s ease-out;
+}
+
+/* Content styles */
+.quick-order-card-emoji {
+    font-size: 1.7rem;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.35));
+}
+
+.quick-order-card-title {
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.03em;
+    color: #fefefe;
+}
+
+.quick-order-card-desc {
+    font-size: 0.82rem;
+    color: rgba(243, 243, 243, 0.78);
+}
+
+.quick-order-card-price {
+    margin-top: 0.3rem;
+    font-weight: 700;
+    color: #ffcf7d;
+    font-size: 0.96rem;
+}
+
+.quick-order-card-btn {
+    margin-top: 0.55rem;
+    align-self: flex-start;
+    border: none;
+    border-radius: 999px;
+    padding: 0.38rem 1rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #0b1020;
+    background: linear-gradient(120deg, #ffcf7d, #ff8c00, #ff6b35);
+    background-size: 220% 100%;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    box-shadow: 0 10px 24px rgba(255, 140, 0, 0.55);
+    transition:
+        background-position 0.35s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        filter 0.2s ease;
+}
+
+.quick-order-card-btn:hover {
+    background-position: 100% 0;
+    transform: translateY(-1px);
+    box-shadow: 0 14px 30px rgba(255, 140, 0, 0.75);
+    filter: brightness(1.05);
+}
+
+.quick-order-card-btn i {
+    font-size: 0.9rem;
+}
+
+/* Nav pills */
+.qo-nav {
+    border: none;
+    background: rgba(6, 10, 25, 0.85);
+    border-radius: 999px;
+    width: 34px;
+    height: 34px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow:
+        0 10px 28px rgba(0, 0, 0, 0.55),
+        0 0 0 1px rgba(255, 255, 255, 0.08);
+    cursor: pointer;
+    color: #ffcf7d;
+    transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease,
+        background 0.18s ease,
+        color 0.18s ease;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+}
+
+.qo-nav:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow:
+        0 16px 32px rgba(0, 0, 0, 0.7),
+        0 0 0 1px rgba(255, 207, 125, 0.4);
+    background: rgba(10, 18, 42, 0.95);
+    color: #ffe6b8;
+}
+
+.qo-nav:disabled {
+    opacity: 0.28;
+    cursor: default;
+    box-shadow: none;
+}
+
+/* Mobile refinements */
+@media (max-width: 575.98px) {
+    .quick-order-slider-wrapper {
+        border-radius: 16px;
+        padding: 0.35rem 0.2rem;
     }
 
     .quick-order-card {
-        background: rgba(255, 255, 255, 0.12);
-        border-radius: 18px;
-        padding: 1rem 1.1rem;
-        box-shadow:
-            0 18px 35px rgba(0, 0, 0, 0.45),
-            0 0 0 1px rgba(255, 255, 255, 0.12);
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        gap: 0.4rem;
-        position: relative;
-        overflow: hidden;
-        backdrop-filter: blur(18px);
-        -webkit-backdrop-filter: blur(18px);
-        transform-origin: center;
-        transition:
-            transform 0.3s ease,
-            box-shadow 0.3s ease,
-            background 0.3s ease;
-    }
-
-    /* Light streak */
-    .quick-order-card::before {
-        content: "";
-        position: absolute;
-        top: -40%;
-        left: -60%;
-        width: 60%;
-        height: 220%;
-        background: linear-gradient(120deg,
-                rgba(255, 255, 255, 0) 0%,
-                rgba(255, 255, 255, 0.42) 45%,
-                rgba(255, 255, 255, 0) 100%);
-        opacity: 0;
-        transform: translateX(-40%);
-        pointer-events: none;
-    }
-
-    /* Accent ring */
-    .quick-order-card::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        border-radius: inherit;
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        box-shadow: 0 0 0 1px rgba(255, 127, 80, 0.08);
-        pointer-events: none;
-    }
-
-    /* Hover micro motion */
-    .quick-order-card:hover {
-        transform: translateY(-4px) scale(1.01);
-        box-shadow:
-            0 22px 45px rgba(0, 0, 0, 0.65),
-            0 0 0 1px rgba(255, 255, 255, 0.16);
-    }
-
-    .quick-order-card:hover::before {
-        opacity: 1;
-        transform: translateX(220%);
-        transition:
-            transform 0.7s ease-out,
-            opacity 0.3s ease-out;
-    }
-
-    /* Content styles */
-    .quick-order-card-emoji {
-        font-size: 1.7rem;
-        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.35));
+        padding: 0.85rem 0.9rem;
+        border-radius: 16px;
     }
 
     .quick-order-card-title {
-        font-weight: 700;
-        font-size: 1rem;
-        letter-spacing: 0.03em;
-        color: #fefefe;
-    }
-
-    .quick-order-card-desc {
-        font-size: 0.82rem;
-        color: rgba(243, 243, 243, 0.78);
-    }
-
-    .quick-order-card-price {
-        margin-top: 0.3rem;
-        font-weight: 700;
-        color: #ffcf7d;
-        font-size: 0.96rem;
-    }
-
-    .quick-order-card-btn {
-        margin-top: 0.55rem;
-        align-self: flex-start;
-        border: none;
-        border-radius: 999px;
-        padding: 0.38rem 1rem;
-        font-size: 0.82rem;
-        font-weight: 600;
-        color: #0b1020;
-        background: linear-gradient(120deg, #ffcf7d, #ff8c00, #ff6b35);
-        background-size: 220% 100%;
-        cursor: pointer;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.35rem;
-        box-shadow: 0 10px 24px rgba(255, 140, 0, 0.55);
-        transition:
-            background-position 0.35s ease,
-            transform 0.2s ease,
-            box-shadow 0.2s ease,
-            filter 0.2s ease;
-    }
-
-    .quick-order-card-btn:hover {
-        background-position: 100% 0;
-        transform: translateY(-1px);
-        box-shadow: 0 14px 30px rgba(255, 140, 0, 0.75);
-        filter: brightness(1.05);
-    }
-
-    .quick-order-card-btn i {
-        font-size: 0.9rem;
-    }
-
-    /* Nav pills */
-    .qo-nav {
-        border: none;
-        background: rgba(6, 10, 25, 0.85);
-        border-radius: 999px;
-        width: 34px;
-        height: 34px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow:
-            0 10px 28px rgba(0, 0, 0, 0.55),
-            0 0 0 1px rgba(255, 255, 255, 0.08);
-        cursor: pointer;
-        color: #ffcf7d;
-        transition:
-            transform 0.18s ease,
-            box-shadow 0.18s ease,
-            background 0.18s ease,
-            color 0.18s ease;
-        backdrop-filter: blur(18px);
-        -webkit-backdrop-filter: blur(18px);
-    }
-
-    .qo-nav:hover:not(:disabled) {
-        transform: translateY(-2px);
-        box-shadow:
-            0 16px 32px rgba(0, 0, 0, 0.7),
-            0 0 0 1px rgba(255, 207, 125, 0.4);
-        background: rgba(10, 18, 42, 0.95);
-        color: #ffe6b8;
-    }
-
-    .qo-nav:disabled {
-        opacity: 0.28;
-        cursor: default;
-        box-shadow: none;
-    }
-
-    /* Mobile refinements */
-    @media (max-width: 575.98px) {
-        .quick-order-slider-wrapper {
-            border-radius: 16px;
-            padding: 0.35rem 0.2rem;
-        }
-
-        .quick-order-card {
-            padding: 0.85rem 0.9rem;
-            border-radius: 16px;
-        }
-
-        .quick-order-card-title {
-            font-size: 0.95rem;
-        }
-
-        .quick-order-card-desc {
-            font-size: 0.78rem;
-        }
-
-        .qo-nav {
-            width: 30px;
-            height: 30px;
-        }
-    }
-
-    /* Tablet / laptop: a bit more breathing space */
-    @media (min-width: 768px) {
-        .quick-order-slider-wrapper {
-            padding: 0.6rem 0.45rem;
-        }
-    }
-
-    @media (min-width: 1200px) {
-        .quick-order-card {
-            padding: 1.05rem 1.2rem;
-        }
-    }
-
-    /* Dialog size and centering */
-    #quickOrderDetailsModal .modal-dialog {
-        max-width: 920px;
-    }
-
-    /* Glassy, elevated content */
-    #quickOrderDetailsModal .modal-content {
-        border-radius: 22px;
-        overflow: hidden;
-        border: 1px solid rgba(255, 255, 255, 0.06);
-        box-shadow:
-            0 26px 60px rgba(0, 0, 0, 0.55),
-            0 0 0 1px rgba(255, 255, 255, 0.05);
-        background: radial-gradient(circle at top left,
-                #24102b,
-                #100b26 45%,
-                #050712 100%);
-        color: #fefefe;
-    }
-
-    /* Header blends into body */
-    #quickOrderDetailsModal .modal-header {
-        border-bottom: none;
-        background: linear-gradient(135deg, rgba(255, 140, 0, 0.25), transparent);
-    }
-
-    /* Body with subtle pattern */
-    #quickOrderDetailsModal .modal-body {
-        padding: 1.5rem 1.75rem 1.4rem;
-        position: relative;
-    }
-
-    #quickOrderDetailsModal .modal-body::before {
-        content: "";
-        position: absolute;
-        inset: -30%;
-        background:
-            radial-gradient(circle at 10% 0%,
-                rgba(255, 184, 108, 0.18),
-                transparent 55%),
-            radial-gradient(circle at 90% 100%,
-                rgba(147, 112, 219, 0.2),
-                transparent 55%);
-        opacity: 0.9;
-        pointer-events: none;
-    }
-
-    /* Container JS fills */
-    #quickOrderDetailsContent {
-        position: relative;
-        z-index: 1;
-        display: flex;
-        flex-direction: column;
-        gap: 1.25rem;
-    }
-
-    /* List wrapper */
-    .quick-order-products-list {
-        display: flex;
-        flex-direction: column;
-        gap: 0.9rem;
-        /* Option A: no clipping */
-        /* max-height: none; */
-        /* Option B: higher container */
-        max-height: 520px;
-        overflow-y: auto;
-    }
-
-    /* Slim scrollbar on desktop */
-    .quick-order-products-list::-webkit-scrollbar {
-        width: 6px;
-    }
-
-    .quick-order-products-list::-webkit-scrollbar-thumb {
-        background: rgba(255, 255, 255, 0.18);
-        border-radius: 999px;
-    }
-
-    /* Each product row: glass card */
-    .quick-order-product-item {
-        display: flex;
-        align-items: flex-start;
-        /* important: not center if text is tall */
-        gap: 0.9rem;
-        padding: 0.7rem 0.9rem;
-        border-radius: 16px;
-        background: rgba(255, 255, 255, 0.06);
-        /* do NOT set a fixed height here */
-    }
-
-    /* Ambient line accent */
-    .quick-order-product-item::before {
-        content: "";
-        position: absolute;
-        left: 0;
-        top: 15%;
-        bottom: 15%;
-        width: 3px;
-        border-radius: 999px;
-        opacity: 0.7;
-    }
-
-    /* Hover: subtle lift and glow */
-    .quick-order-product-item:hover {
-        transform: translateY(-3px);
-        box-shadow:
-            0 24px 40px rgba(0, 0, 0, 0.7),
-            0 0 0 1px rgba(255, 255, 255, 0.08);
-        background: linear-gradient(135deg,
-                rgba(255, 255, 255, 0.12),
-                rgba(255, 255, 255, 0.03));
-    }
-
-    /* Product image */
-    .quick-order-product-image,
-    .quick-order-product-placeholder {
-        width: 70px;
-        height: 70px;
-        border-radius: 14px;
-        flex-shrink: 0;
-        box-shadow:
-            0 0 0 2px rgba(255, 184, 108, 0.15),
-            0 10px 18px rgba(0, 0, 0, 0.55);
-        object-fit: cover;
-    }
-
-    .quick-order-product-placeholder {
-        background: radial-gradient(circle at 30% 0, #3b4156, #1e2233);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: rgba(255, 255, 255, 0.65);
-    }
-
-    /* Text info */
-    .quick-order-product-info {
-        display: flex;
-        color: white;
-        flex-direction: column;
-        gap: 0.15rem;
-        flex: 1 1 auto;
-        /* allows it to grow */
-        min-width: 0;
-        /* prevents flex text overflow */
-    }
-
-    .quick-order-product-name,
-    .quick-order-product-category {
-        word-break: break-word;
-        color: white;
-    }
-
-    .quick-order-product-category {
-        font-size: 0.78rem;
-        color: rgba(225, 217, 217, 0.7);
-        text-transform: uppercase;
-        letter-spacing: 0.12em;
-    }
-
-    .quick-order-product-price {
-        margin-top: 0.15rem;
-        font-weight: 700;
-        color: #ffcf7d;
         font-size: 0.95rem;
     }
 
-    .quick-order-summary {
-        margin-top: 0.6rem;
-        padding: 0.9rem 1rem;
-        border-radius: 16px;
-        background: radial-gradient(circle at 0 0,
-                #ffcf7d,
-                #ff8c00 45%,
-                #ff6b35 100%);
-        color: #1a1020;
-        box-shadow:
-            0 20px 36px rgba(0, 0, 0, 0.65),
-            0 0 0 1px rgba(255, 255, 255, 0.14);
-        position: relative;
-        overflow: hidden;
+    .quick-order-card-desc {
+        font-size: 0.78rem;
     }
 
-    /* Shimmer line */
-    .quick-order-summary::before {
-        content: "";
-        position: absolute;
-        top: -40%;
-        left: -40%;
-        width: 40%;
-        height: 200%;
-        background: linear-gradient(120deg,
-                rgba(255, 255, 255, 0) 0%,
-                rgba(255, 255, 255, 0.45) 45%,
-                rgba(255, 255, 255, 0) 100%);
-        transform: translateX(-100%);
-        opacity: 0.6;
-        pointer-events: none;
-        animation: qo-summary-sweep 5s ease-in-out infinite;
+    .qo-nav {
+        width: 30px;
+        height: 30px;
+    }
+}
+
+/* Tablet / laptop: a bit more breathing space */
+@media (min-width: 768px) {
+    .quick-order-slider-wrapper {
+        padding: 0.6rem 0.45rem;
+    }
+}
+
+@media (min-width: 1200px) {
+    .quick-order-card {
+        padding: 1.05rem 1.2rem;
+    }
+}
+
+
+/* Dialog size and centering */
+#quickOrderDetailsModal .modal-dialog {
+    max-width: 920px;
+}
+
+/* Glassy, elevated content */
+#quickOrderDetailsModal .modal-content {
+    border-radius: 22px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow:
+        0 26px 60px rgba(0, 0, 0, 0.55),
+        0 0 0 1px rgba(255, 255, 255, 0.05);
+    background: radial-gradient(circle at top left, #24102b, #100b26 45%, #050712 100%);
+    color: #fefefe;
+}
+
+/* Header blends into body */
+#quickOrderDetailsModal .modal-header {
+    border-bottom: none;
+    background: linear-gradient(135deg, rgba(255, 140, 0, 0.25), transparent);
+}
+
+/* Body with subtle pattern */
+#quickOrderDetailsModal .modal-body {
+    padding: 1.5rem 1.75rem 1.4rem;
+    position: relative;
+}
+
+#quickOrderDetailsModal .modal-body::before {
+    content: "";
+    position: absolute;
+    inset: -30%;
+    background:
+        radial-gradient(circle at 10% 0%, rgba(255, 184, 108, 0.18), transparent 55%),
+        radial-gradient(circle at 90% 100%, rgba(147, 112, 219, 0.2), transparent 55%);
+    opacity: 0.9;
+    pointer-events: none;
+}
+
+/* Container JS fills */
+#quickOrderDetailsContent {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+/* List wrapper */
+.quick-order-products-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    /* Option A: no clipping */
+    /* max-height: none; */
+    /* Option B: higher container */
+    max-height: 520px;
+    overflow-y: auto;
+}
+
+
+/* Slim scrollbar on desktop */
+.quick-order-products-list::-webkit-scrollbar {
+    width: 6px;
+}
+.quick-order-products-list::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.18);
+    border-radius: 999px;
+}
+
+/* Each product row: glass card */
+.quick-order-product-item {
+    display: flex;
+    align-items: flex-start;  /* important: not center if text is tall */
+    gap: 0.9rem;
+    padding: 0.7rem 0.9rem;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.06);
+    /* do NOT set a fixed height here */
+}
+
+
+/* Ambient line accent */
+.quick-order-product-item::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 15%;
+    bottom: 15%;
+    width: 3px;
+    border-radius: 999px;
+    opacity: 0.7;
+}
+
+/* Hover: subtle lift and glow */
+.quick-order-product-item:hover {
+    transform: translateY(-3px);
+    box-shadow:
+        0 24px 40px rgba(0, 0, 0, 0.7),
+        0 0 0 1px rgba(255, 255, 255, 0.08);
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.12),
+        rgba(255, 255, 255, 0.03)
+    );
+}
+
+/* Product image */
+.quick-order-product-image,
+.quick-order-product-placeholder {
+    width: 70px;
+    height: 70px;
+    border-radius: 14px;
+    flex-shrink: 0;
+    box-shadow:
+        0 0 0 2px rgba(255, 184, 108, 0.15),
+        0 10px 18px rgba(0, 0, 0, 0.55);
+    object-fit: cover;
+}
+
+.quick-order-product-placeholder {
+    background: radial-gradient(circle at 30% 0, #3b4156, #1e2233);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.65);
+}
+
+/* Text info */
+.quick-order-product-info {
+    display: flex;
+    color:white;
+    flex-direction: column;
+    gap: 0.15rem;
+    flex: 1 1 auto;          /* allows it to grow */
+    min-width: 0;            /* prevents flex text overflow */
+}
+
+.quick-order-product-name,
+.quick-order-product-category {
+    word-break: break-word;
+    color:white;  
+}
+
+.quick-order-product-category {
+    font-size: 0.78rem;
+    color: rgba(225, 217, 217, 0.7);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+}
+
+.quick-order-product-price {
+    margin-top: 0.15rem;
+    font-weight: 700;
+    color: #ffcf7d;
+    font-size: 0.95rem;
+}
+.quick-order-summary {
+    margin-top: 0.6rem;
+    padding: 0.9rem 1rem;
+    border-radius: 16px;
+    background: radial-gradient(circle at 0 0, #ffcf7d, #ff8c00 45%, #ff6b35 100%);
+    color: #1a1020;
+    box-shadow:
+        0 20px 36px rgba(0, 0, 0, 0.65),
+        0 0 0 1px rgba(255, 255, 255, 0.14);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Shimmer line */
+.quick-order-summary::before {
+    content: "";
+    position: absolute;
+    top: -40%;
+    left: -40%;
+    width: 40%;
+    height: 200%;
+    background: linear-gradient(
+        120deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.45) 45%,
+        rgba(255, 255, 255, 0) 100%
+    );
+    transform: translateX(-100%);
+    opacity: 0.6;
+    pointer-events: none;
+    animation: qo-summary-sweep 5s ease-in-out infinite;
+}
+
+@keyframes qo-summary-sweep {
+    0%, 40%   { transform: translateX(-120%); opacity: 0; }
+    45%, 60%  { transform: translateX(160%); opacity: 0.6; }
+    100%      { transform: translateX(160%); opacity: 0; }
+}
+
+.quick-order-summary-row,
+.quick-order-summary-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.quick-order-summary-row {
+    font-size: 0.9rem;
+    color: rgba(32, 22, 8, 0.9);
+    margin-bottom: 0.25rem;
+}
+
+.quick-order-summary-total {
+    margin-top: 0.35rem;
+    padding-top: 0.45rem;
+    border-top: 1px dashed rgba(50, 32, 10, 0.55);
+    font-weight: 800;
+    font-size: 1rem;
+}
+/* Mobile */
+@media (max-width: 575.98px) {
+    #quickOrderDetailsModal .modal-dialog {
+        margin: 0.75rem;
     }
 
-    @keyframes qo-summary-sweep {
-
-        0%,
-        40% {
-            transform: translateX(-120%);
-            opacity: 0;
-        }
-
-        45%,
-        60% {
-            transform: translateX(160%);
-            opacity: 0.6;
-        }
-
-        100% {
-            transform: translateX(160%);
-            opacity: 0;
-        }
+    #quickOrderDetailsModal .modal-body {
+        padding: 1.1rem 1.1rem 1rem;
     }
 
-    .quick-order-summary-row,
-    .quick-order-summary-total {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+    .quick-order-product-item {
+        align-items: flex-start;
+        padding: 0.6rem 0.7rem;
     }
 
-    .quick-order-summary-row {
+    .quick-order-product-image,
+    .quick-order-product-placeholder {
+        width: 56px;
+        height: 56px;
+    }
+
+    .quick-order-product-name {
         font-size: 0.9rem;
-        color: rgba(32, 22, 8, 0.9);
-        margin-bottom: 0.25rem;
     }
 
-    .quick-order-summary-total {
-        margin-top: 0.35rem;
-        padding-top: 0.45rem;
-        border-top: 1px dashed rgba(50, 32, 10, 0.55);
-        font-weight: 800;
-        font-size: 1rem;
+    .quick-order-product-category {
+        font-size: 0.74rem;
     }
 
-    /* Mobile */
-    @media (max-width: 575.98px) {
-        #quickOrderDetailsModal .modal-dialog {
-            margin: 0.75rem;
-        }
-
-        #quickOrderDetailsModal .modal-body {
-            padding: 1.1rem 1.1rem 1rem;
-        }
-
-        .quick-order-product-item {
-            align-items: flex-start;
-            padding: 0.6rem 0.7rem;
-        }
-
-        .quick-order-product-image,
-        .quick-order-product-placeholder {
-            width: 56px;
-            height: 56px;
-        }
-
-        .quick-order-product-name {
-            font-size: 0.9rem;
-        }
-
-        .quick-order-product-category {
-            font-size: 0.74rem;
-        }
-
-        .quick-order-summary {
-            margin-top: 0.8rem;
-            padding: 0.75rem 0.85rem;
-        }
+    .quick-order-summary {
+        margin-top: 0.8rem;
+        padding: 0.75rem 0.85rem;
     }
+}
 
-    /* Tablet and up */
-    @media (min-width: 768px) {
-        .quick-order-products-list {
-            max-height: 460px;
-        }
+/* Tablet and up */
+@media (min-width: 768px) {
+    .quick-order-products-list {
+        max-height: 460px;
     }
+}
+
 </style>
 <script>
     function initQuickOrderSlider() {
-        const slider = document.getElementById("quickOrderSlider");
-        const prevBtn = document.querySelector(".qo-prev");
-        const nextBtn = document.querySelector(".qo-next");
+        const slider = document.getElementById('quickOrderSlider');
+        const prevBtn = document.querySelector('.qo-prev');
+        const nextBtn = document.querySelector('.qo-next');
 
         if (!slider || !prevBtn || !nextBtn) return;
 
         let slideWidth = getSlideWidth();
 
         function getSlideWidth() {
-            const firstSlide = slider.querySelector(".quick-order-slide");
+            const firstSlide = slider.querySelector('.quick-order-slide');
             return firstSlide ? firstSlide.getBoundingClientRect().width : 0;
         }
 
-        window.addEventListener("resize", () => {
+        window.addEventListener('resize', () => {
             slideWidth = getSlideWidth();
         });
 
@@ -3347,13 +3111,13 @@
             nextBtn.disabled = slider.scrollLeft >= maxScroll;
         }
 
-        nextBtn.addEventListener("click", () => {
-            slider.scrollBy({ left: slideWidth, behavior: "smooth" });
+        nextBtn.addEventListener('click', () => {
+            slider.scrollBy({ left: slideWidth, behavior: 'smooth' });
             setTimeout(updateNavState, 300);
         });
 
-        prevBtn.addEventListener("click", () => {
-            slider.scrollBy({ left: -slideWidth, behavior: "smooth" });
+        prevBtn.addEventListener('click', () => {
+            slider.scrollBy({ left: -slideWidth, behavior: 'smooth' });
             setTimeout(updateNavState, 300);
         });
 
@@ -3362,25 +3126,25 @@
         let startX;
         let scrollLeft;
 
-        slider.addEventListener("mousedown", (e) => {
+        slider.addEventListener('mousedown', (e) => {
             isDown = true;
-            slider.classList.add("is-dragging");
+            slider.classList.add('is-dragging');
             startX = e.pageX - slider.offsetLeft;
             scrollLeft = slider.scrollLeft;
         });
 
-        slider.addEventListener("mouseleave", () => {
+        slider.addEventListener('mouseleave', () => {
             isDown = false;
-            slider.classList.remove("is-dragging");
+            slider.classList.remove('is-dragging');
         });
 
-        slider.addEventListener("mouseup", () => {
+        slider.addEventListener('mouseup', () => {
             isDown = false;
-            slider.classList.remove("is-dragging");
+            slider.classList.remove('is-dragging');
             updateNavState();
         });
 
-        slider.addEventListener("mousemove", (e) => {
+        slider.addEventListener('mousemove', (e) => {
             if (!isDown) return;
             e.preventDefault();
             const x = e.pageX - slider.offsetLeft;
@@ -3388,18 +3152,18 @@
             slider.scrollLeft = scrollLeft - walk;
         });
 
-        slider.addEventListener("touchstart", (e) => {
+        slider.addEventListener('touchstart', (e) => {
             isDown = true;
             startX = e.touches[0].pageX - slider.offsetLeft;
             scrollLeft = slider.scrollLeft;
         });
 
-        slider.addEventListener("touchend", () => {
+        slider.addEventListener('touchend', () => {
             isDown = false;
             updateNavState();
         });
 
-        slider.addEventListener("touchmove", (e) => {
+        slider.addEventListener('touchmove', (e) => {
             if (!isDown) return;
             const x = e.touches[0].pageX - slider.offsetLeft;
             const walk = (x - startX) * 1.2;
@@ -3411,7 +3175,7 @@
 </script>
 
 <div class="inventory-container">
-    <div id="diwaliLoadingOverlay" class="diwali-loading-overlay" style="display: none">
+    <div id="diwaliLoadingOverlay" class="diwali-loading-overlay" style="display: none;">
         <div class="diwali-loading-container">
             <!-- Single Rotating Chakra -->
             <div class="chakra-single">
@@ -3424,9 +3188,10 @@
     </div>
 </div>
 
+
 <div class="inventory-container">
     <div class="container">
-        <img src="{% static 'images/homes.jpg' %}" class="home-banner" />
+        <img src="{% static 'images/homes.jpg' %}" class="home-banner">
         <!-- Category Subheader -->
         <div class="category-subheader">
             <button class="nav-scroll-btn nav-left">&lt;</button>
@@ -3442,6 +3207,7 @@
             <button class="nav-scroll-btn nav-right">&gt;</button>
         </div>
     </div>
+
 </div>
 
 <style>
@@ -3493,6 +3259,7 @@
 
     /* 🔸 Show and style only on mobile */
     @media (max-width: 768px) {
+
         .category-subheader {
             position: relative;
             padding: 15px 0;
@@ -3534,6 +3301,7 @@
 </style>
 <script>
     document.addEventListener("DOMContentLoaded", () => {
+
         const nav = document.querySelector(".category-nav");
         const left = document.querySelector(".nav-left");
         const right = document.querySelector(".nav-right");
@@ -3542,36 +3310,40 @@
 
         left.addEventListener("click", () => {
             nav.scrollBy({
-                left: -250, // Laptop-friendly scroll amount
-                behavior: "smooth",
+                left: -250,      // Laptop-friendly scroll amount
+                behavior: "smooth"
             });
         });
 
         right.addEventListener("click", () => {
             nav.scrollBy({
                 left: 250,
-                behavior: "smooth",
+                behavior: "smooth"
             });
         });
     });
+
 </script>
 
 <div class="container mt-4">
     <!-- 🎇 DIWALI SALES BANNER WITH DYNAMIC YEAR -->
     <div class="diwali-sales-banner">
-        <marquee behavior="alternate" direction="up" width="80%" class="diwali-banner-title">
-            Diwali sales on {{ now.year }} Upto 80% off Minimum order 2500 rupees only
-        </marquee>
+        <h1 class="diwali-banner-title">
+            Diwali sales on {{ now.year }} Upto 80% off Minimum order 3000 rupees only
+        </h1>
     </div>
 
     <!-- 🔶 CATEGORY TABLES (SPARKLER ITEMS, FLOWER POTS, etc.) -->
     {% for category, products_in_category in products_by_category.items %}
     <div class="category-section" id="category-{{ category.id }}">
+
         <!-- invisible anchor for scroll accuracy -->
         <a id="scroll-target-{{ category.id }}" class="category-scroll-anchor"></a>
 
         <!-- Title bar (hidden on mobile) -->
-        <div class="category-title-bar">{{ category.name|upper }}</div>
+        <div class="category-title-bar">
+            {{ category.name|upper }}
+        </div>
 
         <div class="order-table-wrapper table-responsive">
             <table class="kannan-order-table">
@@ -3595,16 +3367,22 @@
 
                         <td class="img-col">
                             {% if product.image %}
-                            <img src="{{ product.image.url }}" alt="{{ product.name }}" />
+                            <img src="{{ product.image.url }}" alt="{{ product.name }}">
                             {% else %}
                             <span>No Image</span>
                             {% endif %}
                         </td>
 
-                        <td class="name-col">{{ product.name }}</td>
+                        <td class="name-col">
+                            {{ product.name }}
+                        </td>
 
                         <td class="content-col">
-                            {% if product.content %} {{ product.content }} {% else %} 1 BOX {% endif %}
+                            {% if product.content %}
+                            {{ product.content }}
+                            {% else %}
+                            1 BOX
+                            {% endif %}
                         </td>
 
                         <!-- MRP per unit (will be multiplied by qty in JS) -->
@@ -3621,10 +3399,12 @@
                         </td>
 
                         <td class="qty-col">
-                            <input type="number" class="qty-input" min="0" value="0" />
+                            <input type="number" class="qty-input" min="0" value="0">
                         </td>
 
-                        <td class="total-col">₹<span class="row-total-val">0.00</span></td>
+                        <td class="total-col">
+                            ₹<span class="row-total-val">0.00</span>
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -3633,10 +3413,11 @@
         <!-- MOBILE ITEMS GO HERE (inside category section) -->
         {% for product in products_in_category %}
         <div class="mobile-product-item" data-product-id="{{ product.id }}" data-mrp="{{ product.price }}">
+
             <div class="mobile-top">
                 <div class="mobile-img">
                     {% if product.image %}
-                    <img src="{{ product.image.url }}" alt="{{ product.name }}" />
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}">
                     {% endif %}
                 </div>
 
@@ -3646,25 +3427,9 @@
                         {% if product.content %}{{ product.content }}{% else %}1 BOX{% endif %}
                     </div>
 
-                    <div class="mobile-price-row" style="
-              display: flex;
-              flex-direction: column;
-              gap: 4px;
-              margin-top: 8px;
-            ">
-                        <div style="display: flex; align-items: center; gap: 8px">
-                            <span class="mobile-mrp" style="
-                  text-decoration: line-through;
-                  color: #ff5252;
-                  font-size: 0.95rem;
-                  font-weight: 600;
-                ">MRP: ₹{{ product.price }}</span>
-                            <span class="mobile-discount-display"
-                                style="color: #4caf50; font-size: 0.95rem; font-weight: 700">Discount: ₹0.00</span>
-                        </div>
-                        <div style="color: #00e676; font-size: 1.3rem; font-weight: 800">
-                            ₹<span class="mobile-our amount-val">0.00</span>
-                        </div>
+                    <div class="mobile-price-row">
+                        <span class="mobile-mrp">₹{{ product.price }}</span>
+                        <span class="mobile-our amount-val">₹0</span>
                     </div>
                 </div>
             </div>
@@ -3672,28 +3437,29 @@
             <div class="mobile-bottom">
                 <div class="qty-box">
                     <button class="qty-btn minus">−</button>
-                    <input type="number" class="qty-input" min="0" value="0" />
+                    <input type="number" class="qty-input" min="0" value="0">
                     <button class="qty-btn plus">+</button>
                 </div>
 
                 <div class="mobile-total">₹<span class="row-total-val">0.00</span></div>
             </div>
+
+
         </div>
         {% endfor %}
     </div>
     {% endfor %}
+
 </div>
 <!-- 🌟 FULL IMAGE VIEW MODAL -->
 <div class="modal fade" id="imageModal" tabindex="-1">
     <div class="modal-dialog modal-fullscreen-sm-down modal-lg">
-        <div class="modal-content" style="background: rgba(0, 0, 0, 0.85)">
+        <div class="modal-content" style="background: rgba(0,0,0,0.85);">
             <div class="modal-body d-flex justify-content-center align-items-center p-0">
-                <img id="modalImage" src="" alt="Product Image" style="
-            max-height: 90vh;
-            max-width: 95vw;
-            object-fit: contain;
-            border-radius: 10px;
-          " />
+
+                <img id="modalImage" src="" alt="Product Image"
+                    style="max-height: 90vh; max-width: 95vw; object-fit: contain; border-radius: 10px;">
+
             </div>
             <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3"
                 data-bs-dismiss="modal"></button>
@@ -3703,24 +3469,24 @@
 <script>
     // PRODUCT IMAGE CLICK → OPEN FULL VIEW MODAL
     document.addEventListener("DOMContentLoaded", function () {
-        const modal = new bootstrap.Modal(document.getElementById("imageModal"));
-        const modalImg = document.getElementById("modalImage");
+        const modal = new bootstrap.Modal(document.getElementById('imageModal'));
+        const modalImg = document.getElementById('modalImage');
 
-        document
-            .querySelectorAll(".img-col img, .mobile-img img")
-            .forEach((img) => {
-                img.style.cursor = "pointer";
+        document.querySelectorAll(".img-col img, .mobile-img img").forEach(img => {
+            img.style.cursor = "pointer";
 
-                img.addEventListener("click", () => {
-                    modalImg.src = img.src;
-                    modal.show();
-                });
+            img.addEventListener("click", () => {
+                modalImg.src = img.src;
+                modal.show();
             });
+        });
     });
+
 </script>
 <style>
     /* MOBILE PLUS & MINUS BUTTONS */
     @media (max-width: 768px) {
+
         .qty-box {
             display: flex;
             align-items: center;
@@ -3763,7 +3529,8 @@
 </style>
 <script>
     document.addEventListener("DOMContentLoaded", () => {
-        document.querySelectorAll(".mobile-product-item").forEach((box) => {
+        document.querySelectorAll(".mobile-product-item").forEach(box => {
+
             const minusBtn = box.querySelector(".qty-btn.minus");
             const plusBtn = box.querySelector(".qty-btn.plus");
             const qtyInput = box.querySelector(".qty-input");
@@ -3779,8 +3546,10 @@
                 qtyInput.value = qty + 1;
                 qtyInput.dispatchEvent(new Event("input"));
             });
+
         });
     });
+
 </script>
 <!-- Part 1: Clean Mobile CSS Integration -->
 <style>
@@ -3872,13 +3641,16 @@
         }
 
         @media (max-width: 768px) {
+
             .mobile-name {
                 font-size: 1rem;
                 font-weight: 700;
                 color: #ffffff !important;
                 /* 🔥 White text */
             }
+
         }
+
 
         .mobile-top {
             display: flex;
@@ -3960,9 +3732,15 @@
     }
 </style>
 
-{% endblock content %} {% block extra_js %}
+
+
+{% endblock content %}
+
+
+{% block extra_js %}
 <script src="{% static 'inventory/checkout.js' %}"></script>
 <script>
+
     // =====================================================
     // 🛒 GLOBAL CART
     // =====================================================
@@ -3972,35 +3750,31 @@
     // 🟠 UNIFIED updateCart() FOR BOTH DESKTOP + MOBILE
     // =====================================================
     function updateCart(productId, row, qty, amount, mrp) {
+
         const name =
             row.querySelector(".name-col")?.textContent.trim() ||
             row.querySelector(".mobile-name")?.textContent.trim() ||
             "Unknown Item";
 
-        const imgSrc =
-            row.querySelector(".img-col img")?.src ||
-            row.querySelector(".mobile-img img")?.src ||
-            "";
-
-        let existing = cart.find((i) => i.id == productId);
+        let existing = cart.find(i => i.id == productId);
 
         if (qty == 0) {
-            cart = cart.filter((i) => i.id != productId);
-        } else if (existing) {
+            cart = cart.filter(i => i.id != productId);
+        }
+        else if (existing) {
             existing.quantity = qty;
             existing.amount = parseFloat(amount);
-            existing.discount = parseFloat(mrp * 0.8);
+            existing.discount = parseFloat(mrp * 0.80);
             existing.mrp = parseFloat(mrp);
-            existing.image = imgSrc;
-        } else {
+        }
+        else {
             cart.push({
                 id: productId,
                 name: name,
-                image: imgSrc,
                 quantity: qty,
                 mrp: parseFloat(mrp),
-                discount: parseFloat(mrp * 0.8),
-                amount: parseFloat(amount),
+                discount: parseFloat(mrp * 0.80),
+                amount: parseFloat(amount)
             });
         }
 
@@ -4014,32 +3788,9 @@
         const total = cart.reduce((s, i) => s + i.amount * i.quantity, 0);
         const count = cart.reduce((s, i) => s + i.quantity, 0);
 
-        // Calculate total savings
-        const totalMrp = cart.reduce(
-            (s, i) => s + (i.mrp || i.amount / 0.2) * i.quantity,
-            0,
-        );
-        const savings = totalMrp - total;
-
-        // Update floating cart
         document.getElementById("cart-total").textContent = total.toFixed(2);
-        document.querySelector(".cart-items-count").textContent =
-            `(${count} items)`;
-
-        // Update modal subtotal
+        document.querySelector(".cart-items-count").textContent = `(${count} items)`;
         document.getElementById("modalSubtotal").textContent = total.toFixed(2);
-
-        // Update Analytics Strip
-        const analyticsStrip = document.getElementById("analyticsStrip");
-        if (count > 0) {
-            analyticsStrip.style.display = "flex";
-            document.getElementById("analytics-products").textContent = count;
-            document.getElementById("analytics-savings").textContent =
-                savings.toFixed(2);
-            document.getElementById("analytics-total").textContent = total.toFixed(2);
-        } else {
-            analyticsStrip.style.display = "none";
-        }
 
         updateCartModal();
         updateMinOrderAlert(); // Check minimum order requirement
@@ -4049,6 +3800,7 @@
     // 🟣 UPDATE CART MODAL ITEMS
     // =====================================================
     function updateCartModal() {
+
         const cartItems = document.getElementById("cartItems");
 
         if (cart.length === 0) {
@@ -4061,132 +3813,38 @@
             return;
         }
 
-        cartItems.innerHTML = cart
-            .map((item) => {
-                const itemMrp = item.mrp || item.amount / 0.2;
-                const itemTotal = item.amount * item.quantity;
-                const itemOriginalTotal = itemMrp * item.quantity;
-                const itemSavings = itemOriginalTotal - itemTotal;
-
-                return `
-            <div class="cart-item d-flex justify-content-between align-items-center mb-3 p-2 p-sm-3 border rounded" style="background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1) !important;">
-                <div style="flex: 1; display: flex; gap: 10px; align-items: start; min-width: 0;">
-                    ${item.image ? `<img src="${item.image}" alt="${item.name}" style="width: 55px; height: 55px; object-fit: cover; border-radius: 8px; border: 1px solid rgba(255,215,0,0.3); flex-shrink: 0;">` : `<div style="width: 55px; height: 55px; border-radius: 8px; border: 1px solid rgba(255,215,0,0.3); display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.05); flex-shrink: 0;"><i class="bi bi-image text-muted"></i></div>`}
-                    <div style="flex: 1; min-width: 0;">
-                        <h6 class="mb-1 text-light fw-bold text-wrap text-break" style="font-size: 1.05rem; line-height: 1.2;">${item.name}</h6>
-                        <div class="d-flex align-items-center gap-2 mt-2 flex-wrap">
-                            <div class="input-group input-group-sm" style="width: 90px; flex-wrap: nowrap;">
-                                <button class="btn btn-sm cart-qty-btn minus" type="button" data-id="${item.id}" style="background: rgba(255,215,0,0.1); border: 1px solid rgba(255,215,0,0.3); color: #ffd700; border-radius: 6px 0 0 6px; padding: 0 8px;">
-                                    <b>-</b>
-                                </button>
-                                <input type="number" class="form-control text-center cart-qty-input px-1" 
-                                       value="${item.quantity}" min="1" data-id="${item.id}"
-                                       style="background: rgba(255,215,0,0.1); color: #ffd700; border-top: 1px solid rgba(255,215,0,0.3); border-bottom: 1px solid rgba(255,215,0,0.3); border-left: none; border-right: none; font-weight: bold; border-radius: 0; box-shadow: none;">
-                                <button class="btn btn-sm cart-qty-btn plus" type="button" data-id="${item.id}" style="background: rgba(255,215,0,0.1); border: 1px solid rgba(255,215,0,0.3); color: #ffd700; border-radius: 0 6px 6px 0; padding: 0 8px;">
-                                    <b>+</b>
-                                </button>
-                            </div>
-                            <span style="color: #ffffff; font-size: 0.95rem; font-weight: 500; white-space: nowrap;">× ₹${item.amount.toFixed(2)}</span>
-                        </div>
-                        <div class="mt-1 d-flex flex-column flex-sm-row" style="font-size: 0.85rem;">
-                            <span class="text-decoration-line-through me-sm-2" style="color: #e0e0e0; white-space: nowrap;">MRP: ₹${itemOriginalTotal.toFixed(2)}</span>
-                            <span style="color: #00d2ff; font-weight: 600; white-space: nowrap;"><i class="bi bi-tag-fill me-1"></i>Saved: ₹${itemSavings.toFixed(2)}</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="d-flex flex-column align-items-end gap-2 ms-2 flex-shrink-0">
-                    <div class="fw-bold text-end" style="color: #ffcf7d; font-size: 1.1rem; line-height: 1;">₹${itemTotal.toFixed(2)}</div>
-                    <button class="btn btn-sm remove-item" data-id="${item.id}" style="background: rgba(220, 53, 69, 0.15); color: #ff6b6b; border: 1px solid rgba(220, 53, 69, 0.3); border-radius: 8px; padding: 4px 8px;" title="Remove Item">
-                        <i class="bi bi-trash"></i>
-                    </button>
-                </div>
+        cartItems.innerHTML = cart.map(item => `
+        <div class="cart-item d-flex justify-content-between align-items-center mb-3 p-3 border rounded">
+            <div>
+                <h6 class="mb-1">${item.name}</h6>
+                <small class="text-muted">
+                    MRP: ₹${item.mrp} | Discount: ₹${item.discount} | Amount: ₹${item.amount}
+                    <br>Qty: ${item.quantity}
+                </small>
             </div>
-            `;
-            })
-            .join("");
+            <div class="d-flex align-items-center gap-3">
+                <span class="fw-bold">₹${(item.amount * item.quantity).toFixed(2)}</span>
+                <button class="btn btn-sm btn-outline-danger remove-item" data-id="${item.id}">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </div>
+        </div>
+    `).join("");
 
-        document.querySelectorAll(".remove-item").forEach((btn) => {
+        document.querySelectorAll(".remove-item").forEach(btn => {
             btn.addEventListener("click", function () {
                 const id = btn.dataset.id;
-                cart = cart.filter((i) => i.id != id);
+                cart = cart.filter(i => i.id != id);
 
                 // Reset qty in desktop table if exists
-                const row = document.querySelector(
-                    `tr[data-product-id="${id}"] .qty-input`,
-                );
+                const row = document.querySelector(`tr[data-product-id="${id}"] .qty-input`);
                 if (row) row.value = 0;
 
                 // Reset qty in mobile card if exists
-                const mob = document.querySelector(
-                    `.mobile-product-item[data-product-id="${id}"] .qty-input`,
-                );
+                const mob = document.querySelector(`.mobile-product-item[data-product-id="${id}"] .qty-input`);
                 if (mob) mob.value = 0;
 
                 updateCartDisplay();
-            });
-        });
-
-        // 🔄 Event listener for quantity input changes IN the modal
-        document.querySelectorAll(".cart-qty-input").forEach((input) => {
-            input.addEventListener("change", function () {
-                const id = this.dataset.id;
-                let newQty = parseInt(this.value) || 0;
-
-                // Prevent negative or zero from this input directly unless using trash
-                if (newQty < 1) {
-                    newQty = 1;
-                    this.value = 1;
-                }
-
-                // Update global cart logic
-                const cartItem = cart.find((i) => i.id == id);
-                if (cartItem) {
-                    cartItem.quantity = newQty;
-                }
-
-                // Sync the main page grid inputs
-                const desktopRow = document.querySelector(
-                    `tr[data-product-id="${id}"] .qty-input`,
-                );
-                if (desktopRow) {
-                    desktopRow.value = newQty;
-                    // Trigger total math for that row too
-                    desktopRow.dispatchEvent(new Event("input"));
-                }
-
-                const mobileRow = document.querySelector(
-                    `.mobile-product-item[data-product-id="${id}"] .qty-input`,
-                );
-                if (mobileRow) {
-                    mobileRow.value = newQty;
-                    mobileRow.dispatchEvent(new Event("input"));
-                }
-
-                updateCartDisplay();
-            });
-        });
-
-        // Event listeners for +/- buttons in cart
-        document.querySelectorAll(".cart-qty-btn").forEach((btn) => {
-            btn.addEventListener("click", function () {
-                const id = this.dataset.id;
-                const input = document.querySelector(
-                    `.cart-qty-input[data-id="${id}"]`,
-                );
-                if (!input) return;
-
-                let currentQty = parseInt(input.value) || 1;
-
-                if (this.classList.contains("plus")) {
-                    currentQty += 1;
-                } else if (this.classList.contains("minus")) {
-                    currentQty -= 1;
-                }
-
-                if (currentQty < 1) currentQty = 1;
-
-                input.value = currentQty;
-                input.dispatchEvent(new Event("change"));
             });
         });
     }
@@ -4195,7 +3853,8 @@
     // 🟡 DESKTOP TABLE HANDLER
     // =====================================================
     document.addEventListener("DOMContentLoaded", function () {
-        document.querySelectorAll(".order-row").forEach((row) => {
+
+        document.querySelectorAll(".order-row").forEach(row => {
             const qtyInput = row.querySelector(".qty-input");
             const mrp = parseFloat(row.dataset.mrp);
 
@@ -4204,18 +3863,17 @@
             const totalEle = row.querySelector(".row-total-val");
 
             // ✨ INITIALIZE DISCOUNT AND AMOUNT FOR QUANTITY 1 ON PAGE LOAD
-            const initDiscount = (mrp * 0.8).toFixed(2);
-            const initAmount = (mrp * 0.2).toFixed(2);
-            const initQty = parseInt(qtyInput.value) || 0;
+            const initDiscount = (mrp * 0.80).toFixed(2);
+            const initAmount = (mrp * 0.20).toFixed(2);
             discountEle.textContent = initDiscount;
             amountEle.textContent = initAmount;
-            totalEle.textContent = (initAmount * initQty).toFixed(2); // Initial total based on qty
+            totalEle.textContent = initAmount; // For qty 1, total = amount
 
             qtyInput.addEventListener("input", function () {
                 const qty = parseInt(qtyInput.value) || 0;
 
-                const discount = (mrp * 0.8).toFixed(2);
-                const amount = (mrp * 0.2).toFixed(2);
+                const discount = (mrp * 0.80).toFixed(2);
+                const amount = (mrp * 0.20).toFixed(2);
                 const total = (amount * qty).toFixed(2);
 
                 discountEle.textContent = discount;
@@ -4231,42 +3889,52 @@
     // 🔵 MOBILE CARD HANDLER (NOW SHOWS FULL BREAKDOWN A1)
     // =====================================================
     document.addEventListener("DOMContentLoaded", function () {
-        document.querySelectorAll(".mobile-product-item").forEach((box) => {
+
+        document.querySelectorAll(".mobile-product-item").forEach(box => {
+
             const qtyInput = box.querySelector(".qty-input");
             const mrp = parseFloat(box.dataset.mrp);
 
             const amountEle = box.querySelector(".amount-val");
             const totalEle = box.querySelector(".row-total-val");
 
-            const topMrpEle = box.querySelector(".mobile-mrp");
-            const discountEle = box.querySelector(".mobile-discount-display");
+            // Create discount span dynamically for mobile
+            if (!box.querySelector(".mobile-discount")) {
+                const discountTag = document.createElement("div");
+                discountTag.style.color = "#ff5252";
+                discountTag.style.fontWeight = "700";
+                discountTag.style.marginTop = "4px";
+                discountTag.classList.add("mobile-discount");
+                box.querySelector(".mobile-info").appendChild(discountTag);
+            }
+
+            const discountEle = box.querySelector(".mobile-discount");
 
             // ✨ INITIALIZE DISCOUNT AND AMOUNT FOR QUANTITY 1 ON PAGE LOAD
-            const initDiscount = (mrp * 0.8).toFixed(2);
-            const initAmount = (mrp * 0.2).toFixed(2);
-            const initQty = parseInt(qtyInput.value) || 0;
-
+            const initDiscount = (mrp * 0.80).toFixed(2);
+            const initAmount = (mrp * 0.20).toFixed(2);
             discountEle.textContent = `Discount: ₹${initDiscount}`;
-            topMrpEle.textContent = `MRP: ₹${mrp.toFixed(2)}`;
-            amountEle.textContent = `${initAmount}`;
-            totalEle.textContent = (initAmount * initQty).toFixed(2); // Initial total based on qty
+            amountEle.textContent = `₹${initAmount}`;
+            totalEle.textContent = initAmount; // For qty 1, total = amount
 
             qtyInput.addEventListener("input", function () {
                 const qty = parseInt(qtyInput.value) || 0;
 
-                const discount = (mrp * 0.8).toFixed(2);
-                const amount = (mrp * 0.2).toFixed(2);
+                const discount = (mrp * 0.80).toFixed(2);
+                const amount = (mrp * 0.20).toFixed(2);
                 const total = (amount * qty).toFixed(2);
 
                 discountEle.textContent = `Discount: ₹${discount}`;
-                topMrpEle.textContent = `MRP: ₹${mrp.toFixed(2)}`;
-                amountEle.textContent = `${amount}`;
+                amountEle.textContent = `₹${amount}`;
                 totalEle.textContent = total;
 
                 updateCart(box.dataset.productId, box, qty, amount, mrp);
             });
         });
+
+
     });
+
 </script>
 
 <script>
@@ -4278,21 +3946,18 @@
     let quickOrderListsCache = null;
 
     // Load quick order lists when modal is opened
-    document
-        .getElementById("quickOrderModal")
-        ?.addEventListener("show.bs.modal", function () {
-            loadQuickOrderLists();
-        });
+    document.getElementById('quickOrderModal')?.addEventListener('show.bs.modal', function () {
+        loadQuickOrderLists();
+    });
 
     async function loadQuickOrderLists() {
         try {
-            const response = await fetch("/inventory/quick-order-lists/", {
-                method: "GET",
+            const response = await fetch('/inventory/quick-order-lists/', {
+                method: 'GET',
                 headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRFToken":
-                        document.querySelector("[name=csrfmiddlewaretoken]")?.value || "",
-                },
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]')?.value || ''
+                }
             });
 
             const data = await response.json();
@@ -4301,16 +3966,16 @@
                 quickOrderListsCache = data.quick_order_lists;
                 displayQuickOrderLists(data.quick_order_lists);
             } else {
-                showAlert("Failed to load quick order lists", "danger");
+                showAlert('Failed to load quick order lists', 'danger');
             }
         } catch (error) {
-            console.error("Error loading quick order lists:", error);
-            showAlert("Network error. Please try again.", "danger");
+            console.error('Error loading quick order lists:', error);
+            showAlert('Network error. Please try again.', 'danger');
         }
     }
 
     function displayQuickOrderLists(lists) {
-        const container = document.getElementById("quickOrderListsContainer");
+        const container = document.getElementById('quickOrderListsContainer');
 
         let html = `
         <div class="quick-order-slider-wrapper">
@@ -4318,7 +3983,7 @@
             <div class="quick-order-slider" id="quickOrderSlider">
     `;
 
-        lists.forEach((list) => {
+        lists.forEach(list => {
             const total = list.total || 0;
             html += `
             <div class="quick-order-slide">
@@ -4343,17 +4008,18 @@
 
         container.innerHTML = html;
 
-        initQuickOrderSlider(); // attach JS
+        initQuickOrderSlider();  // attach JS
     }
 
+
     function openQuickOrderDetails(listId) {
-        const list = quickOrderListsCache.find((l) => l.id === listId);
+        const list = quickOrderListsCache.find(l => l.id === listId);
         if (!list) return;
 
         currentQuickOrderList = list;
 
-        const modalTitle = document.getElementById("detailsModalTitle");
-        const content = document.getElementById("quickOrderDetailsContent");
+        const modalTitle = document.getElementById('detailsModalTitle');
+        const content = document.getElementById('quickOrderDetailsContent');
 
         modalTitle.innerHTML = `${list.emoji} ${list.name}`;
 
@@ -4362,7 +4028,7 @@
         <div class="quick-order-products-list">
     `;
 
-        list.products.forEach((product) => {
+        list.products.forEach(product => {
             html += `
             <div class="quick-order-product-item">
                 ${product.image_url ? `<img src="${product.image_url}" alt="${product.name}" class="quick-order-product-image">` : '<div style="width: 80px; height: 80px; background: #e0e0e0; border-radius: 8px; display: flex; align-items: center; justify-content: center;"><i class="bi bi-image" style="font-size: 2rem; color: #999;"></i></div>'}
@@ -4375,7 +4041,7 @@
         `;
         });
 
-        html += "</div>";
+        html += '</div>';
 
         html += `
         <div class="quick-order-summary">
@@ -4385,7 +4051,7 @@
             </div>
             <div class="quick-order-summary-row">
                 <span>Categories:</span>
-                <span>${[...new Set(list.products.map((p) => p.category))].join(", ")}</span>
+                <span>${[...new Set(list.products.map(p => p.category))].join(', ')}</span>
             </div>
             <div class="quick-order-summary-total">
                 <span>Order Total:</span>
@@ -4397,104 +4063,83 @@
         content.innerHTML = html;
 
         // Show details modal
-        const detailsModal = bootstrap.Modal.getOrCreateInstance(
-            document.getElementById("quickOrderDetailsModal"),
-        );
+        const detailsModal = bootstrap.Modal.getOrCreateInstance(document.getElementById('quickOrderDetailsModal'));
         detailsModal.show();
     }
 
-    document
-        .getElementById("proceedQuickOrderCheckout")
-        ?.addEventListener("click", async function () {
-            if (!currentQuickOrderList) {
-                showAlert("Please select a quick order list", "warning");
-                return;
-            }
+    document.getElementById('proceedQuickOrderCheckout')?.addEventListener('click', async function () {
+        if (!currentQuickOrderList) {
+            showAlert('Please select a quick order list', 'warning');
+            return;
+        }
 
-            const loadingOverlay = document.getElementById("diwaliLoadingOverlay");
-            loadingOverlay.style.display = "flex";
+        const loadingOverlay = document.getElementById('diwaliLoadingOverlay');
+        loadingOverlay.style.display = 'flex';
 
-            try {
-                const response = await fetch(
-                    "/inventory/quick-order/" + currentQuickOrderList.id + "/checkout/",
-                    {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "X-CSRFToken": document.querySelector(
-                                "[name=csrfmiddlewaretoken]",
-                            ).value,
-                        },
-                        body: JSON.stringify({
-                            list_id: currentQuickOrderList.id,
-                            products: currentQuickOrderList.products,
-                        }),
-                    },
-                );
+        try {
+            const response = await fetch('/inventory/quick-order/' + currentQuickOrderList.id + '/checkout/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                },
+                body: JSON.stringify({
+                    list_id: currentQuickOrderList.id,
+                    products: currentQuickOrderList.products
+                })
+            });
 
-                const data = await response.json();
+            const data = await response.json();
 
-                if (data.success && data.ready_for_checkout) {
-                    // Populate cart with quick order items
-                    cart = [];
-                    for (const [productId, item] of Object.entries(data.cart_items)) {
-                        cart.push({
-                            id: parseInt(productId),
-                            name: item.name,
-                            quantity: item.quantity,
-                            amount: item.price,
-                        });
-                    }
-
-                    updateCartDisplay();
-
-                    // Close all modals
-                    bootstrap.Modal.getInstance(
-                        document.getElementById("quickOrderDetailsModal"),
-                    )?.hide();
-                    bootstrap.Modal.getInstance(
-                        document.getElementById("quickOrderModal"),
-                    )?.hide();
-
-                    // Wait a moment then show loading
-                    setTimeout(() => {
-                        // Open cart modal to proceed with checkout
-                        const cartModal = bootstrap.Modal.getOrCreateInstance(
-                            document.getElementById("cartModal"),
-                        );
-                        cartModal.show();
-
-                        loadingOverlay.style.display = "none";
-
-                        // Scroll to checkout button
-                        setTimeout(() => {
-                            const checkoutBtn = document.getElementById("proceedToCheckout");
-                            checkoutBtn?.scrollIntoView({
-                                behavior: "smooth",
-                                block: "center",
-                            });
-                        }, 500);
-                    }, 1500);
-                } else if (data.shortfall !== undefined) {
-                    loadingOverlay.style.display = "none";
-                    showAlert(
-                        `Minimum order amount is ₹${data.minimum_required}. Current: ₹${data.current_total.toFixed(2)}. Shortfall: ₹${data.shortfall.toFixed(2)}`,
-                        "warning",
-                    );
-                } else {
-                    loadingOverlay.style.display = "none";
-                    showAlert(data.error || "Error processing quick order", "danger");
+            if (data.success && data.ready_for_checkout) {
+                // Populate cart with quick order items
+                cart = [];
+                for (const [productId, item] of Object.entries(data.cart_items)) {
+                    cart.push({
+                        id: parseInt(productId),
+                        name: item.name,
+                        quantity: item.quantity,
+                        amount: item.price
+                    });
                 }
-            } catch (error) {
-                console.error("Error:", error);
-                loadingOverlay.style.display = "none";
-                showAlert("Network error. Please try again.", "danger");
-            }
-        });
 
-    function showAlert(message, type = "info") {
+                updateCartDisplay();
+
+                // Close all modals
+                bootstrap.Modal.getInstance(document.getElementById('quickOrderDetailsModal'))?.hide();
+                bootstrap.Modal.getInstance(document.getElementById('quickOrderModal'))?.hide();
+
+                // Wait a moment then show loading
+                setTimeout(() => {
+                    // Open cart modal to proceed with checkout
+                    const cartModal = bootstrap.Modal.getOrCreateInstance(document.getElementById('cartModal'));
+                    cartModal.show();
+
+                    loadingOverlay.style.display = 'none';
+
+                    // Scroll to checkout button
+                    setTimeout(() => {
+                        const checkoutBtn = document.getElementById('proceedToCheckout');
+                        checkoutBtn?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }, 500);
+                }, 1500);
+            } else if (data.shortfall !== undefined) {
+                loadingOverlay.style.display = 'none';
+                showAlert(`Minimum order amount is ₹${data.minimum_required}. Current: ₹${data.current_total.toFixed(2)}. Shortfall: ₹${data.shortfall.toFixed(2)}`, 'warning');
+            } else {
+                loadingOverlay.style.display = 'none';
+                showAlert(data.error || 'Error processing quick order', 'danger');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            loadingOverlay.style.display = 'none';
+            showAlert('Network error. Please try again.', 'danger');
+        }
+    });
+
+    function showAlert(message, type = 'info') {
         // Use existing toast/alert system if available, otherwise use alert
-        if (typeof showToast === "function") {
+        if (typeof showToast === 'function') {
             showToast(message, type);
         } else {
             alert(message);
@@ -4506,45 +4151,43 @@
 
     // =====================================================
 
-    const MIN_ORDER_AMOUNT = 2500;
+    const MIN_ORDER_AMOUNT = 3000;
 
     document.addEventListener("DOMContentLoaded", function () {
+
         const checkoutButton = document.getElementById("proceedToCheckout");
         const checkoutForm = document.getElementById("checkoutForm");
 
         // Update minimum order alert whenever cart changes
         window.updateMinOrderAlert = function () {
-            const currentTotal =
-                parseFloat(document.getElementById("modalSubtotal").innerText) || 0;
-            const minOrderAlert = document.getElementById("minOrderAlert");
-            const shortfallAmount = document.getElementById("shortfallAmount");
+            const currentTotal = parseFloat(document.getElementById('modalSubtotal').innerText) || 0;
+            const minOrderAlert = document.getElementById('minOrderAlert');
+            const shortfallAmount = document.getElementById('shortfallAmount');
 
             if (currentTotal < MIN_ORDER_AMOUNT) {
                 const shortfall = MIN_ORDER_AMOUNT - currentTotal;
                 shortfallAmount.innerText = shortfall.toFixed(2);
-                minOrderAlert.style.display = "block";
+                minOrderAlert.style.display = 'block';
                 checkoutButton.disabled = true;
-                checkoutButton.style.opacity = "0.6";
-                checkoutButton.style.cursor = "not-allowed";
+                checkoutButton.style.opacity = '0.6';
+                checkoutButton.style.cursor = 'not-allowed';
                 checkoutButton.title = `Add ₹${shortfall.toFixed(2)} more items to checkout`;
             } else {
-                minOrderAlert.style.display = "none";
+                minOrderAlert.style.display = 'none';
                 checkoutButton.disabled = false;
-                checkoutButton.style.opacity = "1";
-                checkoutButton.style.cursor = "pointer";
-                checkoutButton.title = "";
+                checkoutButton.style.opacity = '1';
+                checkoutButton.style.cursor = 'pointer';
+                checkoutButton.title = '';
             }
         };
 
         checkoutButton.addEventListener("click", async function () {
+
             // Validate minimum order amount first
-            const currentTotal =
-                parseFloat(document.getElementById("modalSubtotal").innerText) || 0;
+            const currentTotal = parseFloat(document.getElementById('modalSubtotal').innerText) || 0;
             if (currentTotal < MIN_ORDER_AMOUNT) {
                 const shortfall = MIN_ORDER_AMOUNT - currentTotal;
-                alert(
-                    `Minimum order amount is ₹${MIN_ORDER_AMOUNT}. Please add ₹${shortfall.toFixed(2)} more items.`,
-                );
+                alert(`Minimum order amount is ₹${MIN_ORDER_AMOUNT}. Please add ₹${shortfall.toFixed(2)} more items.`);
                 return;
             }
 
@@ -4563,45 +4206,42 @@
             checkoutButton.disabled = true;
             const originalButtonText = checkoutButton.innerText;
             checkoutButton.innerText = "Processing...";
-            const loadingOverlay = document.getElementById("diwaliLoadingOverlay");
-            loadingOverlay.style.display = "flex";
+            const loadingOverlay = document.getElementById('diwaliLoadingOverlay');
+            loadingOverlay.style.display = 'flex';
 
             // Gather customer data
             const customerData = {
-                fullName: document.getElementById("fullName").value,
-                email: document.getElementById("email").value,
-                phone: document.getElementById("phone").value,
-                deliveryAddress: document.getElementById("deliveryAddress").value,
-                updateProfile:
-                    document.getElementById("updateProfile")?.checked || false,
+                fullName: document.getElementById('fullName').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                deliveryAddress: document.getElementById('deliveryAddress').value,
+                updateProfile: document.getElementById('updateProfile')?.checked || false
             };
 
             // Prepare cart items for backend
             const cartItemsObj = {};
-            cart.forEach((item) => {
+            cart.forEach(item => {
                 cartItemsObj[item.id] = {
                     name: item.name,
                     quantity: item.quantity,
-                    price: item.amount,
+                    price: item.amount
                 };
             });
 
             try {
-                const csrfToken = document.querySelector(
-                    "[name=csrfmiddlewaretoken]",
-                ).value;
+                const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
-                const res = await fetch("/inventory/checkout/", {
-                    method: "POST",
+                const res = await fetch('/inventory/checkout/', {
+                    method: 'POST',
                     headers: {
-                        "Content-Type": "application/json",
-                        "X-CSRFToken": csrfToken,
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrfToken
                     },
                     body: JSON.stringify({
                         customerData,
-                        cartItems: cartItemsObj,
+                        cartItems: cartItemsObj
                     }),
-                    credentials: "same-origin",
+                    credentials: 'same-origin'
                 });
 
                 const data = await res.json();
@@ -4609,7 +4249,7 @@
                 if (data.success) {
                     // Keep loading animation for 2 seconds before showing success
                     setTimeout(() => {
-                        loadingOverlay.style.display = "none";
+                        loadingOverlay.style.display = 'none';
                         showDiwaliSuccess(data.orderSummary.total);
 
                         cart = [];
@@ -4617,28 +4257,29 @@
                     }, 1500);
                 } else {
                     // Hide loading and restore button
-                    loadingOverlay.style.display = "none";
+                    loadingOverlay.style.display = 'none';
                     checkoutButton.disabled = false;
                     checkoutButton.innerText = originalButtonText;
 
                     // Handle minimum order error gracefully
                     if (data.shortfall !== undefined) {
-                        alert(
-                            `❌ Minimum Order Requirement\n\nMinimum order amount: ₹${data.minimum_required}\nCurrent total: ₹${data.current_total.toFixed(2)}\nShortfall: ₹${data.shortfall.toFixed(2)}\n\nPlease add more items to your cart.`,
-                        );
+                        alert(`❌ Minimum Order Requirement\n\nMinimum order amount: ₹${data.minimum_required}\nCurrent total: ₹${data.current_total.toFixed(2)}\nShortfall: ₹${data.shortfall.toFixed(2)}\n\nPlease add more items to your cart.`);
                     } else {
                         alert(data.error || "Checkout failed.");
                     }
                 }
+
             } catch (err) {
                 console.error(err);
                 // Hide loading and restore button
-                loadingOverlay.style.display = "none";
+                loadingOverlay.style.display = 'none';
                 checkoutButton.disabled = false;
                 checkoutButton.innerText = originalButtonText;
                 alert("Network error. Try again.");
             }
+
         });
+
     });
 
     // =====================================================
@@ -4646,8 +4287,9 @@
     // =====================================================
     // ------------------- 🎇 Diwali Success Overlay -------------------
     function showDiwaliSuccess(total) {
-        const overlay = document.createElement("div");
-        overlay.className = "diwali-success-overlay active";
+
+        const overlay = document.createElement('div');
+        overlay.className = 'diwali-success-overlay active';
 
         overlay.innerHTML = `
         <div class="diwali-message-box">
@@ -4668,25 +4310,27 @@
         launchConfetti();
 
         setTimeout(() => {
-            overlay.classList.remove("active");
+            overlay.classList.remove('active');
             overlay.remove();
-            location.reload(); // 🔥 Refresh the page after animation
+            location.reload();   // 🔥 Refresh the page after animation
         }, 4000);
+
     }
+
 
     // ------------------- 🎊 Confetti Effect -------------------
     function launchConfetti() {
+
         for (let i = 0; i < 80; i++) {
-            const confetti = document.createElement("div");
-            confetti.style.position = "fixed";
-            confetti.style.top = "-10px";
+
+            const confetti = document.createElement('div');
+            confetti.style.position = 'fixed';
+            confetti.style.top = '-10px';
             confetti.style.left = `${Math.random() * 100}%`;
-            confetti.style.width = "8px";
-            confetti.style.height = "8px";
-            confetti.style.borderRadius = "50%";
-            confetti.style.background = ["#ffcc00", "#ff6b35", "#0d6efd", "#28a745"][
-                Math.floor(Math.random() * 4)
-            ];
+            confetti.style.width = '8px';
+            confetti.style.height = '8px';
+            confetti.style.borderRadius = '50%';
+            confetti.style.background = ['#ffcc00', '#ff6b35', '#0d6efd', '#28a745'][Math.floor(Math.random() * 4)];
             confetti.style.opacity = Math.random();
             confetti.style.zIndex = 9999;
 
@@ -4694,22 +4338,19 @@
 
             const duration = 3 + Math.random() * 3;
 
-            confetti.animate(
-                [
-                    { transform: `translateY(0) rotate(0deg)` },
-                    {
-                        transform: `translateY(${window.innerHeight}px) rotate(${360 * Math.random()}deg)`,
-                    },
-                ],
-                {
-                    duration: duration * 1000,
-                    easing: "ease-out",
-                    fill: "forwards",
-                },
-            );
+            confetti.animate([
+                { transform: `translateY(0) rotate(0deg)` },
+                { transform: `translateY(${window.innerHeight}px) rotate(${360 * Math.random()}deg)` }
+            ], {
+                duration: duration * 1000,
+                easing: 'ease-out',
+                fill: 'forwards'
+            });
 
             setTimeout(() => confetti.remove(), duration * 1000);
         }
     }
+
 </script>
+
 {% endblock %}
