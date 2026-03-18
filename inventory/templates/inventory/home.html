@@ -2098,6 +2098,49 @@
     </div>
 </div>
 
+<style>
+    .cart-item-total-price {
+        color: #ffffff !important;
+        font-weight: 900 !important;
+        font-size: 1.2rem !important;
+        background: linear-gradient(135deg, #ffcf7d 0%, #ff8c00 50%, #ff6b35 100%) !important;
+        padding: 0.6rem 1rem !important;
+        border-radius: 10px !important;
+        box-shadow: 0 8px 20px rgba(255, 140, 0, 0.7), 0 0 20px rgba(255, 215, 0, 0.5) !important;
+        text-shadow: 0 3px 6px rgba(0,0,0,0.6) !important;
+        letter-spacing: 0.5px !important;
+        display: inline-block !important;
+        border: 2px solid rgba(255, 255, 255, 0.3) !important;
+        white-space: nowrap !important;
+        max-width: 140px !important;
+        text-align: center !important;
+    }
+
+    /* Mobile inventory page prices */
+    .mobile-our {
+        color: #00ff66 !important;
+        font-weight: 800 !important;
+        font-size: 1.1rem !important;
+        text-shadow: 0 0 8px rgba(0, 255, 102, 0.6) !important;
+    }
+
+    .mobile-total {
+        background: linear-gradient(135deg, #ffcf7d 0%, #ff8c00 50%, #ff6b35 100%) !important;
+        color: #ffffff !important;
+        padding: 0.6rem 1rem !important;
+        border-radius: 8px !important;
+        font-weight: 800 !important;
+        font-size: 1rem !important;
+        box-shadow: 0 6px 16px rgba(255, 140, 0, 0.5) !important;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.5) !important;
+    }
+
+    .mobile-total .row-total-val {
+        color: #ffffff !important;
+        font-weight: 900 !important;
+    }
+</style>
+
 <!-- Cart Modal -->
 <div class="modal fade" id="cartModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
@@ -3746,6 +3789,13 @@
     // =====================================================
     let cart = [];
 
+    // Initialize totals to 0 on page load
+    document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById("cart-total").textContent = "0.00";
+        document.getElementById("modalSubtotal").textContent = "0.00";
+        document.querySelector(".cart-items-count").textContent = "(0 items)";
+    });
+
     // =====================================================
     // 🟠 UNIFIED updateCart() FOR BOTH DESKTOP + MOBILE
     // =====================================================
@@ -3755,6 +3805,12 @@
             row.querySelector(".name-col")?.textContent.trim() ||
             row.querySelector(".mobile-name")?.textContent.trim() ||
             "Unknown Item";
+
+        // Get product image
+        const imageElement = 
+            row.querySelector(".img-col img") ||
+            row.querySelector(".mobile-img img");
+        const image = imageElement ? imageElement.src : null;
 
         let existing = cart.find(i => i.id == productId);
 
@@ -3774,7 +3830,8 @@
                 quantity: qty,
                 mrp: parseFloat(mrp),
                 discount: parseFloat(mrp * 0.80),
-                amount: parseFloat(amount)
+                amount: parseFloat(amount),
+                image: image
             });
         }
 
@@ -3814,17 +3871,42 @@
         }
 
         cartItems.innerHTML = cart.map(item => `
-        <div class="cart-item d-flex justify-content-between align-items-center mb-3 p-3 border rounded">
-            <div>
-                <h6 class="mb-1">${item.name}</h6>
-                <small class="text-muted">
-                    MRP: ₹${item.mrp} | Discount: ₹${item.discount} | Amount: ₹${item.amount}
-                    <br>Qty: ${item.quantity}
-                </small>
+        <div class="cart-item" style="background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.04)); border: 1px solid rgba(255,255,255,0.2); border-radius: 16px; padding: 1.2rem; margin-bottom: 1rem; box-shadow: 0 8px 24px rgba(0,0,0,0.3);">
+            
+            <!-- Top row: Image + Info -->
+            <div style="display: flex; gap: 1.2rem; margin-bottom: 1rem;">
+                <!-- Product Image -->
+                ${item.image ? `<img src="${item.image}" alt="${item.name}" style="width: 90px; height: 90px; border-radius: 12px; object-fit: cover; box-shadow: 0 6px 16px rgba(0,0,0,0.5); flex-shrink: 0;">` : ''}
+                
+                <!-- Product Details -->
+                <div style="flex: 1; min-width: 0;">
+                    <h5 style="margin: 0 0 0.8rem 0; color: #fff; font-weight: 800; font-size: 1.1rem;">${item.name}</h5>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; font-size: 0.9rem;">
+                        <div><span style="color: #ffb3ff; font-weight: 600;">MRP:</span> <span style="color: #fff; font-weight: 700;">₹${item.mrp.toFixed(2)}</span></div>
+                        <div><span style="color: #ff5252; font-weight: 600;">Discount:</span> <span style="color: #fff; font-weight: 700;">₹${item.discount.toFixed(2)}</span></div>
+                        <div><span style="color: #00ff66; font-weight: 600;">Amount:</span> <span style="color: #00ff66; font-weight: 800;">₹${item.amount.toFixed(2)}</span></div>
+                        <div><span style="color: #ffb347; font-weight: 600;">Unit Price:</span> <span style="color: #fff; font-weight: 700;">₹${item.amount.toFixed(2)}</span></div>
+                    </div>
+                </div>
             </div>
-            <div class="d-flex align-items-center gap-3">
-                <span class="fw-bold">₹${(item.amount * item.quantity).toFixed(2)}</span>
-                <button class="btn btn-sm btn-outline-danger remove-item" data-id="${item.id}">
+            
+            <!-- Bottom row: Qty Controls + Total + Remove -->
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 1rem; border-top: 1px solid rgba(255,255,255,0.15); padding-top: 1rem;">
+                
+                <!-- Quantity Controls -->
+                <div style="display: flex; align-items: center; gap: 0.6rem;">
+                    <span style="color: #ffb347; font-weight: 600; min-width: 35px;">Qty:</span>
+                    <button class="qty-decrease" data-id="${item.id}" style="background: #ff5252; color: white; border: none; border-radius: 4px; width: 28px; height: 28px; cursor: pointer; font-weight: 700; font-size: 1.1rem; display: flex; align-items: center; justify-content: center;">−</button>
+                    <input type="number" class="cart-qty-input" data-id="${item.id}" value="${item.quantity}" min="1" style="width: 45px; text-align: center; border: 1px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.08); color: #fff; border-radius: 4px; padding: 0.4rem; font-weight: 600;">
+                    <button class="qty-increase" data-id="${item.id}" style="background: #00ff66; color: #000; border: none; border-radius: 4px; width: 28px; height: 28px; cursor: pointer; font-weight: 700; font-size: 1.1rem; display: flex; align-items: center; justify-content: center;">+</button>
+                </div>
+                
+                <!-- Total Price -->
+                <div class="cart-item-total-price" style="margin: 0;">₹${(item.amount * item.quantity).toFixed(2)}</div>
+                
+                <!-- Remove Button -->
+                <button class="remove-item" data-id="${item.id}" style="background: #ff5252; color: white; border: none; border-radius: 8px; padding: 0.6rem 1rem; cursor: pointer; font-size: 0.85rem; font-weight: 600; white-space: nowrap; display: flex; align-items: center; gap: 0.4rem;">
                     <i class="bi bi-trash"></i>
                 </button>
             </div>
@@ -3845,6 +3927,43 @@
                 if (mob) mob.value = 0;
 
                 updateCartDisplay();
+            });
+        });
+
+        // Handle quantity decrease
+        document.querySelectorAll(".qty-decrease").forEach(btn => {
+            btn.addEventListener("click", function () {
+                const id = parseInt(btn.dataset.id);
+                const item = cart.find(i => i.id == id);
+                if (item && item.quantity > 1) {
+                    item.quantity -= 1;
+                    updateCartDisplay();
+                }
+            });
+        });
+
+        // Handle quantity increase
+        document.querySelectorAll(".qty-increase").forEach(btn => {
+            btn.addEventListener("click", function () {
+                const id = parseInt(btn.dataset.id);
+                const item = cart.find(i => i.id == id);
+                if (item) {
+                    item.quantity += 1;
+                    updateCartDisplay();
+                }
+            });
+        });
+
+        // Handle quantity input change
+        document.querySelectorAll(".cart-qty-input").forEach(input => {
+            input.addEventListener("change", function () {
+                const id = parseInt(input.dataset.id);
+                const newQty = parseInt(input.value) || 1;
+                const item = cart.find(i => i.id == id);
+                if (item && newQty > 0) {
+                    item.quantity = newQty;
+                    updateCartDisplay();
+                }
             });
         });
     }
