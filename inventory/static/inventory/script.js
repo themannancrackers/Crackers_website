@@ -57,10 +57,15 @@ document.addEventListener("DOMContentLoaded", function () {
       const simulatedMrp = (item.price * 1.2).toFixed(2);
       const discount = (simulatedMrp - item.price).toFixed(2);
 
-      const itemHtml = `
-                <div class="cart-item modern-cart-item" data-id="${id}">
+        const itemHtml = `
+                <div class="cart-item modern-cart-item" data-id="${id}" style="position: relative;">
+                    <!-- Remove Button -->
+                    <button class="btn-trash remove-item" data-id="${id}" title="Remove item" style="position: absolute; top: 10px; right: 10px; z-index: 10;">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+
                     <!-- Row 1: Image + Product Name -->
-                    <div class="cart-row-1">
+                    <div class="cart-row-1" style="padding-right: 2.5rem;">
                         <div class="cart-item-image">
                             <i class="fa-solid fa-box" style="font-size: 2.5rem; color: #0d6efd;"></i>
                         </div>
@@ -83,16 +88,13 @@ document.addEventListener("DOMContentLoaded", function () {
                         </div>
                     </div>
                     
-                    <!-- Row 3: Qty Controls, Delete, Total -->
+                    <!-- Row 3: Qty Controls, Total -->
                     <div class="cart-row-3">
                         <div class="qty-section">
                             <button class="qty-btn decrease-cart-qty" data-id="${id}">−</button>
                             <input type="number" class="qty-input cart-qty-input" value="${item.quantity}" min="1" data-id="${id}" readonly>
                             <button class="qty-btn increase-cart-qty" data-id="${id}">+</button>
                         </div>
-                        <button class="btn-trash remove-item" data-id="${id}" title="Remove item">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
                         <div class="total-box">₹${itemTotal.toFixed(2)}</div>
                     </div>
                 </div>
