@@ -54,65 +54,52 @@ document.addEventListener("DOMContentLoaded", function () {
     cartItemsContainer.innerHTML = "";
     Object.entries(cartItems).forEach(([id, item]) => {
       const itemTotal = item.price * item.quantity;
-      // Calculate a simulated MRP and discount for display (20% markup as MRP)
       const simulatedMrp = (item.price * 1.2).toFixed(2);
       const discount = (simulatedMrp - item.price).toFixed(2);
       
       const itemHtml = `
                 <div class="cart-item modern-cart-item" data-id="${id}">
-                    <!-- Top Row: Image + Quantity Controls -->
-                    <div class="cart-item-top-row">
+                    <!-- Row 1: Image + Product Name -->
+                    <div class="cart-row-1">
                         <div class="cart-item-image">
                             <i class="fa-solid fa-box" style="font-size: 2.5rem; color: #0d6efd;"></i>
                         </div>
-                        
-                        <!-- Quantity Controls (moved below image) -->
-                        <div class="quantity-control-compact">
-                            <span class="quantity-label">Qty:</span>
-                            <button class="qty-btn decrease-cart-qty" data-id="${id}" style="background: #dc3545;">
-                                <i class="fa-solid fa-minus"></i>
-                            </button>
-                            <input type="number" class="qty-input cart-qty-input" value="${item.quantity}" min="1" data-id="${id}" readonly>
-                            <button class="qty-btn increase-cart-qty" data-id="${id}" style="background: #28a745;">
-                                <i class="fa-solid fa-plus"></i>
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <!-- Middle Row: Product Details & Pricing -->
-                    <div class="cart-item-middle-row">
                         <h5 class="cart-item-title">${item.name}</h5>
-                        
-                        <!-- Pricing Info -->
-                        <div class="pricing-section">
-                            <div class="pricing-row">
-                                <span class="pricing-label">MRP:</span>
-                                <span class="pricing-value mrp-value" style="color: #dc3545;">₹${simulatedMrp}</span>
-                                <span class="pricing-label" style="margin-left: 15px;">Discount:</span>
-                                <span class="pricing-value discount-value">₹${discount}</span>
-                            </div>
-                            <div class="pricing-row">
-                                <span class="pricing-label">Amount:</span>
-                                <span class="pricing-value amount-value" style="color: #28a745; font-weight: 600;">₹${item.price.toFixed(2)}</span>
-                                <span class="pricing-label" style="margin-left: 15px;">Unit Price:</span>
-                                <span class="pricing-value unit-price">₹${item.price.toFixed(2)}</span>
-                            </div>
+                    </div>
+                    
+                    <!-- Row 2: MRP, Discount, Amount -->
+                    <div class="cart-row-2">
+                        <div class="price-detail">
+                            <span class="label">MRP:</span>
+                            <span class="value mrp">₹${simulatedMrp}</span>
+                        </div>
+                        <div class="price-detail">
+                            <span class="label">Discount:</span>
+                            <span class="value discount">₹${discount}</span>
+                        </div>
+                        <div class="price-detail">
+                            <span class="label">Amount:</span>
+                            <span class="value amount">₹${item.price.toFixed(2)}</span>
                         </div>
                     </div>
                     
-                    <!-- Bottom Row: Total Price + Delete Button -->
-                    <div class="cart-item-bottom-row">
-                        <span class="total-amount-badge">₹${itemTotal.toFixed(2)}</span>
-                        <button class="btn-remove-item remove-item" data-id="${id}" title="Remove item">
+                    <!-- Row 3: Qty Controls, Delete, Total -->
+                    <div class="cart-row-3">
+                        <div class="qty-section">
+                            <button class="qty-btn decrease-cart-qty" data-id="${id}">−</button>
+                            <input type="number" class="qty-input cart-qty-input" value="${item.quantity}" min="1" data-id="${id}" readonly>
+                            <button class="qty-btn increase-cart-qty" data-id="${id}">+</button>
+                        </div>
+                        <button class="btn-trash remove-item" data-id="${id}" title="Remove item">
                             <i class="fa-solid fa-trash"></i>
                         </button>
+                        <div class="total-box">₹${itemTotal.toFixed(2)}</div>
                     </div>
                 </div>
             `;
       cartItemsContainer.insertAdjacentHTML("beforeend", itemHtml);
     });
     
-    // Add event listeners for quantity controls
     attachCartQuantityListeners();
   }
   
