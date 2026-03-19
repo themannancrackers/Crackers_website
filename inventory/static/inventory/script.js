@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const itemTotal = item.price * item.quantity;
       const simulatedMrp = (item.price * 1.2).toFixed(2);
       const discount = (simulatedMrp - item.price).toFixed(2);
-      
+
       const itemHtml = `
                 <div class="cart-item modern-cart-item" data-id="${id}">
                     <!-- Row 1: Image + Product Name -->
@@ -99,14 +99,14 @@ document.addEventListener("DOMContentLoaded", function () {
             `;
       cartItemsContainer.insertAdjacentHTML("beforeend", itemHtml);
     });
-    
+
     attachCartQuantityListeners();
   }
-  
+
   function attachCartQuantityListeners() {
     // Decrease quantity
     document.querySelectorAll(".decrease-cart-qty").forEach(btn => {
-      btn.addEventListener("click", function(e) {
+      btn.addEventListener("click", function (e) {
         e.preventDefault();
         const id = this.dataset.id;
         if (cartItems[id] && cartItems[id].quantity > 1) {
@@ -117,10 +117,10 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       });
     });
-    
+
     // Increase quantity
     document.querySelectorAll(".increase-cart-qty").forEach(btn => {
-      btn.addEventListener("click", function(e) {
+      btn.addEventListener("click", function (e) {
         e.preventDefault();
         const id = this.dataset.id;
         if (cartItems[id]) {
@@ -149,7 +149,7 @@ document.addEventListener("DOMContentLoaded", function () {
       (sum, item) => sum + item.price * item.quantity,
       0,
     );
-    
+
     // Sync with window.cart for checkout.js
     window.cart = Object.entries(cartItems).map(([id, item]) => ({
       id: id,
@@ -157,7 +157,7 @@ document.addEventListener("DOMContentLoaded", function () {
       price: item.price,
       quantity: item.quantity
     }));
-    
+
     updateAllCartTotals(totalCartAmount);
   }
 

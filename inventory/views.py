@@ -90,208 +90,6 @@ def contact(request):
 def customer_orders(request):
     return render(request, "inventory/customer_orders.html")
 
-from django.views.decorators.http import require_http_methods
-
-@require_http_methods(["POST"])
-@login_required(login_url='account_login')
-def update_stock(request):
-    if request.method == 'POST':
-        try:
-            data = json.loads(request.body)
-            product_id = data.get('product_id')
-            quantity = int(data.get('quantity', 0))
-            
-            product = Product.objects.get(id=product_id)
-            if product.stock_quantity >= quantity:
-                product.stock_quantity -= quantity
-                product.save()
-                return JsonResponse({
-                    'success': True,
-                    'new_stock': product.stock_quantity,
-                    'is_low_stock': product.is_low_stock
-                })
-            return JsonResponse({
-                'success': False,
-                'error': 'Not enough stock available'
-            })
-        except (Product.DoesNotExist, ValueError, json.JSONDecodeError):
-            return JsonResponse({
-                'success': False,
-                'error': 'Invalid request'
-            })
-    return JsonResponse({'success': False, 'error': 'Invalid method'})
-
-from django.db import transaction
-
-@require_http_methods(["GET", "POST"])
-@login_required(login_url='account_login')
-def checkout(request):
-    if request.method == 'GET':
-        return JsonResponse({
-            'success': False,
-            'error': 'Please use POST method for checkout'
-        })
-    
-    if request.method == 'POST':
-        try:
-            data = json.loads(request.body)
-            customer_data = data.get('customerData', {})
-            cart_items = data.get('cartItems', {})
-            
-            # Validate customer data
-            required_fields = ['fullName', 'email', 'phone', 'deliveryAddress']
-            if not all(field in customer_data and customer_data[field] for field in required_fields):
-                return utils.handle_api_error(
-                    'validation',
-                    'Please fill in all required fields',
-                    400
-                )
-
-            # Update user profile if requested
-            try:
-                if request.user.is_authenticated and customer_data.get('updateProfile'):
-                    User = get_user_model()
-                    user = User.objects.get(id=request.user.id)
-                    
-                    # Split full name into first_name and last_name
-                    full_name = customer_data['fullName'].split(maxsplit=1)
-                    user.first_name = full_name[0]
-                    user.last_name = full_name[1] if len(full_name) > 1 else ''
-                    
-                    user.phone_number = customer_data['phone']
-                    user.address = customer_data['deliveryAddress']
-                    # Don't update email as it might require verification
-                    user.save()
-            except Exception as profile_error:
-                # Log but don't fail checkout
-                import logging
-                logger = logging.getLogger(__name__)
-                logger.warning(f"Profile update failed: {str(profile_error)}")
-            
-            # Validate cart is not empty
-            if not cart_items:
-                return utils.handle_api_error(
-                    'validation',
-                    'Your cart is empty. Please add items before checking out.',
-                    400
-                )
-
-            # Calculate total amount first
-            total_amount = sum(float(item['price']) * item['quantity'] for item in cart_items.values())
-            
-            # Validate minimum order amount (2500)
-            MIN_ORDER_AMOUNT = 2500
-            if total_amount < MIN_ORDER_AMOUNT:
-                return utils.handle_api_error(
-                    'minimum_order',
-                    f'Minimum order amount is ₹{MIN_ORDER_AMOUNT}. Current total: ₹{total_amount:.2f}',
-                    400,
-                    {
-                        'minimum_required': MIN_ORDER_AMOUNT,
-                        'current_total': total_amount,
-                        'shortfall': MIN_ORDER_AMOUNT - total_amount
-                    }
-                )
-
-            # Start database transaction
-            with transaction.atomic():
-                # Check stock availability first
-                for product_id, item in cart_items.items():
-                    try:
-                        product = Product.objects.get(id=product_id)
-                        if product.stock_quantity < item['quantity']:
-                            return utils.handle_api_error(
-                                'stock',
-                                f'Insufficient stock for {product.name}. Available: {product.stock_quantity}',
-                                400
-                            )
-                    except Product.DoesNotExist:
-                        return utils.handle_api_error(
-                            'not_found',
-                            f'Product with ID {product_id} not found',
-                            404
-                        )
-                
-                # Create the order
-                order = Order.objects.create(
-                    user=request.user if request.user.is_authenticated else None,
-                    full_name=customer_data['fullName'],
-                    address=customer_data['deliveryAddress'],
-                    phone=customer_data['phone'],
-                    email=customer_data['email'],
-                    total_amount=total_amount,
-                    status='pending'
-                )
-
-                # Create order items
-                for product_id, item in cart_items.items():
-                    product = Product.objects.get(id=product_id)
-                    OrderItem.objects.create(
-                        order=order,
-                        product=product,
-                        quantity=item['quantity'],
-                        price=item['price']
-                    )
-
-                # Update stock quantities
-                low_stock_products = []
-                for product_id, item in cart_items.items():
-                    product = Product.objects.get(id=product_id)
-                    item_quantity = item.get('quantity', 0)
-                    if item_quantity > 0:
-                        product.stock_quantity -= item_quantity
-                        product.save()
-                        
-                        # Collect low stock products for batch alert
-                        if product.is_low_stock:
-                            low_stock_products.append(product)
-                
-                # Send consolidated batch alert for all low stock items
-                if low_stock_products:
-                    transaction.on_commit(lambda: utils.send_batch_stock_alerts(low_stock_products))
-
-                order_summary = {
-                    'customer': customer_data,
-                    'items': cart_items,
-                    'total': total_amount,
-                    'order_id': order.id
-                }
-
-                # Queue confirmation email to be sent after successful transaction
-                transaction.on_commit(lambda: utils.send_order_confirmation({
-                    'customerData': customer_data,
-                    'cartItems': cart_items,
-                    'orderId': order.id
-                }))
-
-            return JsonResponse({
-                'success': True,
-                'message': 'Order placed successfully!',
-                'orderSummary': order_summary
-            })
-            
-        except json.JSONDecodeError:
-            return utils.handle_api_error(
-                'validation',
-                'Invalid request data format',
-                400
-            )
-        except Exception as e:
-            import logging
-            logger = logging.getLogger(__name__)
-            logger.error(f"Checkout error: {str(e)}", exc_info=True)
-            return utils.handle_api_error(
-                'server',
-                'An unexpected error occurred during checkout. Please try again later.',
-                500
-            )
-            
-    return utils.handle_api_error(
-        'validation',
-        'Invalid request method',
-        405
-    )
-
 @admin_required
 @login_required(login_url='account_login')
 @admin_required
@@ -1012,3 +810,219 @@ def quick_order_checkout(request, list_id):
             'Error processing quick order',
             500
         )
+
+
+# =====================================================
+# 🛒 SHOPPING CART CHECKOUT
+# =====================================================
+
+@require_http_methods(['POST'])
+@login_required(login_url='account_login')
+def update_stock(request):
+    """
+    Validate stock availability before checkout.
+    Frontend sends product_id and quantity to verify availability.
+    """
+    try:
+        data = json.loads(request.body)
+        product_id = data.get('product_id')
+        quantity = int(data.get('quantity', 0))
+
+        if not product_id or quantity <= 0:
+            return JsonResponse({
+                'success': False,
+                'error': 'Invalid product or quantity'
+            }, status=400)
+
+        product = Product.objects.get(id=product_id)
+
+        if product.stock_quantity < quantity:
+            return JsonResponse({
+                'success': False,
+                'error': f'Only {product.stock_quantity} items available',
+                'available': product.stock_quantity
+            }, status=400)
+
+        return JsonResponse({
+            'success': True,
+            'available': product.stock_quantity,
+            'price': str(product.price)
+        })
+
+    except Product.DoesNotExist:
+        return JsonResponse({
+            'success': False,
+            'error': 'Product not found'
+        }, status=404)
+    except json.JSONDecodeError:
+        return JsonResponse({
+            'success': False,
+            'error': 'Invalid JSON data'
+        }, status=400)
+    except Exception as e:
+        import logging
+        logger = logging.getLogger(__name__)
+        logger.error(f"Stock update error: {str(e)}")
+        return JsonResponse({
+            'success': False,
+            'error': 'Error checking stock'
+        }, status=500)
+
+
+@require_http_methods(['POST'])
+@login_required(login_url='account_login')
+def checkout(request):
+    """
+    Process cart checkout and create order with order items.
+    Validates minimum order amount (₹2500), stock availability, and creates transaction.
+    """
+    try:
+        data = json.loads(request.body)
+        items_data = data.get('items', [])
+        phone = data.get('phone', '').strip()
+        address = data.get('address', '').strip()
+        
+        MIN_ORDER = 2500
+
+        # Validation
+        if not items_data:
+            return JsonResponse({
+                'success': False,
+                'error': 'Cart is empty'
+            }, status=400)
+
+        if not phone or len(phone) < 10:
+            return JsonResponse({
+                'success': False,
+                'error': 'Valid phone number required (10+ digits)'
+            }, status=400)
+
+        if not address or len(address) < 10:
+            return JsonResponse({
+                'success': False,
+                'error': 'Valid delivery address required'
+            }, status=400)
+
+        # Build order items and validate stock
+        order_items_to_create = []
+        total_amount = 0
+
+        for item in items_data:
+            try:
+                product = Product.objects.get(id=item['product_id'])
+                qty = int(item['quantity'])
+                selling_price = float(item['price'])
+
+                if qty <= 0:
+                    return JsonResponse({
+                        'success': False,
+                        'error': f'{product.name}: Quantity must be greater than 0'
+                    }, status=400)
+
+                if product.stock_quantity < qty:
+                    return JsonResponse({
+                        'success': False,
+                        'error': f'{product.name}: Only {product.stock_quantity} items available'
+                    }, status=400)
+
+                # Calculate subtotal
+                subtotal = selling_price * qty
+                total_amount += subtotal
+
+                order_items_to_create.append({
+                    'product': product,
+                    'quantity': qty,
+                    'selling_price': selling_price
+                })
+
+            except Product.DoesNotExist:
+                return JsonResponse({
+                    'success': False,
+                    'error': f'Product not found: {item.get("name", "Unknown")}'
+                }, status=404)
+            except (ValueError, KeyError) as e:
+                return JsonResponse({
+                    'success': False,
+                    'error': f'Invalid item data: {str(e)}'
+                }, status=400)
+
+        # Validate minimum order amount
+        if total_amount < MIN_ORDER:
+            return JsonResponse({
+                'success': False,
+                'error': f'Minimum order value is ₹{MIN_ORDER}. Current total: ₹{total_amount:.2f}'
+            }, status=400)
+
+        # Create order with transaction (atomic operation)
+        from django.db import transaction
+
+        try:
+            with transaction.atomic():
+                # Create order
+                order = Order.objects.create(
+                    user=request.user,
+                    full_name=request.user.get_full_name() or request.user.username,
+                    email=request.user.email,
+                    phone=phone,
+                    address=address,
+                    total_amount=total_amount,
+                    status='Pending'
+                )
+
+                # Create order items and decrement stock
+                for item_info in order_items_to_create:
+                    product = item_info['product']
+                    qty = item_info['quantity']
+                    price = item_info['selling_price']
+
+                    # Create order item
+                    OrderItem.objects.create(
+                        order=order,
+                        product=product,
+                        quantity=qty,
+                        price=price
+                    )
+
+                    # Decrement stock
+                    product.stock_quantity -= qty
+                    product.save(update_fields=['stock_quantity'])
+
+                    # Check for low stock alert
+                    if product.stock_quantity < 10:
+                        from whatsapp_notifications.signals import send_low_stock_alert
+                        send_low_stock_alert(product)
+
+            # Send order confirmation email
+            transaction.on_commit(lambda: utils.send_order_confirmation(order))
+
+            return JsonResponse({
+                'success': True,
+                'message': 'Order created successfully',
+                'order_id': order.id,
+                'order_number': f'ORD-{order.id:06d}',
+                'total': f'₹{total_amount:.2f}',
+                'redirect_url': f'/inventory/order-details/{order.id}/'
+            }, status=201)
+
+        except Exception as e:
+            import logging
+            logger = logging.getLogger(__name__)
+            logger.error(f"Checkout transaction error: {str(e)}")
+            return JsonResponse({
+                'success': False,
+                'error': 'Error creating order. Please try again.'
+            }, status=500)
+
+    except json.JSONDecodeError:
+        return JsonResponse({
+            'success': False,
+            'error': 'Invalid JSON data'
+        }, status=400)
+    except Exception as e:
+        import logging
+        logger = logging.getLogger(__name__)
+        logger.error(f"Checkout error: {str(e)}")
+        return JsonResponse({
+            'success': False,
+            'error': 'Error processing checkout'
+        }, status=500)
