@@ -12,6 +12,9 @@ document.addEventListener("DOMContentLoaded", function () {
   // Minimum order amount constant
   const MIN_ORDER_AMOUNT = 2500;
 
+  // Maintain window.cart for checkout.js compatibility
+  window.cart = [];
+
   /* -------------------- 🧮 CORE CART UTILITIES -------------------- */
   function updateAllCartTotals(amount) {
     cartTotalElements.forEach((element) => {
@@ -51,23 +54,95 @@ document.addEventListener("DOMContentLoaded", function () {
     cartItemsContainer.innerHTML = "";
     Object.entries(cartItems).forEach(([id, item]) => {
       const itemTotal = item.price * item.quantity;
+      // Calculate a simulated MRP and discount for display (20% markup as MRP)
+      const simulatedMrp = (item.price * 1.2).toFixed(2);
+      const discount = (simulatedMrp - item.price).toFixed(2);
+      
       const itemHtml = `
-                <div class="cart-item" data-id="${id}">
-                    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center text-body">
-                        <div class="mb-2 mb-sm-0">
-                            <h5 class="mb-1 text-wrap text-break" style="max-width: 100%;">${item.name}</h5>
-                            <p class="mb-0 text-muted">Quantity: ${item.quantity}</p>
+                <div class="cart-item modern-cart-item" data-id="${id}">
+                    <div class="cart-item-container">
+                        <!-- Product Image -->
+                        <div class="cart-item-image">
+                            <i class="fa-solid fa-box" style="font-size: 2.5rem; color: #0d6efd;"></i>
                         </div>
-                        <div class="text-sm-end text-start">
-                            <div class="cart-item-price fw-bold text-primary">₹${itemTotal.toFixed(2)}</div>
-                            <button class="btn btn-sm btn-danger remove-item mt-2 w-100 w-sm-auto">
-                                <i class="bi bi-trash"></i> Remove
+                        
+                        <!-- Product Details -->
+                        <div class="cart-item-details">
+                            <h5 class="cart-item-title">${item.name}</h5>
+                            
+                            <!-- Pricing Info -->
+                            <div class="pricing-section">
+                                <div class="pricing-row">
+                                    <span class="pricing-label">MRP:</span>
+                                    <span class="pricing-value mrp-value" style="color: #dc3545;">₹${simulatedMrp}</span>
+                                    <span class="pricing-label" style="margin-left: 15px;">Discount:</span>
+                                    <span class="pricing-value discount-value">₹${discount}</span>
+                                </div>
+                                <div class="pricing-row">
+                                    <span class="pricing-label">Amount:</span>
+                                    <span class="pricing-value amount-value" style="color: #28a745; font-weight: 600;">₹${item.price.toFixed(2)}</span>
+                                    <span class="pricing-label" style="margin-left: 15px;">Unit Price:</span>
+                                    <span class="pricing-value unit-price">₹${item.price.toFixed(2)}</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Quantity Controls -->
+                            <div class="quantity-control-section">
+                                <span class="quantity-label">Qty:</span>
+                                <button class="qty-btn decrease-cart-qty" data-id="${id}" style="background: #dc3545;">
+                                    <i class="fa-solid fa-minus"></i>
+                                </button>
+                                <input type="number" class="qty-input cart-qty-input" value="${item.quantity}" min="1" data-id="${id}" readonly>
+                                <button class="qty-btn increase-cart-qty" data-id="${id}" style="background: #28a745;">
+                                    <i class="fa-solid fa-plus"></i>
+                                </button>
+                                <span class="total-amount-badge">₹${itemTotal.toFixed(2)}</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Remove Button -->
+                        <div class="cart-item-actions">
+                            <button class="btn-remove-item remove-item" data-id="${id}" title="Remove item">
+                                <i class="fa-solid fa-trash"></i>
                             </button>
                         </div>
                     </div>
                 </div>
             `;
       cartItemsContainer.insertAdjacentHTML("beforeend", itemHtml);
+    });
+    
+    // Add event listeners for quantity controls
+    attachCartQuantityListeners();
+  }
+  
+  function attachCartQuantityListeners() {
+    // Decrease quantity
+    document.querySelectorAll(".decrease-cart-qty").forEach(btn => {
+      btn.addEventListener("click", function(e) {
+        e.preventDefault();
+        const id = this.dataset.id;
+        if (cartItems[id] && cartItems[id].quantity > 1) {
+          cartItems[id].quantity--;
+          updateCartTotal();
+          updateCartCount();
+          renderCartItems();
+        }
+      });
+    });
+    
+    // Increase quantity
+    document.querySelectorAll(".increase-cart-qty").forEach(btn => {
+      btn.addEventListener("click", function(e) {
+        e.preventDefault();
+        const id = this.dataset.id;
+        if (cartItems[id]) {
+          cartItems[id].quantity++;
+          updateCartTotal();
+          updateCartCount();
+          renderCartItems();
+        }
+      });
     });
   }
 
@@ -87,6 +162,15 @@ document.addEventListener("DOMContentLoaded", function () {
       (sum, item) => sum + item.price * item.quantity,
       0,
     );
+    
+    // Sync with window.cart for checkout.js
+    window.cart = Object.entries(cartItems).map(([id, item]) => ({
+      id: id,
+      name: item.name,
+      price: item.price,
+      quantity: item.quantity
+    }));
+    
     updateAllCartTotals(totalCartAmount);
   }
 
@@ -193,15 +277,19 @@ document.addEventListener("DOMContentLoaded", function () {
   cartItemsContainer.addEventListener("click", function (e) {
     if (
       e.target.classList.contains("remove-item") ||
-      e.target.closest(".remove-item")
+      e.target.classList.contains("btn-remove-item") ||
+      e.target.closest(".remove-item") ||
+      e.target.closest(".btn-remove-item")
     ) {
-      const cartItem = e.target.closest(".cart-item");
-      const itemId = cartItem.dataset.id;
-      delete cartItems[itemId];
-      updateCartTotal();
-      updateCartCount();
-      renderCartItems();
-      showToast("Item removed from cart", "warning");
+      const cartItem = e.target.closest(".cart-item") || e.target.closest(".modern-cart-item");
+      const itemId = cartItem?.dataset.id;
+      if (itemId && cartItems[itemId]) {
+        delete cartItems[itemId];
+        updateCartTotal();
+        updateCartCount();
+        renderCartItems();
+        showToast("Item removed from cart", "warning");
+      }
     }
   });
 
