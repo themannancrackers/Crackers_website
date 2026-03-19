@@ -2233,6 +2233,22 @@
     max-width: 1040px;
 }
 
+/* Mobile width adjustments ONLY */
+@media (max-width: 575px) {
+    #cartModal .modal-dialog {
+        max-width: 95vw;
+        width: 95vw;
+        margin: 0.5rem auto;
+    }
+}
+
+@media (max-width: 768px) {
+    #cartModal .modal-dialog {
+        max-width: 90vw;
+        width: 90vw;
+    }
+}
+
 /* Glassy main container */
 #cartModal .modal-content {
     border-radius: 22px;
@@ -2311,7 +2327,7 @@
     overflow: hidden;
 }
 
-/* Desktop and up: stack everything like mobile (cart items → summary → form) */
+/* Desktop and up: keep max-width */
 @media (min-width: 992px) {
     #cartModal .modal-dialog {
         max-width: 1100px;
@@ -2487,10 +2503,6 @@
 }
  /* Stack columns on mobile */
 @media (max-width: 767.98px) {
-    #cartModal .modal-dialog {
-        margin: 0.75rem;
-    }
-
     #cartModal .modal-body {
         grid-template-columns: minmax(0, 1fr);
         gap: 1.2rem;
@@ -2515,33 +2527,6 @@
     }
 }
 /* Larger screens: give more width to cart side */
-@media (min-width: 992px) {
-    #cartModal .modal-dialog {
-        max-width: 1100px;
-    }
-
-    #cartModal .modal-body {
-        padding: 1.4rem 1.8rem 1.2rem;
-        grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); /* wider left, narrower right */
-        gap: 1.75rem;
-    }
-
-    /* Cart container: slightly softer */
-    #cartItems {
-        padding: 1rem 1.2rem 1rem;
-        box-shadow:
-            0 16px 40px rgba(0, 0, 0, 0.55),
-            0 0 0 1px rgba(255, 255, 255, 0.04);
-    }
-
-    /* Form container: a bit tighter to look compact */
-    #checkoutForm {
-        padding: 0.9rem 1rem 1.1rem;
-        box-shadow:
-            0 16px 36px rgba(0, 0, 0, 0.5),
-            0 0 0 1px rgba(255, 255, 255, 0.04);
-    }
-}
 
 /* ==================== MODERN CART ITEM STYLES ==================== */
 
@@ -4185,7 +4170,6 @@
                 
                 <!-- Quantity Controls -->
                 <div style="display: flex; align-items: center; gap: 0.6rem;">
-                    <span style="color: #ffb347; font-weight: 600; min-width: 35px;">Qty:</span>
                     <button class="qty-decrease" data-id="${item.id}" style="background: #ff5252; color: white; border: none; border-radius: 4px; width: 28px; height: 28px; cursor: pointer; font-weight: 700; font-size: 1.1rem; display: flex; align-items: center; justify-content: center;">−</button>
                     <input type="number" class="cart-qty-input" data-id="${item.id}" value="${item.quantity}" min="1" style="width: 45px; text-align: center; border: 1px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.08); color: #fff; border-radius: 4px; padding: 0.4rem; font-weight: 600;">
                     <button class="qty-increase" data-id="${item.id}" style="background: #00ff66; color: #000; border: none; border-radius: 4px; width: 28px; height: 28px; cursor: pointer; font-weight: 700; font-size: 1.1rem; display: flex; align-items: center; justify-content: center;">+</button>
