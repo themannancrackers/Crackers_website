@@ -60,52 +60,52 @@ document.addEventListener("DOMContentLoaded", function () {
       
       const itemHtml = `
                 <div class="cart-item modern-cart-item" data-id="${id}">
-                    <div class="cart-item-container">
-                        <!-- Product Image -->
+                    <!-- Top Row: Image + Quantity Controls -->
+                    <div class="cart-item-top-row">
                         <div class="cart-item-image">
                             <i class="fa-solid fa-box" style="font-size: 2.5rem; color: #0d6efd;"></i>
                         </div>
                         
-                        <!-- Product Details -->
-                        <div class="cart-item-details">
-                            <h5 class="cart-item-title">${item.name}</h5>
-                            
-                            <!-- Pricing Info -->
-                            <div class="pricing-section">
-                                <div class="pricing-row">
-                                    <span class="pricing-label">MRP:</span>
-                                    <span class="pricing-value mrp-value" style="color: #dc3545;">₹${simulatedMrp}</span>
-                                    <span class="pricing-label" style="margin-left: 15px;">Discount:</span>
-                                    <span class="pricing-value discount-value">₹${discount}</span>
-                                </div>
-                                <div class="pricing-row">
-                                    <span class="pricing-label">Amount:</span>
-                                    <span class="pricing-value amount-value" style="color: #28a745; font-weight: 600;">₹${item.price.toFixed(2)}</span>
-                                    <span class="pricing-label" style="margin-left: 15px;">Unit Price:</span>
-                                    <span class="pricing-value unit-price">₹${item.price.toFixed(2)}</span>
-                                </div>
-                            </div>
-                            
-                            <!-- Quantity Controls -->
-                            <div class="quantity-control-section">
-                                <span class="quantity-label">Qty:</span>
-                                <button class="qty-btn decrease-cart-qty" data-id="${id}" style="background: #dc3545;">
-                                    <i class="fa-solid fa-minus"></i>
-                                </button>
-                                <input type="number" class="qty-input cart-qty-input" value="${item.quantity}" min="1" data-id="${id}" readonly>
-                                <button class="qty-btn increase-cart-qty" data-id="${id}" style="background: #28a745;">
-                                    <i class="fa-solid fa-plus"></i>
-                                </button>
-                                <span class="total-amount-badge">₹${itemTotal.toFixed(2)}</span>
-                            </div>
-                        </div>
-                        
-                        <!-- Remove Button -->
-                        <div class="cart-item-actions">
-                            <button class="btn-remove-item remove-item" data-id="${id}" title="Remove item">
-                                <i class="fa-solid fa-trash"></i>
+                        <!-- Quantity Controls (moved below image) -->
+                        <div class="quantity-control-compact">
+                            <span class="quantity-label">Qty:</span>
+                            <button class="qty-btn decrease-cart-qty" data-id="${id}" style="background: #dc3545;">
+                                <i class="fa-solid fa-minus"></i>
+                            </button>
+                            <input type="number" class="qty-input cart-qty-input" value="${item.quantity}" min="1" data-id="${id}" readonly>
+                            <button class="qty-btn increase-cart-qty" data-id="${id}" style="background: #28a745;">
+                                <i class="fa-solid fa-plus"></i>
                             </button>
                         </div>
+                    </div>
+                    
+                    <!-- Middle Row: Product Details & Pricing -->
+                    <div class="cart-item-middle-row">
+                        <h5 class="cart-item-title">${item.name}</h5>
+                        
+                        <!-- Pricing Info -->
+                        <div class="pricing-section">
+                            <div class="pricing-row">
+                                <span class="pricing-label">MRP:</span>
+                                <span class="pricing-value mrp-value" style="color: #dc3545;">₹${simulatedMrp}</span>
+                                <span class="pricing-label" style="margin-left: 15px;">Discount:</span>
+                                <span class="pricing-value discount-value">₹${discount}</span>
+                            </div>
+                            <div class="pricing-row">
+                                <span class="pricing-label">Amount:</span>
+                                <span class="pricing-value amount-value" style="color: #28a745; font-weight: 600;">₹${item.price.toFixed(2)}</span>
+                                <span class="pricing-label" style="margin-left: 15px;">Unit Price:</span>
+                                <span class="pricing-value unit-price">₹${item.price.toFixed(2)}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Bottom Row: Total Price + Delete Button -->
+                    <div class="cart-item-bottom-row">
+                        <span class="total-amount-badge">₹${itemTotal.toFixed(2)}</span>
+                        <button class="btn-remove-item remove-item" data-id="${id}" title="Remove item">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
                     </div>
                 </div>
             `;
