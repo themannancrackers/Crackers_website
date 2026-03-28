@@ -29,9 +29,17 @@ sitemaps = {
     'static': StaticViewSitemap,
 }
 
+from django.contrib.auth import logout
+from django.shortcuts import redirect
+
+def custom_logout(request):
+    logout(request)
+    return redirect('login')
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('accounts/', include('allauth.urls')),
+    path('accounts/logout/', custom_logout, name='logout'),
+    path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/', include('accounts.urls')),  # Add this line for profile URLs
     path('inventory/', include('inventory.urls', namespace='inventory')),
     path('', home, name='home'),  # Home page

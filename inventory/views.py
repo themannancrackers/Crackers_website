@@ -55,7 +55,6 @@ def serve_media(request, path):
         return JsonResponse({'error': 'Error serving file'}, status=500)
 
 
-@login_required(login_url='account_login')
 def home(request):
     from django.db.models import Prefetch
     
@@ -546,7 +545,6 @@ def handle_maintenance(request):
 # ⚡ QUICK ORDER SYSTEM
 # =====================================================
 
-@login_required(login_url='account_login')
 def get_quick_order_lists(request):
     """Get predefined quick order lists with products from all categories"""
     try:
@@ -724,7 +722,6 @@ def get_quick_order_lists(request):
         )
 
 
-@login_required(login_url='account_login')
 def quick_order_checkout(request, list_id):
     """Handle quick order checkout - adds predefined list to cart and proceeds to checkout"""
     if request.method != 'POST':
@@ -817,7 +814,6 @@ def quick_order_checkout(request, list_id):
 # =====================================================
 
 @require_http_methods(['POST'])
-@login_required(login_url='account_login')
 def update_stock(request):
     """
     Validate stock availability before checkout.
@@ -870,7 +866,6 @@ def update_stock(request):
 
 
 @require_http_methods(['POST'])
-@login_required(login_url='account_login')
 def checkout(request):
     """
     Process cart checkout and create order with order items.
@@ -878,9 +873,23 @@ def checkout(request):
     """
     try:
         data = json.loads(request.body)
-        items_data = data.get('items', [])
-        phone = data.get('phone', '').strip()
-        address = data.get('address', '').strip()
+        customer_data = data.get('customerData', {})
+        cart_items_obj = data.get('cartItems', {})
+        
+        # Extract items
+        items_data = []
+        for product_id, item_details in cart_items_obj.items():
+            items_data.append({
+                'product_id': product_id,
+                'quantity': item_details.get('quantity'),
+                'price': item_details.get('price'),
+                'name': item_details.get('name')
+            })
+            
+        full_name = customer_data.get('fullName', '').strip()
+        email = customer_data.get('email', '').strip()
+        phone = customer_data.get('phone', '').strip()
+        address = customer_data.get('deliveryAddress', '').strip()
         
         MIN_ORDER = 2500
 
@@ -890,14 +899,26 @@ def checkout(request):
                 'success': False,
                 'error': 'Cart is empty'
             }, status=400)
-
-        if not phone or len(phone) < 10:
+            
+        if not full_name:
             return JsonResponse({
                 'success': False,
-                'error': 'Valid phone number required (10+ digits)'
+                'error': 'Full name is required'
+            }, status=400)
+            
+        if not email:
+            return JsonResponse({
+                'success': False,
+                'error': 'Email is required'
             }, status=400)
 
-        if not address or len(address) < 10:
+        if not phone or len(phone) < 5:
+            return JsonResponse({
+                'success': False,
+                'error': 'Valid phone number required'
+            }, status=400)
+
+        if not address or len(address) < 5:
             return JsonResponse({
                 'success': False,
                 'error': 'Valid delivery address required'
@@ -958,11 +979,11 @@ def checkout(request):
 
         try:
             with transaction.atomic():
-                # Create order
+                # Create order without user for guest checkout
                 order = Order.objects.create(
-                    user=request.user,
-                    full_name=request.user.get_full_name() or request.user.username,
-                    email=request.user.email,
+                    user=None, # Guest order
+                    full_name=full_name,
+                    email=email,
                     phone=phone,
                     address=address,
                     total_amount=total_amount,
@@ -992,16 +1013,17 @@ def checkout(request):
                         from whatsapp_notifications.signals import send_low_stock_alert
                         send_low_stock_alert(product)
 
-            # Send order confirmation email
+            # Send order confirmation email using utils directly
             transaction.on_commit(lambda: utils.send_order_confirmation(order))
 
             return JsonResponse({
                 'success': True,
+                'orderSummary': {
+                    'total': total_amount,
+                },
                 'message': 'Order created successfully',
                 'order_id': order.id,
-                'order_number': f'ORD-{order.id:06d}',
-                'total': f'₹{total_amount:.2f}',
-                'redirect_url': f'/inventory/order-details/{order.id}/'
+                'order_number': f'ORD-{order.id:06d}'
             }, status=201)
 
         except Exception as e:

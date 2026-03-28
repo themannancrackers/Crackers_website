@@ -12,39 +12,28 @@ from django.core.exceptions import ValidationError
 
 logger = logging.getLogger(__name__)
 
-def send_order_confirmation(order_data):
-    """Send order confirmation email to customer"""
+def send_order_confirmation(order):
+    """Send order confirmation email to customer using Order object."""
     try:
-        subject = 'Order Confirmation - The Mannan Crackers'            
-        customer_data = order_data.get('customerData', {})
+        subject = f'Order Confirmation - The Mannan Crackers [ORD-{order.id:06d}]'
         
-        required_fields = ['fullName', 'email', 'phone', 'deliveryAddress']
-        missing_fields = [field for field in required_fields if not customer_data.get(field)]
-        
-        if missing_fields:
-            raise ValidationError(f"Missing required customer data: {', '.join(missing_fields)}")
-        
-        # Validate email format
-        if '@' not in customer_data['email']:
+        # Validate required fields on Order object
+        if not order.email:
+            raise ValidationError("Missing required customer email")
+        if '@' not in order.email:
             raise ValidationError("Invalid email format")
-        
-        # Validate phone number (assuming 10 digits)
-        if not customer_data['phone'].isdigit() or len(customer_data['phone']) != 10:
-            raise ValidationError("Invalid phone number format")
             
         # Calculate order total and format cart items
-        cart_items = order_data['cartItems']
+        order_items = order.items.select_related('product').all()
         items_html = ""
-        order_total = Decimal('0.00')
         
-        for item_id, item in cart_items.items():
-            item_price = Decimal(str(item['price']))
-            item_quantity = Decimal(str(item['quantity']))
+        for item in order_items:
+            item_price = Decimal(str(item.price))
+            item_quantity = Decimal(str(item.quantity))
             item_total = item_price * item_quantity
-            order_total += item_total
             items_html += f"""
                 <tr>
-                    <td>{item['name']}</td>
+                    <td>{item.product.name}</td>
                     <td>{item_quantity}</td>
                     <td>{format_currency(item_price)}</td>
                     <td>{format_currency(item_total)}</td>
@@ -53,13 +42,15 @@ def send_order_confirmation(order_data):
             
         # Prepare email context
         context = {
-            'customer_name': order_data['customerData']['fullName'],
-            'order_total': format_currency(order_total),
+            'customer_name': order.full_name,
+            'order_total': format_currency(order.total_amount),
             'items_html': items_html,
-            'delivery_address': order_data['customerData']['deliveryAddress'],
-            'phone': order_data['customerData']['phone'],
-            'email': order_data['customerData']['email'],
-            'cart_items': cart_items.values()
+            'delivery_address': order.address,
+            'phone': order.phone,
+            'email': order.email,
+            'order_number': f'ORD-{order.id:06d}',
+            # Only used in some templates if they iterate over cart_items, else items_html is used
+            'cart_items': [{'name': i.product.name, 'quantity': i.quantity, 'price': i.price} for i in order_items]
         }
 
         # Render email templates
@@ -77,18 +68,17 @@ def send_order_confirmation(order_data):
                 subject=subject,
                 message=plain_message,
                 from_email=settings.DEFAULT_FROM_EMAIL,
-                recipient_list=[order_data['customerData']['email']],
+                recipient_list=[order.email],
                 html_message=html_message,
                 fail_silently=False
             )
-            logger.info(f"✅ Order confirmation email sent successfully to {order_data['customerData']['email']}")
+            logger.info(f"✅ Order confirmation email sent successfully to {order.email}")
             return True
             
         except Exception as smtp_error:
             # Log the error but don't fail the order - email sending is non-critical
             error_msg = str(smtp_error)
-            logger.warning(f"⚠️ Failed to send order confirmation email to {order_data['customerData']['email']}: {error_msg}")
-            logger.warning(f"Email config - HOST: {settings.EMAIL_HOST}, PORT: {settings.EMAIL_PORT}, USER: {settings.EMAIL_HOST_USER}")
+            logger.warning(f"⚠️ Failed to send order confirmation email to {order.email}: {error_msg}")
             
             # Return True anyway so checkout completes - email is not critical
             return True

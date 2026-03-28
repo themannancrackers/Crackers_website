@@ -9,7 +9,7 @@ def role_required(allowed_roles):
         def _wrapped_view(request, *args, **kwargs):
             if not request.user.is_authenticated:
                 messages.error(request, 'Please log in to access this page.')
-                return redirect('account_login')
+                return redirect('login')
             
             if request.user.role in allowed_roles:
                 return view_func(request, *args, **kwargs)

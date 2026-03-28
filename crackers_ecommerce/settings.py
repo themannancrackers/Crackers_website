@@ -35,10 +35,6 @@ INSTALLED_APPS = [
     "django.contrib.sites",
 
     # Third-party
-    "allauth",
-    "allauth.account",
-    "allauth.socialaccount",
-    "allauth.socialaccount.providers.google",
 
     # Local apps
     "inventory.apps.InventoryConfig",
@@ -48,48 +44,13 @@ INSTALLED_APPS = [
 ]
 
 # ---------------------------------------------------------------------
-# DJANGO-ALLAUTH CONFIGURATION
+# DJANGO ACCOUNT CONFIGURATION
 # ---------------------------------------------------------------------
-SITE_ID = 1
 
 # URLs
-LOGIN_URL = "account_login"
-LOGIN_REDIRECT_URL = "/accounts/oauth/callback/"     # ✅ Goes to your role-based redirect view
-LOGOUT_REDIRECT_URL = "/accounts/login/"
-
-# Account behaviour
-ACCOUNT_AUTHENTICATION_METHOD = os.getenv("ACCOUNT_AUTHENTICATION_METHOD", "email")
-ACCOUNT_EMAIL_REQUIRED = os.getenv("ACCOUNT_EMAIL_REQUIRED", "True") == "True"
-ACCOUNT_USERNAME_REQUIRED = os.getenv("ACCOUNT_USERNAME_REQUIRED", "False") == "True"
-ACCOUNT_UNIQUE_EMAIL = os.getenv("ACCOUNT_UNIQUE_EMAIL", "True") == "True"
-ACCOUNT_LOGOUT_ON_GET = os.getenv("ACCOUNT_LOGOUT_ON_GET", "True") == "True"
-ACCOUNT_EMAIL_VERIFICATION = os.getenv("ACCOUNT_EMAIL_VERIFICATION", "none")
-ACCOUNT_DEFAULT_HTTP_PROTOCOL = os.getenv("ACCOUNT_DEFAULT_HTTP_PROTOCOL", "http")
-
-# Social-account behaviour
-SOCIALACCOUNT_AUTO_SIGNUP = os.getenv("SOCIALACCOUNT_AUTO_SIGNUP", "True") == "True"
-SOCIALACCOUNT_LOGIN_ON_GET = os.getenv("SOCIALACCOUNT_LOGIN_ON_GET", "False") == "True"
-SOCIALACCOUNT_QUERY_EMAIL = os.getenv("SOCIALACCOUNT_QUERY_EMAIL", "True") == "True"
-SOCIALACCOUNT_STORE_TOKENS = os.getenv("SOCIALACCOUNT_STORE_TOKENS", "True") == "True"
-
-# Custom adapter that links existing users & assigns roles
-SOCIALACCOUNT_ADAPTER = "accounts.adapters.CustomSocialAccountAdapter"
-
-# Google provider configuration
-GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID", "")
-GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET", "")
-
-SOCIALACCOUNT_PROVIDERS = {
-    "google": {
-        "SCOPE": ["profile", "email"],
-        "AUTH_PARAMS": {"access_type": "online"},
-        "APP": {
-            "client_id": GOOGLE_CLIENT_ID,
-            "secret": GOOGLE_CLIENT_SECRET,
-            "key": ""
-        }
-    }
-}
+LOGIN_URL = "login"
+LOGIN_REDIRECT_URL = "accounts:role_redirect"     # Goes to our role-based redirect view
+LOGOUT_REDIRECT_URL = "login"
 
 
 # ---------------------------------------------------------------------
@@ -104,7 +65,6 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "allauth.account.middleware.AccountMiddleware",
     "accounts.middleware.RoleMiddleware",
 ]
 
@@ -140,7 +100,6 @@ AUTH_USER_MODEL = "accounts.CustomUser"
 
 AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
-    "allauth.account.auth_backends.AuthenticationBackend",
     "accounts.auth.RoleBasedBackend",   # your custom RBAC backend
 ]
 
