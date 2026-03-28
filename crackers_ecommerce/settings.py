@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "whatsapp_notifications.apps.WhatsappNotificationsConfig",
              
 ]
+SITE_ID = 1
 
 # ---------------------------------------------------------------------
 # DJANGO ACCOUNT CONFIGURATION
