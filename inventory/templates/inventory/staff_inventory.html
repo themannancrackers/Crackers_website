@@ -218,97 +218,92 @@
   }
 
   /* ---------------------------- */
-  /* CLEAN MOBILE SWIPE LAYOUT   */
+  /* MOBILE CARD LAYOUT          */
   /* ---------------------------- */
   @media (max-width: 768px) {
-
-    /* Hide desktop table */
-    .table thead,
-    .d-none.d-md-table-cell {
-      display: none !important;
-    }
-
-    /* Make rows display as cards */
-    .table tr {
-      display: block !important;
-      padding: 0;
-      border: none;
-      background: transparent;
-    }
-
-    /* CELL RESET */
-    .table td {
-      border: none;
-      padding: 0 !important;
-      display: block;
-    }
-
-    /* SWIPE CARD */
-    .swipe-item {
-      background: #ffffff;
-      border-radius: 14px;
+    .table thead, .d-none.d-md-table-cell { display: none !important; }
+    .table tr { display: block !important; padding: 0; border: none; background: transparent; }
+    .table td { border: none; padding: 0 !important; display: block; }
+    
+    .mobile-card {
+      background: rgba(255, 255, 255, 0.98);
+      border-radius: 12px;
       margin-bottom: 15px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+      border: 1px solid rgba(255, 215, 0, 0.2);
       overflow: hidden;
+      display: flex;
+      flex-direction: column;
       position: relative;
     }
-
-    /* swipe buttons on right */
-    .swipe-actions {
-      position: absolute;
-      right: 0;
-      top: 0;
+    
+    .mobile-card-body {
+      padding: 15px;
       display: flex;
-      height: 100%;
-    }
-
-    .swipe-actions button {
-      width: 70px;
-      border: none;
-      font-weight: 700;
-      color: white;
-    }
-
-    .swipe-delete {
-      background: #ff3b30;
-    }
-
-    .swipe-edit {
-      background: #ff9500;
-    }
-
-    /* main slide content */
-    .swipe-content {
-      display: flex;
-      padding: 12px;
       align-items: center;
-      background: white;
-      transition: transform 0.25s ease;
+      gap: 15px;
     }
-
-    .swipe-img {
-      width: 65px;
-      height: 65px;
-      border-radius: 10px;
+    
+    .mobile-card-img {
+      width: 70px;
+      height: 70px;
+      border-radius: 8px;
       object-fit: cover;
+      border: 2px solid var(--diwali-orange);
       flex-shrink: 0;
     }
-
-    .swipe-info {
-      margin-left: 12px;
+    
+    .mobile-card-info {
       flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
-
-    .swipe-name {
-      font-size: 1.05rem;
+    
+    .mobile-card-title {
+      font-size: 1.1rem;
       font-weight: 700;
+      color: #1a1a2e;
+      margin-bottom: 4px;
+      line-height: 1.2;
     }
-
-    .swipe-price {
-      font-size: 0.9rem;
+    
+    .mobile-card-price {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--diwali-orange);
+      margin-bottom: 4px;
+    }
+    
+    .mobile-card-stock {
+      font-size: 0.85rem;
       color: #555;
-      margin-top: 2px;
     }
+    
+    .mobile-card-actions {
+      display: flex;
+      border-top: 1px solid rgba(0,0,0,0.05);
+      background: #f8f9fa;
+    }
+    
+    .mobile-card-btn {
+      flex: 1;
+      padding: 10px 0;
+      border: none;
+      background: transparent;
+      font-weight: 600;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: background 0.2s;
+    }
+    
+    .mobile-btn-edit { color: #ff8c00; border-right: 1px solid rgba(0,0,0,0.05); }
+    .mobile-btn-edit:active { background: rgba(255, 140, 0, 0.1); }
+    .mobile-btn-delete { color: #dc3545; }
+    .mobile-btn-delete:active { background: rgba(220, 53, 69, 0.1); }
   }
 
 
@@ -444,38 +439,38 @@
                     class="bi bi-trash"></i></button>
               </td>
 
-              <!-- MOBILE SWIPE VIEW -->
+              <!-- MOBILE CARD VIEW -->
               <td class="d-md-none" style="padding:0;border:none;">
-                <div class="swipe-item">
-
-                  <div class="swipe-actions">
-                    <button class="swipe-delete" onclick="deleteProduct('{{ product.id }}')">Del</button>
-                    <button class="swipe-edit" onclick="editProduct('{{ product.id }}')">Edit</button>
-                  </div>
-
-                  <div class="swipe-content">
-
+                <div class="mobile-card">
+                  <div class="mobile-card-body">
                     {% if product.image %}
-                    <img src="{{ product.image.url }}" class="swipe-img">
+                    <img src="{{ product.image.url }}" class="mobile-card-img">
                     {% else %}
-                    <img src="{% static 'img/no-image.png' %}" class="swipe-img">
+                    <img src="{% static 'img/no-image.png' %}" class="mobile-card-img">
                     {% endif %}
-
-                    <div class="swipe-info">
-                      <div class="swipe-name">{{ product.name }}</div>
-                      <div class="swipe-price">₹{{ product.price }}</div>
-                      <div class="swipe-stock">
-                        Stock:
+                    
+                    <div class="mobile-card-info">
+                      <div class="mobile-card-title">{{ product.name }}</div>
+                      <div class="mobile-card-price">₹{{ product.price }}</div>
+                      <div class="mobile-card-stock">
+                        Stock: 
                         {% if product.is_low_stock %}
-                        <span style="color:#ff3b30; font-weight:600;">Low ({{ product.stock_quantity }})</span>
+                        <span style="color:#dc3545; font-weight:600;">Low ({{ product.stock_quantity }})</span>
                         {% else %}
                         <span style="color:#28a745; font-weight:600;">{{ product.stock_quantity }}</span>
                         {% endif %}
                       </div>
                     </div>
-
                   </div>
-
+                  
+                  <div class="mobile-card-actions">
+                    <button class="mobile-card-btn mobile-btn-edit" onclick="editProduct('{{ product.id }}')">
+                      <i class="bi bi-pencil-fill"></i> Edit
+                    </button>
+                    <button class="mobile-card-btn mobile-btn-delete" onclick="deleteProduct('{{ product.id }}')">
+                      <i class="bi bi-trash-fill"></i> Delete
+                    </button>
+                  </div>
                 </div>
               </td>
 
@@ -567,6 +562,18 @@
     </div>
   </div>
 </div>
+
+<!-- Toast Notification Container -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1055;">
+  <div id="successToast" class="toast align-items-center text-white border-0" role="alert" aria-live="assertive" aria-atomic="true" style="background: linear-gradient(135deg, var(--diwali-green), #20c997);">
+    <div class="d-flex">
+      <div class="toast-body fw-bold" id="toastBody" style="font-size: 1.05rem;">
+        Action completed successfully.
+      </div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+  </div>
+</div>
 {% endblock %}
 
 {% block extra_js %}
@@ -618,8 +625,12 @@
       })
         .then(response => response.json())
         .then(data => {
-          if (data.success) location.reload();
-          else alert('Error deleting product');
+          if (data.success) {
+            sessionStorage.setItem('toastMessage', 'Product deleted successfully!');
+            location.reload();
+          } else {
+            alert('Error deleting product');
+          }
         });
     }
   }
@@ -632,49 +643,28 @@
     fetch('/inventory/staff/inventory/', { method: 'POST', body: formData })
       .then(res => res.json())
       .then(data => {
-        if (data.success) location.reload();
+        if (data.success) {
+          sessionStorage.setItem('toastMessage', data.message || 'Product saved successfully!');
+          location.reload();
+        }
         else alert(data.error || 'Error saving product');
       });
   });
 
 
-  let startX = 0;
-  let currentContent = null;
-
-  document.querySelectorAll(".swipe-item").forEach(item => {
-    const content = item.querySelector(".swipe-content");
-
-    item.addEventListener("touchstart", e => {
-      startX = e.touches[0].clientX;
-      currentContent = content;
-    });
-
-    item.addEventListener("touchmove", e => {
-      const diff = e.touches[0].clientX - startX;
-
-      if (diff < 0) {
-        content.style.transform = `translateX(${diff}px)`;
+  // Handle Success Toasts on Load
+  document.addEventListener('DOMContentLoaded', () => {
+    const toastMsg = sessionStorage.getItem('toastMessage');
+    if (toastMsg) {
+      const toastEl = document.getElementById('successToast');
+      const toastBody = document.getElementById('toastBody');
+      if (toastEl && toastBody) {
+        toastBody.textContent = toastMsg;
+        const toast = new bootstrap.Toast(toastEl, { delay: 4000 });
+        toast.show();
       }
-    });
-
-    item.addEventListener("touchend", () => {
-      const moved = parseInt(currentContent.style.transform.replace("translateX(", ""));
-
-      if (moved < -40) {
-        currentContent.style.transform = "translateX(-140px)";  // show actions
-      } else {
-        currentContent.style.transform = "translateX(0)";
-      }
-    });
-  });
-
-  /* tap outside closes */
-  document.addEventListener("touchstart", e => {
-    document.querySelectorAll(".swipe-content").forEach(box => {
-      if (!box.contains(e.target)) {
-        box.style.transform = "translateX(0)";
-      }
-    });
+      sessionStorage.removeItem('toastMessage');
+    }
   });
 
 </script>
