@@ -86,10 +86,8 @@ def safety(request):
 def contact(request):
     return render(request, "inventory/contact.html")
 
-def customer_orders(request):
-    return render(request, "inventory/customer_orders.html")
 
-@admin_required
+
 @login_required(login_url='account_login')
 @admin_required
 def admin_dashboard(request):
@@ -178,7 +176,6 @@ def quick_add_stock(request):
             return JsonResponse({'success': False})
     return JsonResponse({'success': False})
 
-@staff_required
 @login_required(login_url='account_login')
 @staff_required
 def staff_inventory(request):
@@ -354,9 +351,8 @@ def get_shipping_status(order):
     }
     return status_info.get(order.status, {})
 
-@login_required
-@approved_user_required
 @login_required(login_url='account_login')
+@approved_user_required
 def generate_invoice(request, order_id):
     try:
         order = Order.objects.get(id=order_id, user=request.user)
@@ -771,7 +767,7 @@ def quick_order_checkout(request, list_id):
                 )
         
         # Check minimum order amount
-        MIN_ORDER_AMOUNT = 2500
+        MIN_ORDER_AMOUNT = 3000
         if total_amount < MIN_ORDER_AMOUNT:
             return utils.handle_api_error(
                 'minimum_order',
@@ -891,7 +887,7 @@ def checkout(request):
         phone = customer_data.get('phone', '').strip()
         address = customer_data.get('deliveryAddress', '').strip()
         
-        MIN_ORDER = 2500
+        MIN_ORDER = 3000
 
         # Validation
         if not items_data:
@@ -1009,9 +1005,9 @@ def checkout(request):
                     product.save(update_fields=['stock_quantity'])
 
                     # Check for low stock alert
-                    if product.stock_quantity < 10:
-                        from whatsapp_notifications.signals import send_low_stock_alert
-                        send_low_stock_alert(product)
+                    # if product.stock_quantity < 10:
+                    #     from whatsapp_notifications.signals import send_low_stock_alert
+                    #     send_low_stock_alert(product)
 
             # Send order confirmation email using utils directly
             transaction.on_commit(lambda: utils.send_order_confirmation(order))

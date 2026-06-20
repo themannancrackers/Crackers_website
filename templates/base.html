@@ -185,8 +185,10 @@
       border: 2px solid var(--diwali-gold);
       flex-shrink: 0;
       filter: drop-shadow(0 2px 6px rgba(255, 215, 0, 0.4));
+      transition: all 0.3s ease;
     }
 
+    .navbar-logo-link:hover .navbar-logo,
     .navbar-brand:hover .navbar-logo {
       transform: scale(1.08);
       box-shadow: 0 5px 15px rgba(255, 215, 0, 0.5);
@@ -1069,10 +1071,14 @@
     <!-- NAVBAR -->
     <nav class="navbar navbar-expand-lg navbar-dark">
       <div class="container">
-        <a class="navbar-brand" href="{% url 'login' %}">
-          <img src="{% static 'images/kannan_logo.png' %}" alt="The Mannan Crackers Logo" class="navbar-logo" /><span
-            class="brand-text-glow">The Mannan Crackers</span>
-        </a>
+        <div class="navbar-brand-wrapper d-flex align-items-center gap-2">
+          <a href="{% url 'inventory:home' %}" class="navbar-logo-link d-flex align-items-center">
+            <img src="{% static 'images/kannan_logo.png' %}" alt="The Mannan Crackers Logo" class="navbar-logo" />
+          </a>
+          <a class="navbar-brand" href="{% url 'login' %}">
+            <span class="brand-text-glow">The Mannan Crackers</span>
+          </a>
+        </div>
 
         <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navMenu">
           <span class="navbar-toggler-icon"></span>

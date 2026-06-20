@@ -8,7 +8,7 @@ class Category(models.Model):
     order = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
 
-    def _str_(self):
+    def __str__(self):
         return self.name
 
     class Meta:
@@ -33,7 +33,7 @@ class Product(models.Model):
         return self.stock_quantity < 10
 
 class Order(models.Model):
-    MIN_ORDER_AMOUNT = 2500  # Minimum order amount in rupees
+    MIN_ORDER_AMOUNT = 3000  # Minimum order amount in rupees
     STATUS_CHOICES = [
         ('pending', 'Pending'),
         ('processing', 'Processing'),
@@ -47,7 +47,7 @@ class Order(models.Model):
     email = models.EmailField()
     phone = models.CharField(max_length=15)
     address = models.TextField()  # Renamed from delivery_address to match form field
-    total_amount = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(2500)])
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(3000)])
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
