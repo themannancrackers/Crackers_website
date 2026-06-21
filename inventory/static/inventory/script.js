@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
   let cartItems = {};
 
   // Minimum order amount constant
-  const MIN_ORDER_AMOUNT = 2500;
+  const MIN_ORDER_AMOUNT = 2499;
 
   // Maintain window.cart for checkout.js compatibility
   window.cart = [];

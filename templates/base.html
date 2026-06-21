@@ -170,7 +170,6 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      margin-left: -12px;
       text-decoration: none;
     }
 
@@ -243,7 +242,6 @@
       .navbar-brand {
         font-size: 1.1rem;
         gap: 8px;
-        margin-left: -6px;
       }
 
       .navbar-logo {
@@ -1036,6 +1034,28 @@
         z-index: 9999 !important;
       }
     }
+
+    /* Content protection rules */
+    body {
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    img {
+      -webkit-user-drag: none;
+      -khtml-user-drag: none;
+      -moz-user-drag: none;
+      -o-user-drag: none;
+      pointer-events: none;
+    }
+
+    @media print {
+      body {
+        display: none !important;
+      }
+    }
   </style>
 
   {# extra per-page CSS will be injected here #}
@@ -1071,7 +1091,7 @@
     <!-- NAVBAR -->
     <nav class="navbar navbar-expand-lg navbar-dark">
       <div class="container">
-        <div class="navbar-brand-wrapper d-flex align-items-center gap-2">
+        <div class="navbar-brand-wrapper d-flex align-items-center gap-3">
           <a href="{% url 'inventory:home' %}" class="navbar-logo-link d-flex align-items-center">
             <img src="{% static 'images/kannan_logo.png' %}" alt="The Mannan Crackers Logo" class="navbar-logo" />
           </a>
@@ -1420,6 +1440,53 @@
       } else {
         // Scrolling anywhere (up or down) → hide navbar
         header.style.transform = "translateY(-100%)";
+      }
+    });
+  </script>
+  <script>
+    // 🛡️ Screenshot & Content Protection script
+    document.addEventListener("contextmenu", function (e) {
+      e.preventDefault();
+    });
+
+    document.addEventListener("keydown", function (e) {
+      // Disable F12
+      if (e.key === "F12") {
+        e.preventDefault();
+        return false;
+      }
+      // Disable View Source (Ctrl+U or Cmd+U)
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "u") {
+        e.preventDefault();
+        return false;
+      }
+      // Disable DevTools (Ctrl+Shift+I or Cmd+Opt+I)
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === "i") {
+        e.preventDefault();
+        return false;
+      }
+      // Disable DevTools Console (Ctrl+Shift+J or Cmd+Opt+J)
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === "j") {
+        e.preventDefault();
+        return false;
+      }
+      // Disable Print (Ctrl+P or Cmd+P)
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "p") {
+        e.preventDefault();
+        return false;
+      }
+      // Disable Copy (Ctrl+C or Cmd+C)
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "c") {
+        e.preventDefault();
+        return false;
+      }
+    });
+
+    // Clear clipboard on PrintScreen keyup
+    document.addEventListener("keyup", function (e) {
+      if (e.key === "PrintScreen") {
+        navigator.clipboard.writeText("");
+        alert("Screenshots and PrintScreen captures are disabled on this website for security.");
       }
     });
   </script>

@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Get CSRF token from window variable (set in base.html)
 
     // Minimum order amount constant
-    const MIN_ORDER_AMOUNT = 2500;
+    const MIN_ORDER_AMOUNT = 2499;
 
     // Get checkout elements
     const checkoutForm = document.getElementById('checkoutForm');

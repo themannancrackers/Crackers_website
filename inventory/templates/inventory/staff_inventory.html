@@ -24,6 +24,7 @@
   h2.text-light {
     background: linear-gradient(90deg, var(--diwali-gold), var(--diwali-orange));
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
     font-weight: 700;
     text-shadow: 0 0 10px rgba(255, 165, 0, 0.4);
@@ -119,7 +120,10 @@
     vertical-align: middle;
     text-align: center;
     padding: 0.75rem;
-    word-break: break-word;
+  }
+
+  .table th {
+    white-space: nowrap;
   }
 
   /* Badge glow */
@@ -311,6 +315,7 @@
   h2.text-light {
     background: linear-gradient(90deg, var(--diwali-gold), var(--diwali-orange));
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
     font-weight: 700;
     text-shadow: 0 0 10px rgba(255, 165, 0, 0.4);
@@ -386,6 +391,10 @@
 
         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addProductModal">
           <i class="bi bi-plus-lg"></i> Add Product
+        </button>
+
+        <button class="btn btn-warning text-dark fw-bold" data-bs-toggle="modal" data-bs-target="#reorderCategoriesModal">
+          <i class="bi bi-arrow-down-up"></i> Reorder Categories
         </button>
 
       </div>
@@ -563,6 +572,32 @@
   </div>
 </div>
 
+<!-- Reorder Categories Modal -->
+<div class="modal fade" id="reorderCategoriesModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Reorder Categories</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <p class="text-muted small mb-3">Drag and drop categories using the handle to rearrange them.</p>
+        <ul class="list-group" id="categoriesOrderList" style="max-height: 400px; overflow-y: auto;">
+          {% for category in categories %}
+          <li class="list-group-item d-flex align-items-center justify-content-between text-dark" data-id="{{ category.id }}">
+            <span>{{ category.name }}</span>
+            <i class="bi bi-arrows-move text-warning category-drag-handle" style="font-size: 1.2rem; cursor: grab;"></i>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Toast Notification Container -->
 <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1055;">
   <div id="successToast" class="toast align-items-center text-white border-0" role="alert" aria-live="assertive" aria-atomic="true" style="background: linear-gradient(135deg, var(--diwali-green), #20c997);">
@@ -577,6 +612,8 @@
 {% endblock %}
 
 {% block extra_js %}
+<!-- SortableJS library for category drag-and-drop reordering -->
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 <script>
   const productModal = new bootstrap.Modal(document.getElementById('addProductModal'));
   const productForm = document.getElementById('addProductForm');
@@ -706,6 +743,42 @@ document.addEventListener("DOMContentLoaded", function () {
   searchInput.addEventListener("keyup", (e) => {
     if (e.key === "Enter") filterProducts();
   });
+
+  // Sortable JS Category Reordering
+  const categoriesList = document.getElementById("categoriesOrderList");
+  if (categoriesList) {
+    new Sortable(categoriesList, {
+      handle: '.category-drag-handle',
+      animation: 150,
+      ghostClass: 'list-group-item-warning',
+      onEnd: function (evt) {
+        const items = Array.from(categoriesList.querySelectorAll("li"));
+        const categoryIds = items.map(li => li.dataset.id);
+
+        fetch("/inventory/categories/reorder/", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+          },
+          body: JSON.stringify({ category_ids: categoryIds })
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            sessionStorage.setItem('toastMessage', 'Categories reordered successfully!');
+            location.reload();
+          } else {
+            alert(data.error || "Failed to update category order.");
+          }
+        })
+        .catch(err => {
+          console.error(err);
+          alert("An error occurred while reordering categories.");
+        });
+      }
+    });
+  }
 
 });
 </script>

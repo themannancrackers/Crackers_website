@@ -261,6 +261,20 @@ def get_product(request, product_id):
             'error': 'Product not found'
         })
 
+@csrf_exempt
+@login_required(login_url='account_login')
+@staff_required
+@require_http_methods(["POST"])
+def update_category_order(request):
+    try:
+        data = json.loads(request.body)
+        category_ids = data.get('category_ids', [])
+        for index, cat_id in enumerate(category_ids):
+            Category.objects.filter(id=cat_id).update(order=index)
+        return JsonResponse({'success': True, 'message': 'Categories reordered successfully.'})
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)})
+
 from django.http import HttpResponse
 from io import BytesIO
 from django.utils import timezone
@@ -767,7 +781,7 @@ def quick_order_checkout(request, list_id):
                 )
         
         # Check minimum order amount
-        MIN_ORDER_AMOUNT = 3000
+        MIN_ORDER_AMOUNT = 2499
         if total_amount < MIN_ORDER_AMOUNT:
             return utils.handle_api_error(
                 'minimum_order',
@@ -865,7 +879,7 @@ def update_stock(request):
 def checkout(request):
     """
     Process cart checkout and create order with order items.
-    Validates minimum order amount (₹2500), stock availability, and creates transaction.
+    Validates minimum order amount (₹2499), stock availability, and creates transaction.
     """
     try:
         data = json.loads(request.body)
@@ -887,7 +901,7 @@ def checkout(request):
         phone = customer_data.get('phone', '').strip()
         address = customer_data.get('deliveryAddress', '').strip()
         
-        MIN_ORDER = 3000
+        MIN_ORDER = 2499
 
         # Validation
         if not items_data:
