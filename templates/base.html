@@ -1056,6 +1056,29 @@
         display: none !important;
       }
     }
+
+    body.blur-protection {
+      filter: blur(45px) !important;
+      pointer-events: none;
+    }
+
+    #blurOverlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: radial-gradient(circle at center, #101524, #050814);
+      z-index: 9999999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 1.4rem;
+      font-weight: bold;
+      text-align: center;
+      padding: 20px;
+    }
   </style>
 
   {# extra per-page CSS will be injected here #}
@@ -1082,7 +1105,7 @@
           </div>
           <div class="top-contact-card">
             <div class="top-contact-title">Dispatch Details</div>
-            <div class="top-contact-phone">+91 91235 17649</div>
+            <div class="top-contact-phone">+91 82209 91515</div>
           </div>
         </div>
       </div>
@@ -1179,7 +1202,7 @@
                   <a class="dropdown-item text-danger" href="{% url 'logout' %}">Logout</a>
                 </li>
               </ul>
-            {% endif %}
+              {% endif %}
           </ul>
         </div>
       </div>
@@ -1207,7 +1230,7 @@
   <a href="{% url 'inventory:home' %}" class="order-now-btn">
     <img src="{% static 'images/quick_order.png' %}" alt="Quick order" />
   </a>
-  {% endif %} 
+  {% endif %}
   <!-- Bank Details Section -->
   <section class="bank-details-section">
     <div class="container">
@@ -1224,7 +1247,7 @@
             <h6>PhonePe</h6>
             <p>+91 82202 010205</p>
             <h6>Gpay</h6>
-            <p>+91 75021 75121, +91 91235 17649</p>
+            <p>+91 75021 75121</p>
           </div>
         </div>
 
@@ -1253,7 +1276,7 @@
                 <h6>PhonePe</h6>
                 <p>+91 82202 010205</p>
                 <h6>Gpay</h6>
-                <p>+91 75021 75121, +91 91235 17649</p>
+                <p>+91 75021 75121</p>
               </div>
             </div>
           </div>
@@ -1488,6 +1511,24 @@
         navigator.clipboard.writeText("");
         alert("Screenshots and PrintScreen captures are disabled on this website for security.");
       }
+    });
+
+    // Create and append the protection blur overlay element
+    const overlay = document.createElement('div');
+    overlay.id = 'blurOverlay';
+    overlay.innerHTML = '<div><i class="bi bi-lock-fill text-warning" style="font-size: 4rem; display: block; margin-bottom: 15px;"></i>🔒 Content Protected<br><span style="font-size: 1rem; color: #ffb347; font-weight: normal; margin-top: 10px; display: block;">Screenshots and screen sharing are disabled.</span></div>';
+    document.body.appendChild(overlay);
+
+    // Obfuscate screen content on focus loss (blur)
+    window.addEventListener('blur', function() {
+      overlay.style.display = 'flex';
+      document.body.classList.add('blur-protection');
+    });
+
+    // Restore screen content on focus gain (focus)
+    window.addEventListener('focus', function() {
+      overlay.style.display = 'none';
+      document.body.classList.remove('blur-protection');
     });
   </script>
 </body>
