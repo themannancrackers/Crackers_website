@@ -23,10 +23,17 @@ class Product(models.Model):
     description = models.TextField()
     image = models.ImageField(upload_to='products/', blank=True, null=True)
     is_active = models.BooleanField(default=True)
+    is_pinned = models.BooleanField(default=False, verbose_name="Pin to Top")
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        if self.is_pinned:
+            # Set all other products' is_pinned to False
+            Product.objects.filter(is_pinned=True).exclude(id=self.id).update(is_pinned=False)
+        super().save(*args, **kwargs)
 
     @property
     def is_low_stock(self):

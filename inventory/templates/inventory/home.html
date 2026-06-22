@@ -3826,6 +3826,110 @@
         </h1>
     </div>
 
+    <!-- 📌 PINNED/FEATURED PRODUCT DISPLAY SECTION -->
+    {% if pinned_product %}
+    <div class="category-section" id="pinned-product-section" style="border: 2px solid var(--diwali-gold); border-radius: 12px; overflow: hidden; box-shadow: 0 0 20px rgba(255, 215, 0, 0.45); margin-bottom: 35px;">
+        <div class="category-title-bar" style="background: linear-gradient(90deg, #ff8c00, #ffd700, #ff8c00); color: #1a1a2e; font-weight: 800; font-size: 1.15rem;">
+            🔥 FEATURED PRODUCT - MUST BUY! 🔥
+        </div>
+
+        <div class="order-table-wrapper table-responsive">
+            <table class="kannan-order-table">
+                <thead>
+                    <tr>
+                        <th class="sno-col">S.No</th>
+                        <th class="img-col">Image</th>
+                        <th class="name-col">Product Name</th>
+                        <th class="content-col">Content</th>
+                        <th class="money-col mrp">Actual Price</th>
+                        <th class="money-col discount">80% off</th>
+                        <th class="money-col amount">Amount</th>
+                        <th class="qty-col">Quantity</th>
+                        <th class="total-col">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="order-row" data-mrp="{{ pinned_product.price }}" data-product-id="{{ pinned_product.id }}">
+                        <td class="sno-col">1</td>
+
+                        <td class="img-col">
+                            {% if pinned_product.image %}
+                            <img src="{{ pinned_product.image.url }}" alt="{{ pinned_product.name }}">
+                            {% else %}
+                            <span>No Image</span>
+                            {% endif %}
+                        </td>
+
+                        <td class="name-col" style="color: #ffd700; font-weight: bold;">
+                            {{ pinned_product.name }}
+                        </td>
+
+                        <td class="content-col">
+                            {% if pinned_product.content %}
+                            {{ pinned_product.content }}
+                            {% else %}
+                            1 BOX
+                            {% endif %}
+                        </td>
+
+                        <td class="money-col mrp">
+                            ₹<span class="mrp-val">{{ pinned_product.price }}</span>
+                        </td>
+
+                        <td class="money-col discount">
+                            ₹<span class="discount-val">0.00</span>
+                        </td>
+                        <td class="money-col amount">
+                            ₹<span class="amount-val">0.00</span>
+                        </td>
+
+                        <td class="qty-col">
+                            <input type="number" class="qty-input" min="0" value="0">
+                        </td>
+
+                        <td class="total-col">
+                            ₹<span class="row-total-val">0.00</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Mobile product view for Pinned Product -->
+        <div class="mobile-product-item" data-product-id="{{ pinned_product.id }}" data-mrp="{{ pinned_product.price }}" style="border-bottom: none; background: rgba(255, 215, 0, 0.08); padding: 12px; border-radius: 8px; margin: 10px;">
+            <div class="mobile-top">
+                <div class="mobile-img">
+                    {% if pinned_product.image %}
+                    <img src="{{ pinned_product.image.url }}" alt="{{ pinned_product.name }}">
+                    {% endif %}
+                </div>
+
+                <div class="mobile-info">
+                    <div class="mobile-name" style="color: #ffd700 !important; font-weight: bold;">{{ pinned_product.name }} <span class="badge bg-warning text-dark" style="font-size: 0.7rem; vertical-align: middle;">FEATURED</span></div>
+                    <div class="mobile-content">
+                        {% if pinned_product.content %}{{ pinned_product.content }}{% else %}1 BOX{% endif %}
+                    </div>
+
+                    <div class="mobile-price-row">
+                        <span class="mobile-mrp">₹{{ pinned_product.price }}</span>
+                        <span class="mobile-our amount-val">₹0</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mobile-bottom">
+                <div class="qty-box">
+                    <button class="qty-btn minus">−</button>
+                    <input type="number" class="qty-input" min="0" value="0">
+                    <button class="qty-btn plus">+</button>
+                </div>
+
+                <div class="mobile-total">₹<span class="row-total-val">0.00</span></div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
     <!-- 🔶 CATEGORY TABLES (SPARKLER ITEMS, FLOWER POTS, etc.) -->
     {% for category, products_in_category in products_by_category.items %}
     <div class="category-section" id="category-{{ category.id }}">
@@ -3944,38 +4048,7 @@
     {% endfor %}
 
 </div>
-<!-- 🌟 FULL IMAGE VIEW MODAL -->
-<div class="modal fade" id="imageModal" tabindex="-1">
-    <div class="modal-dialog modal-fullscreen-sm-down modal-lg">
-        <div class="modal-content" style="background: rgba(0,0,0,0.85);">
-            <div class="modal-body d-flex justify-content-center align-items-center p-0">
-
-                <img id="modalImage" src="" alt="Product Image"
-                    style="max-height: 90vh; max-width: 95vw; object-fit: contain; border-radius: 10px;">
-
-            </div>
-            <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3"
-                data-bs-dismiss="modal"></button>
-        </div>
-    </div>
-</div>
-<script>
-    // PRODUCT IMAGE CLICK → OPEN FULL VIEW MODAL
-    document.addEventListener("DOMContentLoaded", function () {
-        const modal = new bootstrap.Modal(document.getElementById('imageModal'));
-        const modalImg = document.getElementById('modalImage');
-
-        document.querySelectorAll(".img-col img, .mobile-img img").forEach(img => {
-            img.style.cursor = "pointer";
-
-            img.addEventListener("click", () => {
-                modalImg.src = img.src;
-                modal.show();
-            });
-        });
-    });
-
-</script>
+<!-- Local imageModal removed. Handled globally in base.html. -->
 <style>
     /* MOBILE PLUS & MINUS BUTTONS */
     @media (max-width: 768px) {

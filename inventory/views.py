@@ -56,14 +56,23 @@ def serve_media(request, path):
 
 
 def home(request):
-    from django.db.models import Prefetch
+    from django.db.models import Prefetch, Q
     
-    # Get all active products with their categories
+    # Get pinned product
+    pinned_product = Product.objects.filter(is_active=True, is_pinned=True).first()
+    
+    # Get all active products with their categories (excluding pinned product)
     products = Product.objects.filter(is_active=True).select_related('category')
+    if pinned_product:
+        products = products.exclude(id=pinned_product.id)
 
     # Get categories with prefetched products - prevents N+1 query
+    category_filter = Q(products__is_active=True)
+    if pinned_product:
+        category_filter &= ~Q(products=pinned_product)
+        
     categories_with_products = Category.objects.filter(
-        products__is_active=True
+        category_filter
     ).distinct().order_by('order', 'name').prefetch_related(
         Prefetch('products', queryset=products)
     )
@@ -71,6 +80,7 @@ def home(request):
     products_by_category = {cat: list(cat.products.all()) for cat in categories_with_products}
 
     return render(request, 'inventory/home.html', {
+        'pinned_product': pinned_product,
         'products': products,
         'categories': categories_with_products,
         'products_by_category': products_by_category,
@@ -191,6 +201,7 @@ def staff_inventory(request):
                 product.category_id = data['category']
                 product.price = data['price']
                 product.stock_quantity = data['stock_quantity']
+                product.is_pinned = data.get('is_pinned') == 'on'
                 if image:
                     product.image = image
                 product.save()
@@ -200,7 +211,8 @@ def staff_inventory(request):
                     category_id=data['category'],
                     price=data['price'],
                     stock_quantity=data['stock_quantity'],
-                    image=image
+                    image=image,
+                    is_pinned=data.get('is_pinned') == 'on'
                 )
             return JsonResponse({
                 'success': True,
@@ -252,6 +264,7 @@ def get_product(request, product_id):
                 'category': product.category_id,
                 'price': product.price,
                 'stock_quantity': product.stock_quantity,
+                'is_pinned': product.is_pinned,
                 'image_url': product.image.url if product.image else None
             }
         })
