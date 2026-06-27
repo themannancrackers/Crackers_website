@@ -4132,16 +4132,16 @@
     /* ---------- DESKTOP MODE (>=769px) ---------- */
     @media (min-width: 769px) {
 
-        /* Show desktop table */
-        .order-table-wrapper table {
-            display: table !important;
+        /* Show desktop table wrapper */
+        .order-table-wrapper {
+            display: block !important;
         }
 
         /* Hide mobile cards */
         .mobile-product-item {
             display: none !important;
         }
-
+        
         /* Show category title bar */
         .category-title-bar {
             display: block !important;
@@ -4170,8 +4170,8 @@
     /* ---------- MOBILE MODE (<=768px) ---------- */
     @media (max-width: 768px) {
 
-        /* Hide desktop table */
-        .order-table-wrapper table {
+        /* Hide desktop table wrapper */
+        .order-table-wrapper {
             display: none !important;
         }
 
@@ -4310,9 +4310,8 @@
 
 {% block extra_js %}
 <script>
-    window.MIN_ORDER_AMOUNT = {{ min_order_amount }};
+    window.MIN_ORDER_AMOUNT = parseFloat("{{ min_order_amount }}") || 1999;
 </script>
-<script src="{% static 'inventory/checkout.js' %}"></script>
 <script>
 
     // =====================================================
