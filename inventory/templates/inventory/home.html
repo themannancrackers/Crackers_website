@@ -2171,7 +2171,7 @@
                             <div>
                                 <strong>Minimum Order Required!</strong>
                                 <p class="mb-0 mt-1">You need to add ₹<span id="shortfallAmount">0.00</span> more items
-                                    to reach the minimum order of ₹2499</p>
+                                    to reach the minimum order of ₹{{ min_order_amount }}</p>
                             </div>
                         </div>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -3822,15 +3822,16 @@
     <!-- 🎇 DIWALI SALES BANNER WITH DYNAMIC YEAR -->
     <div class="diwali-sales-banner">
         <h1 class="diwali-banner-title">
-            Diwali sales on {{ now.year }} Upto 80% off Minimum order 2499 rupees only
+            Diwali sales on {{ now.year }} Upto 80% off Minimum order {{ min_order_amount }} rupees only
         </h1>
     </div>
 
     <!-- 📌 PINNED/FEATURED PRODUCT DISPLAY SECTION -->
-    {% if pinned_product %}
+    <!-- 📌 PINNED/FEATURED PRODUCT DISPLAY SECTION -->
+    {% if pinned_products %}
     <div class="category-section" id="pinned-product-section" style="border: 2px solid var(--diwali-gold); border-radius: 12px; overflow: hidden; box-shadow: 0 0 20px rgba(255, 215, 0, 0.45); margin-bottom: 35px;">
         <div class="category-title-bar" style="background: linear-gradient(90deg, #ff8c00, #ffd700, #ff8c00); color: #1a1a2e; font-weight: 800; font-size: 1.15rem;">
-            🔥 FEATURED PRODUCT - MUST BUY! 🔥
+            🔥 FEATURED PRODUCTS - MUST BUY! 🔥
         </div>
 
         <div class="order-table-wrapper table-responsive">
@@ -3849,8 +3850,9 @@
                     </tr>
                 </thead>
                 <tbody>
+                    {% for pinned_product in pinned_products %}
                     <tr class="order-row" data-mrp="{{ pinned_product.price }}" data-product-id="{{ pinned_product.id }}">
-                        <td class="sno-col">1</td>
+                        <td class="sno-col">{{ forloop.counter }}</td>
 
                         <td class="img-col">
                             {% if pinned_product.image %}
@@ -3891,11 +3893,13 @@
                             ₹<span class="row-total-val">0.00</span>
                         </td>
                     </tr>
+                    {% endfor %}
                 </tbody>
             </table>
         </div>
 
-        <!-- Mobile product view for Pinned Product -->
+        <!-- Mobile product view for Pinned Products -->
+        {% for pinned_product in pinned_products %}
         <div class="mobile-product-item" data-product-id="{{ pinned_product.id }}" data-mrp="{{ pinned_product.price }}" style="border-bottom: none; background: rgba(255, 215, 0, 0.08); padding: 12px; border-radius: 8px; margin: 10px;">
             <div class="mobile-top">
                 <div class="mobile-img">
@@ -3927,6 +3931,7 @@
                 <div class="mobile-total">₹<span class="row-total-val">0.00</span></div>
             </div>
         </div>
+        {% endfor %}
     </div>
     {% endif %}
 
@@ -4304,6 +4309,9 @@
 
 
 {% block extra_js %}
+<script>
+    window.MIN_ORDER_AMOUNT = {{ min_order_amount }};
+</script>
 <script src="{% static 'inventory/checkout.js' %}"></script>
 <script>
 
@@ -4791,7 +4799,7 @@
 
     // =====================================================
 
-    const MIN_ORDER_AMOUNT = 2499;
+    const MIN_ORDER_AMOUNT = window.MIN_ORDER_AMOUNT || 1999;
 
     document.addEventListener("DOMContentLoaded", function () {
 

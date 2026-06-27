@@ -6,7 +6,7 @@ from django.views.decorators.http import require_http_methods
 from django.contrib.auth import get_user_model
 from django.db.models import Count, Sum
 from django.utils import timezone
-from .models import Product, Category, Order, OrderItem
+from .models import Product, Category, Order, OrderItem, SiteConfiguration
 from accounts.models import CustomUser
 from accounts.decorators import admin_required, staff_required, approved_user_required
 from django.template.loader import render_to_string
@@ -58,18 +58,18 @@ def serve_media(request, path):
 def home(request):
     from django.db.models import Prefetch, Q
     
-    # Get pinned product
-    pinned_product = Product.objects.filter(is_active=True, is_pinned=True).first()
+    # Get all pinned products
+    pinned_products = Product.objects.filter(is_active=True, is_pinned=True)
     
-    # Get all active products with their categories (excluding pinned product)
+    # Get all active products with their categories (excluding pinned products)
     products = Product.objects.filter(is_active=True).select_related('category')
-    if pinned_product:
-        products = products.exclude(id=pinned_product.id)
+    if pinned_products.exists():
+        products = products.exclude(id__in=pinned_products.values_list('id', flat=True))
 
     # Get categories with prefetched products - prevents N+1 query
     category_filter = Q(products__is_active=True)
-    if pinned_product:
-        category_filter &= ~Q(products=pinned_product)
+    if pinned_products.exists():
+        category_filter &= ~Q(products__in=pinned_products)
         
     categories_with_products = Category.objects.filter(
         category_filter
@@ -80,7 +80,7 @@ def home(request):
     products_by_category = {cat: list(cat.products.all()) for cat in categories_with_products}
 
     return render(request, 'inventory/home.html', {
-        'pinned_product': pinned_product,
+        'pinned_products': pinned_products,
         'products': products,
         'categories': categories_with_products,
         'products_by_category': products_by_category,
@@ -794,16 +794,16 @@ def quick_order_checkout(request, list_id):
                 )
         
         # Check minimum order amount
-        MIN_ORDER_AMOUNT = 2499
+        MIN_ORDER_AMOUNT = SiteConfiguration.get_min_order_amount()
         if total_amount < MIN_ORDER_AMOUNT:
             return utils.handle_api_error(
                 'minimum_order',
                 f'Minimum order amount is ₹{MIN_ORDER_AMOUNT}. Current total: ₹{total_amount:.2f}',
                 400,
                 {
-                    'minimum_required': MIN_ORDER_AMOUNT,
+                    'minimum_required': float(MIN_ORDER_AMOUNT),
                     'current_total': total_amount,
-                    'shortfall': MIN_ORDER_AMOUNT - total_amount,
+                    'shortfall': float(MIN_ORDER_AMOUNT) - total_amount,
                     'cart_items': cart_items,
                     'list_id': list_id
                 }
@@ -914,7 +914,7 @@ def checkout(request):
         phone = customer_data.get('phone', '').strip()
         address = customer_data.get('deliveryAddress', '').strip()
         
-        MIN_ORDER = 2499
+        MIN_ORDER = SiteConfiguration.get_min_order_amount()
 
         # Validation
         if not items_data:
@@ -1071,3 +1071,32 @@ def checkout(request):
             'success': False,
             'error': 'Error processing checkout'
         }, status=500)
+
+@require_http_methods(['POST'])
+@staff_required
+def update_settings(request):
+    try:
+        data = json.loads(request.body)
+        min_order_amount = data.get('min_order_amount')
+        if min_order_amount is None:
+            return JsonResponse({'success': False, 'error': 'min_order_amount is required'}, status=400)
+        
+        try:
+            min_order_amount = float(min_order_amount)
+            if min_order_amount < 0:
+                raise ValueError()
+        except ValueError:
+            return JsonResponse({'success': False, 'error': 'Invalid minimum order amount'}, status=400)
+
+        config, created = SiteConfiguration.objects.get_or_create(id=1)
+        config.min_order_amount = min_order_amount
+        config.save()
+        
+        return JsonResponse({
+            'success': True,
+            'message': f'Minimum order amount updated to ₹{min_order_amount:.2f}',
+            'min_order_amount': min_order_amount
+        })
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)}, status=500)
+

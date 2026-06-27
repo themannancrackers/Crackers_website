@@ -1,5 +1,9 @@
 from django.contrib import admin
-from .models import Category, Product
+from .models import Category, Product, SiteConfiguration
+
+@admin.register(SiteConfiguration)
+class SiteConfigurationAdmin(admin.ModelAdmin):
+    list_display = ('min_order_amount',)
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):

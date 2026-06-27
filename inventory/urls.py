@@ -37,4 +37,5 @@ urlpatterns = [
     path("safety/", views.safety, name="safety"),
     path("contact/", views.contact, name="contact"),
     path("myorder/", views.customer_orders, name="customer_orders"),
+    path("update-settings/", views.update_settings, name="update_settings"),
 ]
