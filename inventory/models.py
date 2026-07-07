@@ -17,6 +17,7 @@ class Category(models.Model):
 
 class Product(models.Model):
     name = models.CharField(max_length=200)
+    product_id = models.IntegerField(null=True, blank=True, unique=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products')
     price = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0)])
     stock_quantity = models.IntegerField(validators=[MinValueValidator(0)])
@@ -29,7 +30,11 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
-
+    def save(self, *args, **kwargs):
+        if not self.product_id:
+            max_id = Product.objects.aggregate(models.Max('product_id'))['product_id__max'] or 0
+            self.product_id = max_id + 1
+        super().save(*args, **kwargs)
 
     @property
     def is_low_stock(self):

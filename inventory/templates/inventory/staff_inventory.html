@@ -419,6 +419,7 @@
         <table class="table table-hover align-middle mb-0">
           <thead>
             <tr>
+              <th>ID</th>
               <th>Image</th>
               <th>Name</th>
               <th>Category</th>
@@ -433,6 +434,9 @@
             <tr class="product-row"
                 data-name="{{ product.name|lower }}"
                 data-category="{{ product.category.name|lower }}">
+
+              <!-- PRODUCT ID -->
+              <td class="d-none d-md-table-cell fw-bold text-warning">#{{ product.product_id }}</td>
 
               <!-- DESKTOP IMAGE -->
               <td class="d-none d-md-table-cell">
@@ -480,7 +484,7 @@
                     
                     <div class="mobile-card-info">
                       <div class="mobile-card-title">
-                        {{ product.name }}
+                        #{{ product.product_id }}. {{ product.name }}
                         {% if product.is_pinned %}
                         <span class="badge bg-warning text-dark" style="font-size: 0.7rem;"><i class="bi bi-pin-angle-fill"></i> Pinned</span>
                         {% endif %}
@@ -558,6 +562,10 @@
         <input type="hidden" name="product_id" value="">
         <div class="modal-body">
           <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label">Product ID (Display ID)</label>
+              <input type="number" class="form-control text-warning fw-bold" id="productDisplayId" name="product_id_display" style="border-color: var(--diwali-gold);" placeholder="Auto-generated if blank" min="1">
+            </div>
             <div class="col-md-6">
               <label class="form-label">Product Name</label>
               <input type="text" class="form-control" name="name" required>
@@ -678,6 +686,13 @@
           const isPinnedCheckbox = productForm.querySelector('input[name="is_pinned"]');
           if (isPinnedCheckbox) {
             isPinnedCheckbox.checked = product.is_pinned;
+          }
+
+          const displayIdInput = document.getElementById('productDisplayId');
+          if (product.product_id_display) {
+            displayIdInput.value = product.product_id_display;
+          } else {
+            displayIdInput.value = '';
           }
 
           if (product.image_url) {

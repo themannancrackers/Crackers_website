@@ -195,6 +195,20 @@ def staff_inventory(request):
             product_id = data.get('product_id')
             image = request.FILES.get('image')
             
+            display_id = data.get('product_id_display')
+            if display_id:
+                try:
+                    display_id = int(display_id)
+                    if display_id <= 0:
+                        return JsonResponse({'success': False, 'error': 'Product ID must be greater than 0.'})
+                    existing = Product.objects.filter(product_id=display_id)
+                    if product_id:
+                        existing = existing.exclude(id=product_id)
+                    if existing.exists():
+                        return JsonResponse({'success': False, 'error': f'Product ID {display_id} is already in use.'})
+                except ValueError:
+                    return JsonResponse({'success': False, 'error': 'Product ID must be a valid integer.'})
+
             if product_id:  # Edit existing product
                 product = Product.objects.get(id=product_id)
                 product.name = data['name']
@@ -202,18 +216,23 @@ def staff_inventory(request):
                 product.price = data['price']
                 product.stock_quantity = data['stock_quantity']
                 product.is_pinned = data.get('is_pinned') == 'on'
+                if display_id:
+                    product.product_id = display_id
                 if image:
                     product.image = image
                 product.save()
             else:  # Create new product
-                product = Product.objects.create(
-                    name=data['name'],
-                    category_id=data['category'],
-                    price=data['price'],
-                    stock_quantity=data['stock_quantity'],
-                    image=image,
-                    is_pinned=data.get('is_pinned') == 'on'
-                )
+                create_kwargs = {
+                    'name': data['name'],
+                    'category_id': data['category'],
+                    'price': data['price'],
+                    'stock_quantity': data['stock_quantity'],
+                    'image': image,
+                    'is_pinned': data.get('is_pinned') == 'on'
+                }
+                if display_id:
+                    create_kwargs['product_id'] = display_id
+                product = Product.objects.create(**create_kwargs)
             return JsonResponse({
                 'success': True,
                 'product_id': product.id,
@@ -260,6 +279,7 @@ def get_product(request, product_id):
             'success': True,
             'product': {
                 'id': product.id,
+                'product_id_display': product.product_id,
                 'name': product.name,
                 'category': product.category_id,
                 'price': product.price,
