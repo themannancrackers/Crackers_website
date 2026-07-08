@@ -403,6 +403,7 @@
 .left-text .title span {
     background: linear-gradient(90deg, #ffcc66, #df8b27);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
@@ -453,6 +454,7 @@
 .left-text .title span {
     background: linear-gradient(90deg, #ffcc66, #d98b2b);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
@@ -657,7 +659,7 @@
                                 {% else %}
                                     <p class="text-muted mb-1">No address provided yet.</p>
                                 {% endif %}
-                                <button class="btn btn-sm btn-outline-primary" onclick="toggleEditAddress({{ order.id }})">
+                                <button class="btn btn-sm btn-outline-primary" data-order-id="{{ order.id }}" onclick="toggleEditAddress(this.dataset.orderId)">
                                     <i class="bi bi-pencil"></i> Edit
                                 </button>
                             </div>
@@ -665,10 +667,10 @@
                             <div id="address-edit-{{ order.id }}" class="d-none">
                                 <textarea id="address-input-{{ order.id }}" class="form-control mb-2" rows="3">{{ order.address }}</textarea>
                                 <div class="d-flex gap-2">
-                                    <button class="btn btn-success btn-sm" onclick="saveAddress({{ order.id }})">
+                                    <button class="btn btn-success btn-sm" data-order-id="{{ order.id }}" onclick="saveAddress(this.dataset.orderId)">
                                         <i class="bi bi-check-lg"></i> Save
                                     </button>
-                                    <button class="btn btn-secondary btn-sm" onclick="toggleEditAddress({{ order.id }})">
+                                    <button class="btn btn-secondary btn-sm" data-order-id="{{ order.id }}" onclick="toggleEditAddress(this.dataset.orderId)">
                                         <i class="bi bi-x-lg"></i> Cancel
                                     </button>
                                 </div>
@@ -680,7 +682,7 @@
 
                         {% if order.status == 'delivered' %}
                         <div class="mt-4">
-                            <button class="btn" style="background: linear-gradient(135deg, var(--primary-color), #0a58ca); color: white; border: none; font-weight: 600;" onclick="downloadInvoice({{ order.id }})">
+                            <button class="btn" style="background: linear-gradient(135deg, var(--primary-color), #0a58ca); color: white; border: none; font-weight: 600;" data-order-id="{{ order.id }}" onclick="downloadInvoice(this.dataset.orderId)">
                                 <i class="bi bi-download"></i> Download Invoice
                             </button>
                         </div>
