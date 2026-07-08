@@ -3852,7 +3852,7 @@
                 <tbody>
                     {% for pinned_product in pinned_products %}
                     <tr class="order-row" data-mrp="{{ pinned_product.price }}" data-product-id="{{ pinned_product.id }}">
-                        <td class="sno-col">{{ forloop.counter }}</td>
+                        <td class="sno-col">{{ pinned_product.product_id }}</td>
 
                         <td class="img-col">
                             {% if pinned_product.image %}
@@ -3863,7 +3863,7 @@
                         </td>
 
                         <td class="name-col" style="color: #ffd700; font-weight: bold;">
-                            #{{ pinned_product.product_id }}. {{ pinned_product.name }}
+                            {{ pinned_product.name }}
                         </td>
 
                         <td class="content-col">
@@ -3965,7 +3965,7 @@
                 <tbody>
                     {% for product in products_in_category %}
                     <tr class="order-row" data-mrp="{{ product.price }}" data-product-id="{{ product.id }}">
-                        <td class="sno-col">{{ forloop.counter }}</td>
+                        <td class="sno-col">{{ product.product_id }}</td>
 
                         <td class="img-col">
                             {% if product.image %}
@@ -3976,7 +3976,7 @@
                         </td>
 
                         <td class="name-col">
-                            #{{ product.product_id }}. {{ product.name }}
+                            {{ product.name }}
                         </td>
 
                         <td class="content-col">
