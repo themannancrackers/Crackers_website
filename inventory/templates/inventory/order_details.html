@@ -44,7 +44,7 @@
             <tbody>
                 {% for item in items %}
 <tr>
-    <td data-label="Product">{{ item.product.name }}</td>
+    <td data-label="Product">#{{ item.product.product_id }}. {{ item.product.name }}</td>
     <td class="text-center" data-label="Qty">{{ item.quantity }}</td>
     <td class="text-end" data-label="Price">₹{{ item.price }}</td>
     <td class="text-end" data-label="Total">₹{{ item.total }}</td>

@@ -3863,7 +3863,7 @@
                         </td>
 
                         <td class="name-col" style="color: #ffd700; font-weight: bold;">
-                            {{ pinned_product.name }}
+                            #{{ pinned_product.product_id }}. {{ pinned_product.name }}
                         </td>
 
                         <td class="content-col">
@@ -3909,7 +3909,7 @@
                 </div>
 
                 <div class="mobile-info">
-                    <div class="mobile-name" style="color: #ffd700 !important; font-weight: bold;">{{ pinned_product.name }} <span class="badge bg-warning text-dark" style="font-size: 0.7rem; vertical-align: middle;">FEATURED</span></div>
+                    <div class="mobile-name" style="color: #ffd700 !important; font-weight: bold;">#{{ pinned_product.product_id }}. {{ pinned_product.name }} <span class="badge bg-warning text-dark" style="font-size: 0.7rem; vertical-align: middle;">FEATURED</span></div>
                     <div class="mobile-content">
                         {% if pinned_product.content %}{{ pinned_product.content }}{% else %}1 BOX{% endif %}
                     </div>
@@ -3976,7 +3976,7 @@
                         </td>
 
                         <td class="name-col">
-                            {{ product.name }}
+                            #{{ product.product_id }}. {{ product.name }}
                         </td>
 
                         <td class="content-col">
@@ -4024,7 +4024,7 @@
                 </div>
 
                 <div class="mobile-info">
-                    <div class="mobile-name">{{ product.name }}</div>
+                    <div class="mobile-name">#{{ product.product_id }}. {{ product.name }}</div>
                     <div class="mobile-content">
                         {% if product.content %}{{ product.content }}{% else %}1 BOX{% endif %}
                     </div>
@@ -4680,7 +4680,7 @@
             <div class="quick-order-product-item">
                 ${product.image_url ? `<img src="${product.image_url}" alt="${product.name}" class="quick-order-product-image">` : '<div style="width: 80px; height: 80px; background: #e0e0e0; border-radius: 8px; display: flex; align-items: center; justify-content: center;"><i class="bi bi-image" style="font-size: 2rem; color: #999;"></i></div>'}
                 <div class="quick-order-product-info">
-                    <div class="quick-order-product-name">${product.name}</div>
+                    <div class="quick-order-product-name">#${product.product_id_display}. ${product.name}</div>
                     <div class="quick-order-product-category">${product.category}</div>
                     <div class="quick-order-product-price">₹${product.price.toFixed(2)}</div>
                 </div>

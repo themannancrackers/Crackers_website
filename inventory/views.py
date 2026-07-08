@@ -736,6 +736,7 @@ def get_quick_order_lists(request):
             quick_list['products'] = [
                 {
                     'id': p.id,
+                    'product_id_display': p.product_id,
                     'name': p.name,
                     'price': float(p.price),
                     'category': p.category.name,
