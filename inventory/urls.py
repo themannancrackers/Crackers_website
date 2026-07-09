@@ -28,6 +28,8 @@ urlpatterns = [
     path('products/<int:product_id>/delete/', views.delete_product, name='delete_product'),
     path('products/<int:product_id>/', views.get_product, name='get_product'),
     path('categories/reorder/', views.update_category_order, name='update_category_order'),
+    path('categories/<int:category_id>/products/', views.get_category_products, name='get_category_products'),
+    path('products/reorder/', views.update_product_order, name='update_product_order'),
 
     # ✅ Customer routes
     path('orders/', views.customer_orders, name='customer_orders'),

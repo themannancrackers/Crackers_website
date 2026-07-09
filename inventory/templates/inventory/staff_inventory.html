@@ -412,6 +412,11 @@
           <i class="bi bi-arrow-down-up"></i> Reorder Categories
         </button>
 
+        <button class="btn btn-warning text-dark fw-bold" data-bs-toggle="modal" data-bs-target="#reorderProductsModal">
+          <i class="bi bi-arrow-down-up"></i> Reorder Products
+        </button>
+
+
       </div>
     </div>
     <div class="card-body">
@@ -616,11 +621,12 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Reorder Categories</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        <h5 class="modal-title text-warning fw-bold">Reorder Categories</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
-        <p class="text-muted small mb-3">Drag and drop categories using the handle to rearrange them.</p>
+        <p class="mb-3" style="color: rgba(255,255,255,0.75); font-size: 0.9rem;">Drag and drop categories using the handle to rearrange them.</p>
+
         <ul class="list-group" id="categoriesOrderList" style="max-height: 400px; overflow-y: auto;">
           {% for category in categories %}
           <li class="list-group-item d-flex align-items-center justify-content-between text-dark" data-id="{{ category.id }}">
@@ -628,6 +634,38 @@
             <i class="bi bi-arrows-move text-warning category-drag-handle" style="font-size: 1.2rem; cursor: grab;"></i>
           </li>
           {% endfor %}
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Reorder Products Modal -->
+<div class="modal fade" id="reorderProductsModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-warning fw-bold">Reorder Products</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="reorderCategorySelect" class="form-label text-white fw-bold">Select Category</label>
+          <select class="form-select bg-dark text-white border-warning" id="reorderCategorySelect">
+            <option value="">-- Choose Category --</option>
+            {% for category in categories %}
+            <option value="{{ category.id }}">{{ category.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        
+        <p class="mb-3" style="color: rgba(255,255,255,0.75); font-size: 0.9rem;">Select a category above, then drag and drop items using the handle to rearrange them.</p>
+
+        <ul class="list-group" id="productsOrderList" style="max-height: 400px; overflow-y: auto;">
+          <li class="list-group-item text-center text-muted" id="productsOrderPlaceholder">Please select a category</li>
         </ul>
       </div>
       <div class="modal-footer">
@@ -800,39 +838,154 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Sortable JS Category Reordering
   const categoriesList = document.getElementById("categoriesOrderList");
-  if (categoriesList) {
-    new Sortable(categoriesList, {
-      handle: '.category-drag-handle',
-      animation: 150,
-      ghostClass: 'list-group-item-warning',
-      onEnd: function (evt) {
-        const items = Array.from(categoriesList.querySelectorAll("li"));
-        const categoryIds = items.map(li => li.dataset.id);
+  
+  function initCategorySortable(SortableLib) {
+    if (categoriesList) {
+      new SortableLib(categoriesList, {
+        handle: '.category-drag-handle',
+        animation: 150,
+        ghostClass: 'list-group-item-warning',
+        onEnd: function (evt) {
+          const items = Array.from(categoriesList.querySelectorAll("li"));
+          const categoryIds = items.map(li => li.dataset.id);
 
-        fetch("/inventory/categories/reorder/", {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
-          },
-          body: JSON.stringify({ category_ids: categoryIds })
-        })
+          fetch("/inventory/categories/reorder/", {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+            },
+            body: JSON.stringify({ category_ids: categoryIds })
+          })
+          .then(res => res.json())
+          .then(data => {
+            if (data.success) {
+              sessionStorage.setItem('toastMessage', 'Categories reordered successfully!');
+              location.reload();
+            } else {
+              alert(data.error || "Failed to update category order.");
+            }
+          })
+          .catch(err => {
+            console.error(err);
+            alert("An error occurred while reordering categories.");
+          });
+        }
+      });
+    }
+  }
+
+  // Helper to ensure SortableJS is loaded before calling
+  function ensureSortable(callback) {
+    if (typeof Sortable !== 'undefined') {
+      callback(Sortable);
+    } else if (typeof window.Sortable !== 'undefined') {
+      callback(window.Sortable);
+    } else {
+      console.log("Sortable not found. Loading dynamically...");
+      const script = document.createElement('script');
+      script.src = "https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js";
+      script.onload = () => {
+        console.log("Sortable loaded dynamically.");
+        callback(typeof Sortable !== 'undefined' ? Sortable : window.Sortable);
+      };
+      script.onerror = () => {
+        console.error("Failed to load SortableJS dynamically.");
+      };
+      document.head.appendChild(script);
+    }
+  }
+
+  // Initialize Category Sortable
+  ensureSortable(initCategorySortable);
+
+  // Sortable JS Product Reordering
+  const reorderCategorySelect = document.getElementById("reorderCategorySelect");
+  const productsOrderList = document.getElementById("productsOrderList");
+  let productsSortable = null;
+
+  if (reorderCategorySelect && productsOrderList) {
+    reorderCategorySelect.addEventListener("change", function () {
+      const categoryId = this.value;
+      
+      if (!categoryId) {
+        productsOrderList.innerHTML = `<li class="list-group-item text-center text-muted" id="productsOrderPlaceholder">Please select a category</li>`;
+        if (productsSortable) {
+          productsSortable.destroy();
+          productsSortable = null;
+        }
+        return;
+      }
+
+      productsOrderList.innerHTML = `<li class="list-group-item text-center text-dark"><div class="spinner-border spinner-border-sm text-primary" role="status"></div> Loading products...</li>`;
+
+      const fetchUrl = `/inventory/categories/${categoryId}/products/`;
+
+      fetch(fetchUrl)
         .then(res => res.json())
         .then(data => {
           if (data.success) {
-            sessionStorage.setItem('toastMessage', 'Categories reordered successfully!');
-            location.reload();
+            if (data.products.length === 0) {
+              productsOrderList.innerHTML = `<li class="list-group-item text-center text-muted">No active products in this category</li>`;
+              return;
+            }
+
+            productsOrderList.innerHTML = data.products.map(p => `
+              <li class="list-group-item d-flex align-items-center justify-content-between text-dark" data-id="${p.id}">
+                <span>#${p.product_id}. ${p.name}</span>
+                <i class="bi bi-arrows-move text-warning product-drag-handle" style="font-size: 1.2rem; cursor: grab;"></i>
+              </li>
+            `).join('');
+
+            // Initialize Product Sortable using helper
+            ensureSortable((SortableLib) => {
+              if (productsSortable) {
+                productsSortable.destroy();
+              }
+              productsSortable = new SortableLib(productsOrderList, {
+                handle: '.product-drag-handle',
+                animation: 150,
+                ghostClass: 'list-group-item-warning',
+                onEnd: function (evt) {
+                  const items = Array.from(productsOrderList.querySelectorAll("li"));
+                  const productIds = items.map(li => li.dataset.id);
+
+                  fetch("/inventory/products/reorder/", {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json',
+                      'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                    },
+                    body: JSON.stringify({ product_ids: productIds })
+                  })
+                  .then(res => res.json())
+                  .then(data => {
+                    if (data.success) {
+                      sessionStorage.setItem('toastMessage', 'Products reordered and S.Nos shifted successfully!');
+                      location.reload();
+                    } else {
+                      alert(data.error || "Failed to update product order.");
+                    }
+                  })
+                  .catch(err => {
+                    console.error(err);
+                    alert("An error occurred while reordering products.");
+                  });
+                }
+              });
+            });
+
           } else {
-            alert(data.error || "Failed to update category order.");
+            productsOrderList.innerHTML = `<li class="list-group-item text-center text-danger">Error: ${data.error || "Failed to load products"}</li>`;
           }
         })
         .catch(err => {
-          console.error(err);
-          alert("An error occurred while reordering categories.");
+          console.error("Fetch error:", err);
+          productsOrderList.innerHTML = `<li class="list-group-item text-center text-danger">An error occurred while fetching products.</li>`;
         });
-      }
     });
   }
+
 
   window.saveMinOrder = function() {
     const minOrderVal = document.getElementById('minOrderInput').value;

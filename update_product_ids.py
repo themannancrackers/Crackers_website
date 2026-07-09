@@ -7,10 +7,15 @@ django.setup()
 from inventory.models import Product
 from django.db import transaction
 
-# Fetch all products sorted by category ordering, then current product_id, then database ID
-products = list(Product.objects.all().order_by('category__order', 'category__name', 'product_id', 'id'))
+# Fetch active products sorted by category ordering, then product order, then current product_id, then database ID
+active_products = list(Product.objects.filter(is_active=True).order_by('category__order', 'category__name', 'order', 'product_id', 'id'))
 
-print(f"Found {len(products)} products. Starting sequential update...")
+# Fetch inactive products sorted by category ordering, then product order, then current product_id, then database ID
+inactive_products = list(Product.objects.filter(is_active=False).order_by('category__order', 'category__name', 'order', 'product_id', 'id'))
+
+products = active_products + inactive_products
+
+print(f"Found {len(products)} products ({len(active_products)} active, {len(inactive_products)} inactive). Starting sequential update...")
 
 try:
     with transaction.atomic():
@@ -24,7 +29,7 @@ try:
             new_id = idx + 1
             product.product_id = new_id
             product.save()
-            print(f"Updated: ID {product.id} | '{product.name}' -> Product ID: {new_id}")
+            print(f"Updated: ID {product.id} | '{product.name}' (Active: {product.is_active}) -> Product ID: {new_id}")
             
     print("\n[SUCCESS] Successfully re-indexed all products starting from 1!")
 except Exception as e:

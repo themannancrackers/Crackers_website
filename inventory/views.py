@@ -62,9 +62,10 @@ def home(request):
     pinned_products = Product.objects.filter(is_active=True, is_pinned=True)
     
     # Get all active products with their categories (excluding pinned products)
-    products = Product.objects.filter(is_active=True).select_related('category')
+    products = Product.objects.filter(is_active=True).select_related('category').order_by('order', 'product_id', 'id')
     if pinned_products.exists():
         products = products.exclude(id__in=pinned_products.values_list('id', flat=True))
+
 
     # Get categories with prefetched products - prevents N+1 query
     category_filter = Q(products__is_active=True)
@@ -248,7 +249,7 @@ def staff_inventory(request):
     if search_query:
         products = products.filter(name__icontains=search_query)
     
-    products = products.order_by('category', 'name')
+    products = products.order_by('category__order', 'category__name', 'order', 'product_id', 'id')
     
     context = {
         'products': products,
@@ -307,6 +308,59 @@ def update_category_order(request):
         return JsonResponse({'success': True, 'message': 'Categories reordered successfully.'})
     except Exception as e:
         return JsonResponse({'success': False, 'error': str(e)})
+
+@login_required(login_url='account_login')
+@staff_required
+@require_http_methods(["GET"])
+def get_category_products(request, category_id):
+    try:
+        products = Product.objects.filter(category_id=category_id).order_by('order', 'product_id', 'id')
+        data = [{
+            'id': p.id,
+            'name': p.name,
+            'product_id': p.product_id,
+        } for p in products]
+        return JsonResponse({'success': True, 'products': data})
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)})
+
+@csrf_exempt
+@login_required(login_url='account_login')
+@staff_required
+@require_http_methods(["POST"])
+def update_product_order(request):
+    try:
+        data = json.loads(request.body)
+        product_ids = data.get('product_ids', [])
+        
+        from django.db import transaction
+        with transaction.atomic():
+            # Update the order field of products inside the category to match the new order
+            for index, p_id in enumerate(product_ids):
+                Product.objects.filter(id=p_id).update(order=index)
+                
+            # Perform sequential re-indexing of all products to shift/update product_id
+            # Fetch active products sorted by category__order, order, product_id, and id
+            active_products = list(Product.objects.filter(is_active=True).order_by('category__order', 'category__name', 'order', 'product_id', 'id'))
+            # Fetch inactive products sorted by category__order, order, product_id, and id
+            inactive_products = list(Product.objects.filter(is_active=False).order_by('category__order', 'category__name', 'order', 'product_id', 'id'))
+            
+            all_products = active_products + inactive_products
+            
+            # Step 1: Assign temporary large unique values to prevent unique constraint conflicts during update
+            for idx, p in enumerate(all_products):
+                p.product_id = 999999 + idx
+                p.save()
+                
+            # Step 2: Assign final sequential IDs starting from 1
+            for idx, p in enumerate(all_products):
+                p.product_id = idx + 1
+                p.save()
+                
+        return JsonResponse({'success': True, 'message': 'Products reordered and IDs updated successfully.'})
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)})
+
 
 from django.http import HttpResponse
 from io import BytesIO

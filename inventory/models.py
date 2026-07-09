@@ -25,6 +25,7 @@ class Product(models.Model):
     image = models.ImageField(upload_to='products/', blank=True, null=True)
     is_active = models.BooleanField(default=True)
     is_pinned = models.BooleanField(default=False, verbose_name="Pin to Top")
+    order = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
