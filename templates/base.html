@@ -1534,12 +1534,12 @@
 
   <style>
     /* Zoomable product images cursor style */
-    .img-col img, .mobile-img img, .mobile-card-img, .img-thumbnail {
+    .img-col img, .mobile-img img, .mobile-card-img, .img-thumbnail, .card-image-wrapper img, .quick-order-product-image, .about-grid img {
       cursor: pointer !important;
       pointer-events: auto !important; /* Override pointer-events: none from general img rule */
       transition: transform 0.2s ease;
     }
-    .img-col img:hover, .mobile-img img:hover, .mobile-card-img:hover, .img-thumbnail:hover {
+    .img-col img:hover, .mobile-img img:hover, .mobile-card-img:hover, .img-thumbnail:hover, .card-image-wrapper img:hover, .quick-order-product-image:hover, .about-grid img:hover {
       transform: scale(1.05);
     }
   </style>
@@ -1572,6 +1572,9 @@
             target.closest('.img-col') ||
             target.closest('.mobile-img') ||
             target.closest('.mobile-card-img') ||
+            target.closest('.card-image-wrapper') ||
+            target.closest('.about-grid') ||
+            target.classList.contains('quick-order-product-image') ||
             target.classList.contains('img-thumbnail')
           )) {
             e.preventDefault();
