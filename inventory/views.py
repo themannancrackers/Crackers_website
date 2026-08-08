@@ -1175,3 +1175,91 @@ def update_settings(request):
     except Exception as e:
         return JsonResponse({'success': False, 'error': str(e)}, status=500)
 
+
+# =====================================================
+# 🧾 STAFF & ADMIN ORDER MANAGEMENT & BILL PRINTING
+# =====================================================
+from django.http import HttpResponse, Http404
+from django.db.models import Q
+
+@staff_required
+def generate_invoice(request, order_id):
+    """
+    Staff/Admin only view to generate PDF bill or printable HTML invoice.
+    URL parameter format=pdf or download=pdf triggers direct PDF file download.
+    PDF filename format: 'Mannan Crackers YYYY-MM-DD.pdf'
+    """
+    try:
+        order = Order.objects.prefetch_related('items__product').get(id=order_id)
+    except Order.DoesNotExist:
+        raise Http404("Order not found")
+
+    fmt = request.GET.get('format', request.GET.get('download', '')).lower()
+    
+    if fmt == 'pdf':
+        pdf_bytes, filename = utils.generate_order_pdf(order)
+        if pdf_bytes:
+            response = HttpResponse(pdf_bytes, content_type='application/pdf')
+            response['Content-Disposition'] = f'attachment; filename="{filename}"'
+            return response
+        else:
+            return JsonResponse({'error': 'Failed to generate PDF invoice'}, status=500)
+
+    # HTML printable invoice for staff
+    order_items = order.items.select_related('product').all()
+    items = []
+    for item in order_items:
+        items.append({
+            'product': item.product,
+            'quantity': item.quantity,
+            'price': item.price,
+            'total': item.price * item.quantity,
+        })
+        
+    return render(request, 'inventory/invoice.html', {
+        'order': order,
+        'items': items,
+        'generation_date': timezone.now(),
+        'auto_print': request.GET.get('print') == 'true',
+        'logo_base64': utils.get_logo_base64(),
+    })
+
+
+@staff_required
+def staff_orders(request):
+    """
+    Dedicated Staff & Admin Orders Management Page.
+    Lists orders with prominent Customer Name display, status filtering, and print/download options.
+    """
+    status_filter = request.GET.get('status', 'all')
+    search_query = request.GET.get('q', '').strip()
+
+    orders_qs = Order.objects.prefetch_related('items__product').order_by('-created_at')
+
+    if status_filter != 'all':
+        orders_qs = orders_qs.filter(status=status_filter)
+
+    if search_query:
+        orders_qs = orders_qs.filter(
+            Q(full_name__icontains=search_query) |
+            Q(phone__icontains=search_query) |
+            Q(id__icontains=search_query)
+        )
+
+    orders_data = []
+    for ord_obj in orders_qs:
+        items = ord_obj.items.select_related('product').all()
+        orders_data.append({
+            'order': ord_obj,
+            'items': items,
+            'item_count': sum(i.quantity for i in items)
+        })
+
+    return render(request, 'inventory/staff_orders.html', {
+        'orders_data': orders_data,
+        'current_status': status_filter,
+        'search_query': search_query,
+        'status_choices': Order.STATUS_CHOICES,
+    })
+
+

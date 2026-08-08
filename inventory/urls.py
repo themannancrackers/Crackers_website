@@ -25,6 +25,8 @@ urlpatterns = [
 
     # ✅ Staff and Product routes
     path('staff/inventory/', views.staff_inventory, name='staff_inventory'),
+    path('staff/orders/', views.staff_orders, name='staff_orders'),
+    path('admin/orders/', views.staff_orders, name='admin_orders'),
     path('products/<int:product_id>/delete/', views.delete_product, name='delete_product'),
     path('products/<int:product_id>/', views.get_product, name='get_product'),
     path('categories/reorder/', views.update_category_order, name='update_category_order'),

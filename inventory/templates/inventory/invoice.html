@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8">
     <title>Invoice - The Mannan Crackers</title>
@@ -8,69 +9,233 @@
             font-family: Georgia, "Times New Roman", Times, serif;
             margin: 0;
             padding: 20px;
+            color: #1a1a2e;
+            background-color: #ffffff;
         }
-        .invoice-header {
+
+        @media print {
+            @page {
+                size: auto;
+                margin: 0mm;
+                /* Hides browser default header (title, date) and footer (URL, page numbers) */
+            }
+
+            body {
+                padding: 12mm 15mm;
+                background-color: #ffffff;
+            }
+
+            .no-print {
+                display: none !important;
+            }
+        }
+
+        .print-actions {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+
+        .btn-print-now {
+            background: linear-gradient(90deg, #ff8c00, #ffd700);
+            color: #1a1a2e;
+            padding: 10px 22px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(255, 140, 0, 0.3);
+            transition: all 0.2s ease;
+        }
+
+        .btn-print-now:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(255, 140, 0, 0.4);
+        }
+
+        .btn-back {
+            background: #1a1a2e;
+            color: #ffd700;
+            padding: 10px 20px;
+            border: 1px solid #ffd700;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-right: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-back:hover {
+            background: #2b2b48;
+            color: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .invoice-header-table {
+            width: 100%;
+            border-bottom: 3px solid #ff8c00;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+
+        .invoice-header-table td {
+            vertical-align: middle;
+        }
+
+        .logo-img-circle {
+            width: 75px;
+            height: 75px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #ff8c00;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .brand-title {
+            color: #d35400;
+            margin: 0;
+            font-size: 26px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .brand-subtitle {
+            margin: 4px 0 0 0;
+            color: #ff8c00;
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .tax-invoice-badge {
+            background-color: #1a1a2e;
+            color: #ffd700;
+            padding: 10px 18px;
+            font-size: 16px;
+            font-weight: bold;
             text-align: center;
-            margin-bottom: 30px;
+            border-radius: 6px;
         }
+
         .invoice-details {
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
+
         .invoice-details table {
             width: 100%;
         }
-        .invoice-details td {
-            padding: 5px;
+
+        .box {
+            background-color: #fffbf0;
+            border: 1px solid #ffb347;
+            padding: 12px 15px;
+            border-radius: 8px;
+            font-size: 13px;
+            line-height: 1.6;
         }
+
+        .box-title {
+            font-weight: bold;
+            color: #b30000;
+            font-size: 14px;
+            margin-bottom: 6px;
+            border-bottom: 1px solid #ffd700;
+            padding-bottom: 4px;
+        }
+
         .items-table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 30px;
         }
-        .items-table th, .items-table td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
+
         .items-table th {
-            background-color: #f5f5f5;
+            background-color: #1a1a2e;
+            color: #ffd700;
+            padding: 10px;
+            text-align: left;
+            font-size: 13px;
+            border: 1px solid #1a1a2e;
         }
-        .total-section {
-            text-align: right;
-            margin-top: 20px;
+
+        .items-table td {
+            border-bottom: 1px solid #e0e0e0;
+            border-left: 1px solid #f0f0f0;
+            border-right: 1px solid #f0f0f0;
+            padding: 10px;
+            font-size: 13px;
         }
+
+        .items-table tr:nth-child(even) {
+            background-color: #fafafa;
+        }
+
+        .total-row td {
+            font-weight: bold;
+            font-size: 15px;
+            border-top: 2px solid #1a1a2e;
+            background-color: #fffbf0;
+            color: #b30000;
+        }
+
         .footer {
-            margin-top: 50px;
+            margin-top: 40px;
             text-align: center;
             font-size: 12px;
             color: #666;
+            border-top: 1px solid #ff8c00;
+            padding-top: 15px;
         }
     </style>
 </head>
+
 <body>
-    <div class="invoice-header">
-        <h1>INVOICE</h1>
-        <h2>The Mannan Crackers</h2>
+    <div class="print-actions no-print">
+        <button onclick="goBack()" class="btn-back">
+            ⬅ Back to Orders
+        </button>
+        <button onclick="window.print()" class="btn-print-now">Print Bill Now</button>
     </div>
+
+    <table class="invoice-header-table">
+        <tr>
+            <td width="15%">
+                {% if logo_base64 %}
+                <img src="{{ logo_base64 }}" class="logo-img-circle" alt="The Mannan Crackers Logo">
+                {% endif %}
+            </td>
+            <td width="85%" style="padding-left: 15px;">
+                <h1 class="brand-title">The Mannan Crackers</h1>
+                <p class="brand-subtitle">✨ PREMIUM QUALITY FIREWORKS & COMBO PACKS ✨</p>
+            </td>
+        </tr>
+    </table>
 
     <div class="invoice-details">
         <table>
             <tr>
-                <td><strong>Date:</strong> {{ order.created_at|date:"F d, Y" }}</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td><strong>Customer:</strong> {{ order.full_name }}</td>
-                <td><strong>Status:</strong> {{ order.get_status_display }}</td>
-            </tr>
-            <tr>
-                <td><strong>Phone:</strong> {{ order.phone }}</td>
-                <td><strong>Email:</strong> {{ order.email }}</td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <strong>Shipping Address:</strong><br>
-                    {{ order.address }}
+                <td width="60%">
+                    <div class="box">
+                        <div class="box-title">👤 CUSTOMER DETAILS</div>
+                        <strong>Name:</strong> {{ order.full_name }}<br>
+                        <strong>Phone:</strong> {{ order.phone }}<br>
+                        {% if order.email %}<strong>Email:</strong> {{ order.email }}<br>{% endif %}
+                        <strong>Address:</strong> {{ order.address }}
+                    </div>
+                </td>
+                <td width="3%"></td>
+                <td width="37%">
+                    <div class="box">
+                        <div class="box-title">📅 BILL DATE</div>
+                        <div style="font-size: 15px; font-weight: bold; color: #1a1a2e; margin-top: 4px;">
+                            {{ generation_date|date:"F d, Y" }}
+                        </div>
+                    </div>
                 </td>
             </tr>
         </table>
@@ -79,34 +244,56 @@
     <table class="items-table">
         <thead>
             <tr>
-                <th>Product</th>
-                <th>Quantity</th>
-                <th>Price</th>
-                <th>Total</th>
+                <th width="8%">#</th>
+                <th width="52%">Product Description</th>
+                <th width="12%" style="text-align: center;">Quantity</th>
+                <th width="14%" style="text-align: right;">Price</th>
+                <th width="14%" style="text-align: right;">Total</th>
             </tr>
         </thead>
         <tbody>
             {% for item in items %}
             <tr>
-                <td>#{{ item.product.product_id }}. {{ item.product.name }}</td>
-                <td>{{ item.quantity }}</td>
-                <td>₹{{ item.price }}</td>
-                <td>₹{{ item.total }}</td>
+                <td>{{ forloop.counter }}</td>
+                <td>{% if item.product.product_id %}#{{ item.product.product_id }}. {% endif %}{{ item.product.name }}
+                </td>
+                <td style="text-align: center;">{{ item.quantity }}</td>
+                <td style="text-align: right;">₹{{ item.price }}</td>
+                <td style="text-align: right;">₹{{ item.total }}</td>
             </tr>
             {% endfor %}
-        </tbody>
-        <tfoot>
-            <tr>
-                <td colspan="3" style="text-align: right;"><strong>Total Amount:</strong></td>
-                <td><strong>₹{{ order.total_amount }}</strong></td>
+            <tr class="total-row">
+                <td colspan="4" style="text-align: right;">Grand Total:</td>
+                <td style="text-align: right;">₹{{ order.total_amount }}</td>
             </tr>
-        </tfoot>
+        </tbody>
     </table>
 
     <div class="footer">
-        <p>Thank you for shopping with The Mannan Crackers!</p>
-        <p>For any queries, please contact us at themannancrackers@gmail.com</p>
-        <p>Generated on: {{ generation_date|date:"F d, Y H:i" }}</p>
+        <p style="font-weight: bold; color: #1a1a2e; margin-bottom: 3px;">Thank you for shopping with The Mannan
+            Crackers!</p>
+        <p style="margin: 0;">For customer support & order inquiries, please contact us at themannancrackers@gmail.com
+        </p>
     </div>
+
+    <script>
+        function goBack() {
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                window.location.href = "{% url 'inventory:staff_orders' %}";
+            }
+        }
+    </script>
+    {% if auto_print %}
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                window.print();
+            }, 300);
+        });
+    </script>
+    {% endif %}
 </body>
+
 </html>

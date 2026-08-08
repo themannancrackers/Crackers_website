@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Invoice - The Mannan Crackers</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 12mm;
+        }
+        body {
+            font-family: Helvetica, Arial, sans-serif;
+            font-size: 11px;
+            color: #1a1a2e;
+        }
+        .header-table {
+            width: 100%;
+            border-bottom: 3px solid #ff8c00;
+            padding-bottom: 10px;
+            margin-bottom: 18px;
+        }
+        .header-table td {
+            vertical-align: middle;
+        }
+        .logo-img-circle {
+            width: 68px;
+            height: 68px;
+        }
+        .brand-title {
+            color: #d35400;
+            margin: 0;
+            font-size: 22px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .brand-subtitle {
+            margin: 3px 0 0 0;
+            color: #ff8c00;
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        .invoice-badge {
+            background-color: #1a1a2e;
+            color: #ffd700;
+            padding: 8px 14px;
+            font-size: 14px;
+            font-weight: bold;
+            text-align: center;
+            border-radius: 4px;
+        }
+        .info-table {
+            width: 100%;
+            margin-bottom: 18px;
+        }
+        .info-table td {
+            vertical-align: top;
+            padding: 4px;
+        }
+        .box {
+            background-color: #fffbf0;
+            border: 1px solid #ffb347;
+            padding: 10px 12px;
+            border-radius: 5px;
+            font-size: 11px;
+            line-height: 1.5;
+        }
+        .box-title {
+            font-weight: bold;
+            color: #b30000;
+            font-size: 12px;
+            margin-bottom: 6px;
+            border-bottom: 1px solid #ffd700;
+            padding-bottom: 4px;
+        }
+        .items-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 8px;
+            margin-bottom: 18px;
+        }
+        .items-table th {
+            background-color: #1a1a2e;
+            color: #ffd700;
+            padding: 8px 6px;
+            text-align: left;
+            font-size: 11px;
+            font-weight: bold;
+            border: 1px solid #1a1a2e;
+        }
+        .items-table td {
+            border-bottom: 1px solid #e0e0e0;
+            border-left: 1px solid #f0f0f0;
+            border-right: 1px solid #f0f0f0;
+            padding: 7px 6px;
+            font-size: 10.5px;
+        }
+        .items-table tr:nth-child(even) {
+            background-color: #fafafa;
+        }
+        .total-row td {
+            font-weight: bold;
+            font-size: 12.5px;
+            border-top: 2px solid #1a1a2e;
+            background-color: #fffbf0;
+            color: #b30000;
+        }
+        .footer {
+            margin-top: 25px;
+            text-align: center;
+            font-size: 10px;
+            color: #555555;
+            border-top: 1px solid #ff8c00;
+            padding-top: 8px;
+        }
+    </style>
+</head>
+<body>
+    <table class="header-table">
+        <tr>
+            <td width="15%">
+                {% if logo_base64 %}
+                <img src="{{ logo_base64 }}" class="logo-img-circle" alt="The Mannan Crackers Logo">
+                {% endif %}
+            </td>
+            <td width="85%" style="padding-left: 10px;">
+                <h1 class="brand-title">The Mannan Crackers</h1>
+                <p class="brand-subtitle">✨ PREMIUM QUALITY FIREWORKS & COMBO PACKS ✨</p>
+            </td>
+        </tr>
+    </table>
+
+    <table class="info-table">
+        <tr>
+            <td width="62%">
+                <div class="box">
+                    <div class="box-title">👤 CUSTOMER DETAILS</div>
+                    <strong>Name:</strong> {{ order.full_name }}<br>
+                    <strong>Phone:</strong> {{ order.phone }}<br>
+                    {% if order.email %}<strong>Email:</strong> {{ order.email }}<br>{% endif %}
+                    <strong>Address:</strong> {{ order.address }}
+                </div>
+            </td>
+            <td width="38%">
+                <div class="box">
+                    <div class="box-title">📅 BILL DATE</div>
+                    <div style="font-size: 14px; font-weight: bold; color: #1a1a2e; margin-top: 4px;">
+                        {{ today_date|date:"F d, Y" }}
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <table class="items-table">
+        <thead>
+            <tr>
+                <th width="8%">#</th>
+                <th width="52%">Product Description</th>
+                <th width="12%" style="text-align: center;">Qty</th>
+                <th width="14%" style="text-align: right;">Price</th>
+                <th width="14%" style="text-align: right;">Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{% if item.product.product_id %}#{{ item.product.product_id }} - {% endif %}{{ item.product.name }}</td>
+                <td style="text-align: center;">{{ item.quantity }}</td>
+                <td style="text-align: right;">₹{{ item.price }}</td>
+                <td style="text-align: right;">₹{{ item.total }}</td>
+            </tr>
+            {% endfor %}
+            <tr class="total-row">
+                <td colspan="4" style="text-align: right;">Grand Total:</td>
+                <td style="text-align: right;">₹{{ order.total_amount }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="footer">
+        <p style="font-weight: bold; color: #1a1a2e; margin-bottom: 2px;">Thank you for shopping with The Mannan Crackers!</p>
+        <p style="margin: 0;">For customer support & order inquiries, please contact us.</p>
+    </div>
+</body>
+</html>

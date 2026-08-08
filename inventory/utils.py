@@ -1,19 +1,100 @@
-from django.core.mail import send_mail
+from django.core.mail import send_mail, EmailMessage
 from django.template.loader import render_to_string
 from django.conf import settings
+from django.utils import timezone
 from decimal import Decimal
+import io
+import os
+import base64
+import logging
+from django.core.exceptions import ValidationError
+from xhtml2pdf import pisa
+
+logger = logging.getLogger(__name__)
 
 def format_currency(amount):
     """Format amount as currency"""
     return f"₹{Decimal(amount):.2f}"
 
-import logging
-from django.core.exceptions import ValidationError
+from PIL import Image, ImageDraw
 
-logger = logging.getLogger(__name__)
+def get_logo_base64():
+    """Get base64 string of the circular company logo for embedding in HTML & PDF templates."""
+    try:
+        logo_path = os.path.join(settings.BASE_DIR, 'static', 'images', 'kannan_logo.png')
+        if os.path.exists(logo_path):
+            img = Image.open(logo_path).convert("RGBA")
+            size = min(img.size)
+            
+            # Crop to centered square
+            left = (img.width - size) // 2
+            top = (img.height - size) // 2
+            img_square = img.crop((left, top, left + size, top + size))
+            
+            # Apply circular mask
+            mask = Image.new('L', (size, size), 0)
+            draw = ImageDraw.Draw(mask)
+            draw.ellipse((0, 0, size, size), fill=255)
+            
+            circular_img = Image.new('RGBA', (size, size), (255, 255, 255, 0))
+            circular_img.paste(img_square, (0, 0), mask)
+            
+            # Resize for optimal rendering & small PDF payload size
+            circular_img.thumbnail((300, 300), Image.Resampling.LANCZOS)
+            
+            buffer = io.BytesIO()
+            circular_img.save(buffer, format="PNG")
+            encoded = base64.b64encode(buffer.getvalue()).decode('utf-8')
+            return f"data:image/png;base64,{encoded}"
+    except Exception as e:
+        logger.warning(f"Could not load logo base64: {str(e)}")
+    return ""
+
+def generate_order_pdf(order):
+    """
+    Generate PDF bytes and custom filename for an Order object.
+    Filename format: 'Mannan Crackers YYYY-MM-DD.pdf'
+    """
+    try:
+        items = order.items.select_related('product').all()
+        today_date = timezone.now()
+        date_str = today_date.strftime('%Y-%m-%d')
+        filename = f"Mannan Crackers {date_str}.pdf"
+
+        formatted_items = []
+        for item in items:
+            price = Decimal(str(item.price))
+            qty = Decimal(str(item.quantity))
+            total = price * qty
+            formatted_items.append({
+                'product': item.product,
+                'quantity': item.quantity,
+                'price': price,
+                'total': total
+            })
+
+        context = {
+            'order': order,
+            'items': formatted_items,
+            'today_date': today_date,
+            'logo_base64': get_logo_base64(),
+        }
+
+        html_content = render_to_string('inventory/invoice_pdf.html', context)
+        pdf_buffer = io.BytesIO()
+        pisa_status = pisa.CreatePDF(html_content, dest=pdf_buffer)
+
+        if pisa_status.err:
+            logger.error(f"Error rendering PDF for Order #{order.id}: {pisa_status.err}")
+            return None, filename
+
+        return pdf_buffer.getvalue(), filename
+    except Exception as e:
+        logger.error(f"Failed to generate order PDF: {str(e)}")
+        return None, f"Mannan Crackers {timezone.now().strftime('%Y-%m-%d')}.pdf"
 
 def send_order_confirmation(order):
-    """Send order confirmation email to customer using Order object."""
+    """Send order confirmation email to customer using Order object, with attached PDF bill."""
     try:
         subject = f'Order Confirmation - The Mannan Crackers [ORD-{order.id:06d}]'
         
@@ -49,7 +130,6 @@ def send_order_confirmation(order):
             'phone': order.phone,
             'email': order.email,
             'order_number': f'ORD-{order.id:06d}',
-            # Only used in some templates if they iterate over cart_items, else items_html is used
             'cart_items': [{'name': i.product.name, 'quantity': i.quantity, 'price': i.price} for i in order_items]
         }
 
@@ -62,17 +142,24 @@ def send_order_confirmation(order):
             html_message = None
             plain_message = f"Order Confirmation\n\nThank you for your order!\n\nOrder Total: {context['order_total']}\nDelivery Address: {context['delivery_address']}"
 
-        # Send email with error handling
+        # Send email with PDF attachment
         try:
-            send_mail(
+            email_msg = EmailMessage(
                 subject=subject,
-                message=plain_message,
+                body=plain_message,
                 from_email=settings.DEFAULT_FROM_EMAIL,
-                recipient_list=[order.email],
-                html_message=html_message,
-                fail_silently=False
+                to=[order.email],
             )
-            logger.info(f"✅ Order confirmation email sent successfully to {order.email}")
+            if html_message:
+                email_msg.attach_alternative(html_message, "text/html")
+            
+            # Attach PDF bill: "Mannan Crackers YYYY-MM-DD.pdf"
+            pdf_bytes, pdf_filename = generate_order_pdf(order)
+            if pdf_bytes:
+                email_msg.attach(pdf_filename, pdf_bytes, "application/pdf")
+                
+            email_msg.send(fail_silently=False)
+            logger.info(f"✅ Order confirmation email with PDF attached sent successfully to {order.email}")
             return True
             
         except Exception as smtp_error:
