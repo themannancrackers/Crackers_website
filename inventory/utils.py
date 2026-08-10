@@ -21,14 +21,24 @@ from PIL import Image, ImageDraw
 def get_logo_base64():
     """Get base64 string of the circular company logo for embedding in PDF & printable HTML invoices."""
     try:
-        # Check media/profile_pictures/Mannan_logo.png first, fallback to static if needed
-        logo_path = os.path.join(settings.MEDIA_ROOT, 'profile_pictures', 'Mannan_logo.png')
-        if not os.path.exists(logo_path):
-            logo_path = os.path.join(settings.BASE_DIR, 'media', 'profile_pictures', 'Mannan_logo.png')
-        if not os.path.exists(logo_path):
-            logo_path = os.path.join(settings.BASE_DIR, 'static', 'images', 'Mannan_logo.png')
+        # Search possible production paths for Mannan_logo (png, PNG, jpg, etc.)
+        possible_paths = [
+            os.path.join(settings.MEDIA_ROOT, 'profile_pictures', 'Mannan_logo.png'),
+            os.path.join(settings.MEDIA_ROOT, 'profile_pictures', 'Mannan_logo.PNG'),
+            os.path.join(settings.BASE_DIR, 'media', 'profile_pictures', 'Mannan_logo.png'),
+            os.path.join(settings.BASE_DIR, 'media', 'profile_pictures', 'Mannan_logo.PNG'),
+            os.path.join(settings.STATIC_ROOT or '', 'images', 'Mannan_logo.png'),
+            os.path.join(settings.BASE_DIR, 'static', 'images', 'Mannan_logo.png'),
+            os.path.join(settings.BASE_DIR, 'static', 'images', 'kannan_logo.png'),
+        ]
+        
+        logo_path = None
+        for p in possible_paths:
+            if p and os.path.exists(p):
+                logo_path = p
+                break
             
-        if os.path.exists(logo_path):
+        if logo_path:
             img = Image.open(logo_path).convert("RGBA")
             size = min(img.size)
             
