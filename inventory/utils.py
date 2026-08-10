@@ -39,31 +39,11 @@ def get_logo_base64():
                 break
             
         if logo_path:
-            img = Image.open(logo_path).convert("RGBA")
-            # If square enough, apply circle mask; otherwise preserve entire logo
-            width, height = img.size
-            if abs(width - height) / max(width, height) < 0.2:
-                size = min(width, height)
-                left = (width - size) // 2
-                top = (height - size) // 2
-                img_square = img.crop((left, top, left + size, top + size))
-                
-                mask = Image.new('L', (size, size), 0)
-                draw = ImageDraw.Draw(mask)
-                draw.ellipse((0, 0, size, size), fill=255)
-                
-                circular_img = Image.new('RGBA', (size, size), (255, 255, 255, 0))
-                circular_img.paste(img_square, (0, 0), mask)
-                final_img = circular_img
-            else:
-                final_img = img
-                
-            final_img.thumbnail((300, 300), Image.Resampling.LANCZOS)
-            
-            buffer = io.BytesIO()
-            final_img.save(buffer, format="PNG")
-            encoded = base64.b64encode(buffer.getvalue()).decode('utf-8')
-            return f"data:image/png;base64,{encoded}"
+            with open(logo_path, "rb") as f:
+                encoded = base64.b64encode(f.read()).decode('utf-8')
+            ext = os.path.splitext(logo_path)[1].lower().replace('.', '')
+            if ext == 'jpg': ext = 'jpeg'
+            return f"data:image/{ext};base64,{encoded}"
         else:
             logger.warning(f"No valid logo file found in search paths: {possible_paths}")
     except Exception as e:
