@@ -64,8 +64,10 @@ def get_logo_base64():
             final_img.save(buffer, format="PNG")
             encoded = base64.b64encode(buffer.getvalue()).decode('utf-8')
             return f"data:image/png;base64,{encoded}"
+        else:
+            logger.warning(f"No valid logo file found in search paths: {possible_paths}")
     except Exception as e:
-        logger.warning(f"Could not load logo base64: {str(e)}")
+        logger.error(f"Error generating logo base64: {str(e)}", exc_info=True)
     return ""
 
 def generate_order_pdf(order):
