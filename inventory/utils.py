@@ -19,9 +19,15 @@ def format_currency(amount):
 from PIL import Image, ImageDraw
 
 def get_logo_base64():
-    """Get base64 string of the circular company logo for embedding in HTML & PDF templates."""
+    """Get base64 string of the circular company logo for embedding in PDF & printable HTML invoices."""
     try:
-        logo_path = os.path.join(settings.BASE_DIR, 'static', 'images', 'kannan_logo.png')
+        # Check media/profile_pictures/Mannan_logo.png first, fallback to static if needed
+        logo_path = os.path.join(settings.MEDIA_ROOT, 'profile_pictures', 'Mannan_logo.png')
+        if not os.path.exists(logo_path):
+            logo_path = os.path.join(settings.BASE_DIR, 'media', 'profile_pictures', 'Mannan_logo.png')
+        if not os.path.exists(logo_path):
+            logo_path = os.path.join(settings.BASE_DIR, 'static', 'images', 'Mannan_logo.png')
+            
         if os.path.exists(logo_path):
             img = Image.open(logo_path).convert("RGBA")
             size = min(img.size)

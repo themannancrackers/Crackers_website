@@ -9,7 +9,7 @@
             font-family: Georgia, "Times New Roman", Times, serif;
             margin: 0;
             padding: 20px;
-            color: #1a1a2e;
+            color: #000000;
             background-color: #ffffff;
         }
 
@@ -23,10 +23,26 @@
             body {
                 padding: 12mm 15mm;
                 background-color: #ffffff;
+                color: #000000;
             }
 
             .no-print {
                 display: none !important;
+            }
+
+            .items-table th, .total-row td, .items-table td {
+                background-color: #ffffff !important;
+                color: #000000 !important;
+                border: 1px solid #000000 !important;
+            }
+
+            .items-table th, .total-row td {
+                background-color: #f0f0f0 !important;
+            }
+
+            .box {
+                background-color: #ffffff !important;
+                border: 1px solid #000000 !important;
             }
         }
 
@@ -36,49 +52,47 @@
         }
 
         .btn-print-now {
-            background: linear-gradient(90deg, #ff8c00, #ffd700);
-            color: #1a1a2e;
+            background: #000000;
+            color: #ffffff;
             padding: 10px 22px;
-            border: none;
+            border: 1px solid #000000;
             border-radius: 8px;
             font-size: 15px;
             font-weight: bold;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(255, 140, 0, 0.3);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
             transition: all 0.2s ease;
         }
 
         .btn-print-now:hover {
+            background: #333333;
             transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(255, 140, 0, 0.4);
         }
 
         .btn-back {
-            background: #1a1a2e;
-            color: #ffd700;
+            background: #ffffff;
+            color: #000000;
             padding: 10px 20px;
-            border: 1px solid #ffd700;
+            border: 1px solid #000000;
             border-radius: 8px;
             font-size: 14px;
             font-weight: bold;
             cursor: pointer;
             margin-right: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
             transition: all 0.2s ease;
             text-decoration: none;
             display: inline-block;
         }
 
         .btn-back:hover {
-            background: #2b2b48;
-            color: #ffffff;
+            background: #f0f0f0;
             transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
         }
 
         .invoice-header-table {
             width: 100%;
-            border-bottom: 3px solid #ff8c00;
+            border-bottom: 2px solid #000000;
             padding-bottom: 15px;
             margin-bottom: 25px;
         }
@@ -92,12 +106,11 @@
             height: 75px;
             border-radius: 50%;
             object-fit: cover;
-            border: 2px solid #ff8c00;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border: 1px solid #000000;
         }
 
         .brand-title {
-            color: #d35400;
+            color: #000000;
             margin: 0;
             font-size: 26px;
             font-weight: bold;
@@ -106,15 +119,16 @@
 
         .brand-subtitle {
             margin: 4px 0 0 0;
-            color: #ff8c00;
+            color: #333333;
             font-size: 12px;
             font-weight: bold;
             letter-spacing: 1px;
         }
 
         .tax-invoice-badge {
-            background-color: #1a1a2e;
-            color: #ffd700;
+            background-color: #ffffff;
+            color: #000000;
+            border: 2px solid #000000;
             padding: 10px 18px;
             font-size: 16px;
             font-weight: bold;
@@ -131,21 +145,23 @@
         }
 
         .box {
-            background-color: #fffbf0;
-            border: 1px solid #ffb347;
+            background-color: #ffffff;
+            border: 1px solid #000000;
             padding: 12px 15px;
-            border-radius: 8px;
+            border-radius: 6px;
             font-size: 13px;
             line-height: 1.6;
+            color: #000000;
         }
 
         .box-title {
             font-weight: bold;
-            color: #b30000;
+            color: #000000;
             font-size: 14px;
             margin-bottom: 6px;
-            border-bottom: 1px solid #ffd700;
+            border-bottom: 1px solid #000000;
             padding-bottom: 4px;
+            text-transform: uppercase;
         }
 
         .items-table {
@@ -155,40 +171,39 @@
         }
 
         .items-table th {
-            background-color: #1a1a2e;
-            color: #ffd700;
+            background-color: #f0f0f0;
+            color: #000000;
             padding: 10px;
             text-align: left;
             font-size: 13px;
-            border: 1px solid #1a1a2e;
+            border: 1px solid #000000;
         }
 
         .items-table td {
-            border-bottom: 1px solid #e0e0e0;
-            border-left: 1px solid #f0f0f0;
-            border-right: 1px solid #f0f0f0;
+            border: 1px solid #000000;
             padding: 10px;
             font-size: 13px;
+            color: #000000;
         }
 
         .items-table tr:nth-child(even) {
-            background-color: #fafafa;
+            background-color: #ffffff;
         }
 
         .total-row td {
             font-weight: bold;
             font-size: 15px;
-            border-top: 2px solid #1a1a2e;
-            background-color: #fffbf0;
-            color: #b30000;
+            border-top: 2px solid #000000;
+            background-color: #f0f0f0;
+            color: #000000;
         }
 
         .footer {
             margin-top: 40px;
             text-align: center;
             font-size: 12px;
-            color: #666;
-            border-top: 1px solid #ff8c00;
+            color: #000000;
+            border-top: 1px solid #000000;
             padding-top: 15px;
         }
     </style>
@@ -211,7 +226,7 @@
             </td>
             <td width="85%" style="padding-left: 15px;">
                 <h1 class="brand-title">The Mannan Crackers</h1>
-                <p class="brand-subtitle">✨ PREMIUM QUALITY FIREWORKS & COMBO PACKS ✨</p>
+                <p class="brand-subtitle">PREMIUM QUALITY FIREWORKS & COMBO PACKS</p>
             </td>
         </tr>
     </table>
@@ -221,7 +236,7 @@
             <tr>
                 <td width="60%">
                     <div class="box">
-                        <div class="box-title">👤 CUSTOMER DETAILS</div>
+                        <div class="box-title">CUSTOMER DETAILS</div>
                         <strong>Name:</strong> {{ order.full_name }}<br>
                         <strong>Phone:</strong> {{ order.phone }}<br>
                         {% if order.email %}<strong>Email:</strong> {{ order.email }}<br>{% endif %}
@@ -231,8 +246,8 @@
                 <td width="3%"></td>
                 <td width="37%">
                     <div class="box">
-                        <div class="box-title">📅 BILL DATE</div>
-                        <div style="font-size: 15px; font-weight: bold; color: #1a1a2e; margin-top: 4px;">
+                        <div class="box-title">BILL DATE</div>
+                        <div style="font-size: 15px; font-weight: bold; color: #000000; margin-top: 4px;">
                             {{ generation_date|date:"F d, Y" }}
                         </div>
                     </div>
@@ -270,7 +285,7 @@
     </table>
 
     <div class="footer">
-        <p style="font-weight: bold; color: #1a1a2e; margin-bottom: 3px;">Thank you for shopping with The Mannan
+        <p style="font-weight: bold; color: #000000; margin-bottom: 3px;">Thank you for shopping with The Mannan
             Crackers!</p>
         <p style="margin: 0;">For customer support & order inquiries, please contact us at themannancrackers@gmail.com
         </p>
