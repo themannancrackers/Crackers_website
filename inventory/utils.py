@@ -297,18 +297,3 @@ def handle_api_error(error_type, message, status_code=400, extra_data=None):
     return JsonResponse(response_data, status=status_code)
 
 
-def get_error_message(error_type):
-    """Get user-friendly error message based on error type"""
-    messages = {
-        'validation': 'The data you provided is invalid. Please check and try again.',
-        'authentication': 'You need to log in to perform this action.',
-        'permission': 'You don\'t have permission to perform this action.',
-        'not_found': 'The requested resource was not found.',
-        'server': 'An unexpected error occurred on our servers. Please try again later.',
-        'network': 'Network connection error. Please check your internet and try again.',
-        'checkout': 'An error occurred during checkout. Please review your information and try again.',
-        'payment': 'Payment processing failed. Please try again or contact support.',
-        'stock': 'Some items in your cart are no longer available. Please review your order.',
-        'minimum_order': 'Minimum order amount not met. Please add more items to your cart.',
-    }
-    return messages.get(error_type, 'An unexpected error occurred. Please try again.')
