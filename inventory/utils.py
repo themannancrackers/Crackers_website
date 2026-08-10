@@ -23,18 +23,16 @@ def get_logo_base64():
     try:
         # Search possible production paths for Mannan_logo (png, PNG, jpg, etc.)
         possible_paths = [
+            os.path.join(settings.BASE_DIR, 'static', 'images', 'Mannan_logo.png'),
+            os.path.join(settings.BASE_DIR, 'media', 'profile_pictures', 'Mannan_logo.png'),
+            os.path.join(settings.MEDIA_ROOT, 'profile_pictures', 'Mannan_logo.png'),
             os.path.join(settings.BASE_DIR, 'staticfiles', 'images', 'Mannan_logo.png'),
             os.path.join(settings.STATIC_ROOT or '', 'images', 'Mannan_logo.png'),
-            os.path.join(settings.BASE_DIR, 'static', 'images', 'Mannan_logo.png'),
-            os.path.join(settings.MEDIA_ROOT, 'profile_pictures', 'Mannan_logo.png'),
-            os.path.join(settings.MEDIA_ROOT, 'profile_pictures', 'Mannan_logo.PNG'),
-            os.path.join(settings.BASE_DIR, 'media', 'profile_pictures', 'Mannan_logo.png'),
-            os.path.join(settings.BASE_DIR, 'static', 'images', 'kannan_logo.png'),
         ]
         
         logo_path = None
         for p in possible_paths:
-            if p and os.path.exists(p):
+            if p and os.path.exists(p) and os.path.getsize(p) > 0:
                 logo_path = p
                 break
             
