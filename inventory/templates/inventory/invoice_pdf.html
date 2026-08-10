@@ -123,8 +123,11 @@
     <table class="header-table">
         <tr>
             <td width="15%">
+                {% load static %}
                 {% if logo_base64 %}
                 <img src="{{ logo_base64 }}" class="logo-img-circle" alt="The Mannan Crackers Logo">
+                {% else %}
+                <img src="{% static 'images/Mannan_logo.png' %}" class="logo-img-circle" alt="The Mannan Crackers Logo">
                 {% endif %}
             </td>
             <td width="85%" style="padding-left: 10px;">
