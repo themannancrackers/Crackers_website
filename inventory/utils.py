@@ -40,26 +40,28 @@ def get_logo_base64():
             
         if logo_path:
             img = Image.open(logo_path).convert("RGBA")
-            size = min(img.size)
-            
-            # Crop to centered square
-            left = (img.width - size) // 2
-            top = (img.height - size) // 2
-            img_square = img.crop((left, top, left + size, top + size))
-            
-            # Apply circular mask
-            mask = Image.new('L', (size, size), 0)
-            draw = ImageDraw.Draw(mask)
-            draw.ellipse((0, 0, size, size), fill=255)
-            
-            circular_img = Image.new('RGBA', (size, size), (255, 255, 255, 0))
-            circular_img.paste(img_square, (0, 0), mask)
-            
-            # Resize for optimal rendering & small PDF payload size
-            circular_img.thumbnail((300, 300), Image.Resampling.LANCZOS)
+            # If square enough, apply circle mask; otherwise preserve entire logo
+            width, height = img.size
+            if abs(width - height) / max(width, height) < 0.2:
+                size = min(width, height)
+                left = (width - size) // 2
+                top = (height - size) // 2
+                img_square = img.crop((left, top, left + size, top + size))
+                
+                mask = Image.new('L', (size, size), 0)
+                draw = ImageDraw.Draw(mask)
+                draw.ellipse((0, 0, size, size), fill=255)
+                
+                circular_img = Image.new('RGBA', (size, size), (255, 255, 255, 0))
+                circular_img.paste(img_square, (0, 0), mask)
+                final_img = circular_img
+            else:
+                final_img = img
+                
+            final_img.thumbnail((300, 300), Image.Resampling.LANCZOS)
             
             buffer = io.BytesIO()
-            circular_img.save(buffer, format="PNG")
+            final_img.save(buffer, format="PNG")
             encoded = base64.b64encode(buffer.getvalue()).decode('utf-8')
             return f"data:image/png;base64,{encoded}"
     except Exception as e:
