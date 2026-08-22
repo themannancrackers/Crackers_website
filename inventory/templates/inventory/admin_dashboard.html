@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static tz %}
 
 
 {% block extra_css %}
@@ -528,8 +528,9 @@ select.order-status option {
           </h6>
           <select id="orderFilter" class="form-select form-select-sm w-auto bg-dark text-white border-warning" onchange="filterOrders(this.value)" style="border-color: var(--diwali-orange) !important;">
             <option value="all">All Orders</option>
-            <option value="pending">Pending</option>
-            <option value="confirmed">Confirmed</option>
+            {% for status_code, status_label in status_choices %}
+            <option value="{{ status_code }}">{{ status_label }}</option>
+            {% endfor %}
           </select>
         </div>
 
@@ -557,11 +558,12 @@ select.order-status option {
                 </td>
                 <td>
                   <select class="form-select form-select-sm order-status" data-id="{{ order.id }}" style="border-color: var(--diwali-orange);">
-                    <option value="pending" {% if order.status == 'pending' %}selected{% endif %}>Pending</option>
-                    <option value="confirmed" {% if order.status == 'confirmed' %}selected{% endif %}>Confirmed</option>
+                    {% for status_code, status_label in status_choices %}
+                    <option value="{{ status_code }}" {% if order.status == status_code %}selected{% endif %}>{{ status_label }}</option>
+                    {% endfor %}
                   </select>
                 </td>
-<td class="order-date" data-date="{{ order.created_at }}">{{ order.created_at }}</td>
+<td class="order-date" data-date="{{ order.created_at|localtime|date:'c' }}">{{ order.created_at|localtime|date:"d M Y, h:i A" }}</td>
                 <td class="pe-3">
                   <button class="btn btn-sm btn-outline-warning view-details" data-id="{{ order.id }}" style="border-color: var(--diwali-orange); color: var(--diwali-orange);">
                     <i class="bi bi-eye"></i>
@@ -900,8 +902,9 @@ document.addEventListener("DOMContentLoaded", function () {
   const lastUpdated = document.getElementById("last-updated");
 
   // Fetch dashboard data
-  function fetchDashboardData() {
-    fetch("{% url 'inventory:dashboard_data' %}")
+  function fetchDashboardData(status) {
+    const selectedStatus = status || document.getElementById('orderFilter').value || 'all';
+    fetch("{% url 'inventory:dashboard_data' %}?status=" + encodeURIComponent(selectedStatus))
       .then(response => response.json())
       .then(data => {
         document.getElementById("total-users").textContent = data.total_users;
@@ -912,6 +915,9 @@ document.addEventListener("DOMContentLoaded", function () {
         // Update recent orders table
         ordersTable.innerHTML = "";
         data.recent_orders.forEach(order => {
+          const statusOptions = data.status_choices.map(choice =>
+            '<option value="' + choice[0] + '"' + (order.status === choice[0] ? ' selected' : '') + '>' + choice[1] + '</option>'
+          ).join('');
           ordersTable.innerHTML += `
             <tr data-id="${order.id}" style="border-bottom: 1px solid #e9ecef;">
               <td class="ps-3 fw-bold text-orange">#${order.id}</td>
@@ -923,8 +929,7 @@ document.addEventListener("DOMContentLoaded", function () {
               </td>
               <td>
                 <select class="form-select form-select-sm order-status" data-id="${order.id}" style="border-color: var(--diwali-orange);">
-                  <option value="pending" ${order.status === 'pending' ? 'selected' : ''}>Pending</option>
-                  <option value="confirmed" ${order.status === 'confirmed' ? 'selected' : ''}>Confirmed</option>
+                  ${statusOptions}
                 </select>
               </td>
 <td>${formatDateSafe(order.created_at)}</td>
@@ -961,7 +966,11 @@ document.addEventListener("DOMContentLoaded", function () {
   refreshBtn.addEventListener("click", fetchDashboardData);
   setInterval(fetchDashboardData, 30000);
 
-  // Change order status (Pending/Confirmed)
+  window.filterOrders = function (status) {
+    fetchDashboardData(status);
+  };
+
+  // Change order status
   document.body.addEventListener("change", function (e) {
     if (e.target.classList.contains("order-status")) {
       const orderId = e.target.dataset.id;

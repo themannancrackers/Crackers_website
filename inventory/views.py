@@ -4,7 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from django.contrib.auth import get_user_model
-from django.db.models import Count, Sum
+from django.db import transaction
+from django.db.models import Count, F, Q, Sum
 from django.utils import timezone
 from .models import Product, Category, Order, OrderItem, SiteConfiguration
 from accounts.models import CustomUser
@@ -108,36 +109,42 @@ def admin_dashboard(request):
         'total_orders': Order.objects.count(),
         'total_revenue': Order.objects.filter(status='delivered').aggregate(Sum('total_amount'))['total_amount__sum'] or 0,
         'recent_orders': Order.objects.order_by('-created_at')[:10],
-        'low_stock_products': Product.objects.filter(stock_quantity__lt=10)
+        'low_stock_products': Product.objects.filter(stock_quantity__lt=10),
+        'status_choices': Order.STATUS_CHOICES,
     }
     return render(request, 'inventory/admin_dashboard.html', context)
 
 @admin_required
 def dashboard_data(request):
+    status_filter = request.GET.get('status', 'all')
+    recent_orders = Order.objects.order_by('-created_at')
+    if status_filter != 'all':
+        recent_orders = recent_orders.filter(status=status_filter)
+
     data = {
         'total_users': CustomUser.objects.count(),
         'total_products': Product.objects.count(),
         'total_orders': Order.objects.count(),
         'total_revenue': Order.objects.filter(status='delivered').aggregate(Sum('total_amount'))['total_amount__sum'] or 0,
-        'recent_orders': list(Order.objects.order_by('-created_at')[:10].values(
+        'recent_orders': list(recent_orders[:10].values(
             'id', 'full_name', 'total_amount', 'status'
         )),
+        'status_choices': Order.STATUS_CHOICES,
         'low_stock_products': list(Product.objects.filter(stock_quantity__lt=10).values(
             'id', 'name', 'stock_quantity'
         ))
     }
     
-    # Add status choices for each order
-    for order in data['recent_orders']:
-        order['status_choices'] = Order.STATUS_CHOICES
-    
     return JsonResponse(data)
 
-@admin_required
+@staff_required
 def update_order_status(request, order_id):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
+            valid_statuses = dict(Order.STATUS_CHOICES)
+            if data['status'] not in valid_statuses:
+                return JsonResponse({'success': False, 'error': 'Invalid order status.'}, status=400)
             order = Order.objects.get(id=order_id)
             order.status = data['status']
             order.save()
@@ -145,6 +152,27 @@ def update_order_status(request, order_id):
         except (Order.DoesNotExist, KeyError, json.JSONDecodeError):
             return JsonResponse({'success': False})
     return JsonResponse({'success': False})
+
+@staff_required
+@require_http_methods(["POST"])
+def delete_order(request, order_id):
+    try:
+        with transaction.atomic():
+            order = Order.objects.prefetch_related('items').get(
+                id=order_id,
+                status='pending'
+            )
+            for item in order.items.all():
+                Product.objects.filter(id=item.product_id).update(
+                    stock_quantity=F('stock_quantity') + item.quantity
+                )
+            order.delete()
+        return JsonResponse({'success': True})
+    except Order.DoesNotExist:
+        return JsonResponse({
+            'success': False,
+            'error': 'Only pending orders can be deleted.'
+        }, status=400)
 
 @admin_required
 def order_details(request, order_id):
@@ -247,7 +275,12 @@ def staff_inventory(request):
     products = Product.objects.all()
     
     if search_query:
-        products = products.filter(name__icontains=search_query)
+        products = products.filter(
+            Q(name__icontains=search_query) |
+            Q(category__name__icontains=search_query) |
+            Q(description__icontains=search_query) |
+            Q(product_id__icontains=search_query)
+        ).distinct()
     
     products = products.order_by('category__order', 'category__name', 'order', 'product_id', 'id')
     
@@ -984,7 +1017,7 @@ def checkout(request):
                     phone=phone,
                     address=address,
                     total_amount=total_amount,
-                    status='Pending'
+                    status='pending'
                 )
 
                 # Create order items and decrement stock
@@ -1142,8 +1175,12 @@ def staff_orders(request):
         orders_qs = orders_qs.filter(
             Q(full_name__icontains=search_query) |
             Q(phone__icontains=search_query) |
+            Q(email__icontains=search_query) |
+            Q(address__icontains=search_query) |
+            Q(items__product__name__icontains=search_query) |
+            Q(items__product__category__name__icontains=search_query) |
             Q(id__icontains=search_query)
-        )
+        ).distinct()
 
     orders_data = []
     for ord_obj in orders_qs:

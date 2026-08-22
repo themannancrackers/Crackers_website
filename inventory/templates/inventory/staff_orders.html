@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static tz %}
 
 {% block title %}Orders & Bill Printing - The Mannan Crackers{% endblock %}
 
@@ -48,8 +48,9 @@
   .nav-pills .nav-link {
     color: #cbd5e1;
     border-radius: 20px;
-    padding: 8px 18px;
+    padding: 8px 10px;
     font-weight: 600;
+    text-align: center;
     transition: all 0.3s ease;
   }
 
@@ -57,6 +58,61 @@
     background: linear-gradient(90deg, var(--diwali-orange), var(--diwali-gold));
     color: #1a1a2e;
     box-shadow: 0 0 12px rgba(255, 215, 0, 0.4);
+  }
+
+  .orders-filter-form {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    flex-wrap: nowrap;
+  }
+
+  .orders-filter-statuses {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .orders-filter-statuses .nav-pills {
+    flex-wrap: nowrap;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .orders-filter-statuses .nav-item {
+    flex: 1 1 0;
+  }
+
+  .orders-filter-search {
+    flex: 0 1 420px;
+    min-width: 300px;
+  }
+
+  .orders-filter-search .input-group {
+    flex-wrap: nowrap;
+  }
+
+  @media (max-width: 767.98px) {
+    .orders-filter-form {
+      align-items: stretch;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .orders-filter-search {
+      flex-basis: auto;
+      min-width: 0;
+      width: 100%;
+    }
+
+    .orders-filter-statuses .nav-pills {
+      flex-wrap: wrap;
+      justify-content: center;
+      row-gap: 4px;
+    }
+
+    .orders-filter-statuses .nav-item {
+      flex: 1 1 auto;
+    }
   }
 
   /* Order Cards */
@@ -179,8 +235,8 @@
 
   <!-- Filter & Search Card -->
   <div class="filter-card">
-    <form method="GET" action="{% url 'inventory:staff_orders' %}" class="row g-3 align-items-center">
-      <div class="col-md-6 col-lg-7">
+    <form method="GET" action="{% url 'inventory:staff_orders' %}" class="orders-filter-form">
+      <div class="orders-filter-statuses">
         <ul class="nav nav-pills">
           <li class="nav-item">
             <a class="nav-link {% if current_status == 'all' %}active{% endif %}" 
@@ -188,28 +244,18 @@
               All Orders
             </a>
           </li>
+          {% for status_code, status_label in status_choices %}
           <li class="nav-item">
-            <a class="nav-link {% if current_status == 'pending' %}active{% endif %}" 
-               href="{% url 'inventory:staff_orders' %}?status=pending{% if search_query %}&q={{ search_query }}{% endif %}">
-              Pending
+            <a class="nav-link {% if current_status == status_code %}active{% endif %}" 
+               href="{% url 'inventory:staff_orders' %}?status={{ status_code }}{% if search_query %}&q={{ search_query }}{% endif %}">
+              {{ status_label }}
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link {% if current_status == 'processing' %}active{% endif %}" 
-               href="{% url 'inventory:staff_orders' %}?status=processing{% if search_query %}&q={{ search_query }}{% endif %}">
-              Processing
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link {% if current_status == 'completed' %}active{% endif %}" 
-               href="{% url 'inventory:staff_orders' %}?status=completed{% if search_query %}&q={{ search_query }}{% endif %}">
-              Completed
-            </a>
-          </li>
+          {% endfor %}
         </ul>
       </div>
 
-      <div class="col-md-6 col-lg-5">
+      <div class="orders-filter-search">
         <div class="input-group">
           <input type="hidden" name="status" value="{{ current_status }}">
           <input type="text" name="q" class="form-control bg-dark border-secondary text-light placeholder-slate-400" 
@@ -237,19 +283,15 @@
             {{ item.order.full_name }}
           </h3>
           <span class="text-slate-300 small">
-            Order #ORD-{{ item.order.id|stringformat:"06d" }} | {{ item.order.created_at|date:"d M Y, h:i A" }}
+            Order #ORD-{{ item.order.id|stringformat:"06d" }} | {{ item.order.created_at|localtime|date:"d M Y, h:i A" }}
           </span>
         </div>
         <div class="d-flex align-items-center gap-2">
-          {% if item.order.status == 'completed' %}
-            <span class="badge bg-success status-badge"><i class="bi bi-check-circle-fill me-1"></i> Completed</span>
-          {% elif item.order.status == 'processing' %}
-            <span class="badge bg-primary status-badge"><i class="bi bi-hourglass-split me-1"></i> Processing</span>
-          {% elif item.order.status == 'cancelled' %}
-            <span class="badge bg-danger status-badge"><i class="bi bi-x-circle-fill me-1"></i> Cancelled</span>
-          {% else %}
-            <span class="badge bg-warning text-dark status-badge"><i class="bi bi-clock-fill me-1"></i> Pending</span>
-          {% endif %}
+          <select class="form-select form-select-sm order-status" data-id="{{ item.order.id }}" aria-label="Change order status">
+            {% for status_code, status_label in status_choices %}
+            <option value="{{ status_code }}" {% if item.order.status == status_code %}selected{% endif %}>{{ status_label }}</option>
+            {% endfor %}
+          </select>
 
           <!-- Action Buttons for Staff & Admin -->
           <a href="{% url 'inventory:generate_invoice' item.order.id %}?print=true" 
@@ -264,6 +306,14 @@
              title="Download PDF Bill">
             <i class="bi bi-file-earmark-pdf-fill"></i> Download PDF
           </a>
+          {% if item.order.status == 'pending' %}
+          <form method="post" action="{% url 'inventory:delete_order' item.order.id %}" class="d-inline" onsubmit="return confirm('Delete this pending order?');">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger btn-sm d-inline-flex align-items-center gap-1" title="Delete pending order">
+              <i class="bi bi-trash-fill"></i> Delete
+            </button>
+          </form>
+          {% endif %}
         </div>
       </div>
 
@@ -331,4 +381,27 @@
     </div>
   {% endif %}
 </div>
+<script>
+document.addEventListener('change', function (event) {
+  if (!event.target.classList.contains('order-status')) return;
+
+  const statusSelect = event.target;
+  fetch("{% url 'inventory:update_order_status' 0 %}".replace('0', statusSelect.dataset.id), {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': '{{ csrf_token }}'
+    },
+    body: JSON.stringify({ status: statusSelect.value })
+  }).then(function (response) {
+    if (!response.ok) throw new Error('Status update failed');
+    return response.json();
+  }).then(function (data) {
+    if (data.success) window.location.reload();
+    else throw new Error(data.error || 'Status update failed');
+  }).catch(function (error) {
+    alert(error.message);
+  });
+});
+</script>
 {% endblock %}
