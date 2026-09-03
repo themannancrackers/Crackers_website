@@ -37,6 +37,9 @@ class InventoryWorkflowTests(TestCase):
 			email='customer@example.com',
 			phone='9894835855',
 			address='12 Test Street',
+			subtotal=Decimal('2000.00'),
+			handling_fee_percentage=Decimal('0.00'),
+			handling_fee=Decimal('0.00'),
 			total_amount=Decimal('2000.00'),
 			status=status,
 		)
@@ -147,3 +150,56 @@ class InventoryWorkflowTests(TestCase):
 		response = self.client.get(reverse('inventory:home'))
 
 		self.assertContains(response, '+91 98948 35855')
+
+	def test_update_settings_handling_fee(self):
+		self.client.force_login(self.staff)
+		response = self.client.post(
+			reverse('inventory:update_settings'),
+			data={'min_order_amount': 2000, 'handling_fee_percentage': 5.0},
+			content_type='application/json'
+		)
+		self.assertEqual(response.status_code, 200)
+		self.assertTrue(response.json()['success'])
+		config = SiteConfiguration.objects.get(id=1)
+		self.assertEqual(float(config.handling_fee_percentage), 5.0)
+
+	@patch('inventory.views.utils.send_order_confirmation')
+	def test_handling_fee_included_in_checkout_and_invoice(self, send_email):
+		config = SiteConfiguration.objects.get(id=1)
+		config.handling_fee_percentage = Decimal('4.00')
+		config.save()
+
+		response = self.client.post(
+			reverse('inventory:checkout'),
+			data={
+				'customerData': {
+					'fullName': 'Fee Customer',
+					'email': 'feecustomer@example.com',
+					'phone': '9894835855',
+					'deliveryAddress': '12 Fee Street',
+				},
+				'cartItems': {
+					str(self.product.id): {
+						'name': self.product.name,
+						'quantity': 2,
+						'price': '1000.00',
+					}
+				},
+			},
+			content_type='application/json',
+		)
+
+		self.assertEqual(response.status_code, 201)
+		order = Order.objects.get(id=response.json()['order_id'])
+		self.assertEqual(order.subtotal, Decimal('2000.00'))
+		self.assertEqual(order.handling_fee_percentage, Decimal('4.00'))
+		self.assertEqual(order.handling_fee, Decimal('80.00'))
+		self.assertEqual(order.total_amount, Decimal('2080.00'))
+
+		# Test Invoice generation
+		self.client.force_login(self.staff)
+		inv_response = self.client.get(reverse('inventory:generate_invoice', args=[order.id]))
+		self.assertEqual(inv_response.status_code, 200)
+		self.assertContains(inv_response, 'Handling Fee:')
+		self.assertContains(inv_response, '₹80.00')
+

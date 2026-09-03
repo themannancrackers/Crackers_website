@@ -956,7 +956,7 @@ def checkout(request):
 
         # Build order items and validate stock
         order_items_to_create = []
-        total_amount = 0
+        subtotal_val = 0.0
 
         for item in items_data:
             try:
@@ -977,8 +977,8 @@ def checkout(request):
                     }, status=400)
 
                 # Calculate subtotal
-                subtotal = selling_price * qty
-                total_amount += subtotal
+                subtotal_item = selling_price * qty
+                subtotal_val += subtotal_item
 
                 order_items_to_create.append({
                     'product': product,
@@ -997,12 +997,17 @@ def checkout(request):
                     'error': f'Invalid item data: {str(e)}'
                 }, status=400)
 
-        # Validate minimum order amount
-        if total_amount < MIN_ORDER:
+        # Validate minimum order amount against subtotal
+        if subtotal_val < float(MIN_ORDER):
             return JsonResponse({
                 'success': False,
-                'error': f'Minimum order value is ₹{MIN_ORDER}. Current total: ₹{total_amount:.2f}'
+                'error': f'Minimum order value is ₹{MIN_ORDER}. Current total: ₹{subtotal_val:.2f}'
             }, status=400)
+
+        # Calculate Handling Fee
+        handling_fee_pct = float(SiteConfiguration.get_handling_fee_percentage())
+        handling_fee_amount = round(subtotal_val * (handling_fee_pct / 100.0), 2)
+        total_amount = round(subtotal_val + handling_fee_amount, 2)
 
         # Create order with transaction (atomic operation)
         from django.db import transaction
@@ -1016,6 +1021,9 @@ def checkout(request):
                     email=email,
                     phone=phone,
                     address=address,
+                    subtotal=subtotal_val,
+                    handling_fee_percentage=handling_fee_pct,
+                    handling_fee=handling_fee_amount,
                     total_amount=total_amount,
                     status='pending'
                 )
@@ -1049,6 +1057,8 @@ def checkout(request):
             return JsonResponse({
                 'success': True,
                 'orderSummary': {
+                    'subtotal': subtotal_val,
+                    'handling_fee': handling_fee_amount,
                     'total': total_amount,
                 },
                 'message': 'Order created successfully',
@@ -1084,25 +1094,39 @@ def checkout(request):
 def update_settings(request):
     try:
         data = json.loads(request.body)
-        min_order_amount = data.get('min_order_amount')
-        if min_order_amount is None:
-            return JsonResponse({'success': False, 'error': 'min_order_amount is required'}, status=400)
-        
-        try:
-            min_order_amount = float(min_order_amount)
-            if min_order_amount < 0:
-                raise ValueError()
-        except ValueError:
-            return JsonResponse({'success': False, 'error': 'Invalid minimum order amount'}, status=400)
-
         config, created = SiteConfiguration.objects.get_or_create(id=1)
-        config.min_order_amount = min_order_amount
+        
+        updated_fields = []
+        if 'min_order_amount' in data and data['min_order_amount'] is not None:
+            try:
+                min_order_val = float(data['min_order_amount'])
+                if min_order_val < 0:
+                    raise ValueError()
+                config.min_order_amount = min_order_val
+                updated_fields.append(f'Min Order: ₹{min_order_val:.2f}')
+            except ValueError:
+                return JsonResponse({'success': False, 'error': 'Invalid minimum order amount'}, status=400)
+
+        if 'handling_fee_percentage' in data and data['handling_fee_percentage'] is not None:
+            try:
+                handling_fee_pct = float(data['handling_fee_percentage'])
+                if handling_fee_pct < 0:
+                    raise ValueError()
+                config.handling_fee_percentage = handling_fee_pct
+                updated_fields.append(f'Handling Fee: {handling_fee_pct:.2f}%')
+            except ValueError:
+                return JsonResponse({'success': False, 'error': 'Invalid handling fee percentage'}, status=400)
+
+        if not updated_fields:
+            return JsonResponse({'success': False, 'error': 'No settings provided to update'}, status=400)
+
         config.save()
         
         return JsonResponse({
             'success': True,
-            'message': f'Minimum order amount updated to ₹{min_order_amount:.2f}',
-            'min_order_amount': min_order_amount
+            'message': 'Updated ' + ', '.join(updated_fields),
+            'min_order_amount': float(config.min_order_amount),
+            'handling_fee_percentage': float(config.handling_fee_percentage)
         })
     except Exception as e:
         return JsonResponse({'success': False, 'error': str(e)}, status=500)

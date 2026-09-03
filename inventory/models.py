@@ -50,11 +50,22 @@ class SiteConfiguration(models.Model):
         default=1999, 
         validators=[MinValueValidator(0)]
     )
+    handling_fee_percentage = models.DecimalField(
+        max_digits=5,
+        decimal_places=2,
+        default=3.00,
+        validators=[MinValueValidator(0)]
+    )
 
     @classmethod
     def get_min_order_amount(cls):
         config, created = cls.objects.get_or_create(id=1)
         return config.min_order_amount
+
+    @classmethod
+    def get_handling_fee_percentage(cls):
+        config, created = cls.objects.get_or_create(id=1)
+        return config.handling_fee_percentage
 
     def __str__(self):
         return "Site Configuration"
@@ -83,6 +94,9 @@ class Order(models.Model):
     email = models.EmailField()
     phone = models.CharField(max_length=15)
     address = models.TextField()  # Renamed from delivery_address to match form field
+    subtotal = models.DecimalField(max_digits=10, decimal_places=2, default=0, validators=[MinValueValidator(0)])
+    handling_fee_percentage = models.DecimalField(max_digits=5, decimal_places=2, default=0, validators=[MinValueValidator(0)])
+    handling_fee = models.DecimalField(max_digits=10, decimal_places=2, default=0, validators=[MinValueValidator(0)])
     total_amount = models.DecimalField(max_digits=10, decimal_places=2, validators=[validate_min_order_amount])
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
     created_at = models.DateTimeField(auto_now_add=True)

@@ -3,7 +3,7 @@ from .models import Category, Product, SiteConfiguration
 
 @admin.register(SiteConfiguration)
 class SiteConfigurationAdmin(admin.ModelAdmin):
-    list_display = ('min_order_amount',)
+    list_display = ('min_order_amount', 'handling_fee_percentage')
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):

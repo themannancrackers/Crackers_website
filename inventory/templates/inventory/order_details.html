@@ -53,6 +53,16 @@
                 {% endfor %}
             </tbody>
             <tfoot class="table-light">
+                {% if order.handling_fee > 0 %}
+                <tr>
+                    <td colspan="3" class="text-end">Subtotal:</td>
+                    <td class="text-end">₹{{ order.subtotal }}</td>
+                </tr>
+                <tr>
+                    <td colspan="3" class="text-end">Handling Fee:</td>
+                    <td class="text-end">₹{{ order.handling_fee }}</td>
+                </tr>
+                {% endif %}
                 <tr>
                     <td colspan="3" class="text-end"><strong>Total Amount:</strong></td>
                     <td class="text-end"><strong>₹{{ order.total_amount }}</strong></td>

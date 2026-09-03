@@ -2159,9 +2159,17 @@
                 </div>
                 <div class="cart-summary-details mb-4">
                     <h4>Order Summary</h4>
-                    <div class="d-flex justify-content-between">
+                    <div class="d-flex justify-content-between mb-1">
                         <span>Subtotal:</span>
                         <span>₹<span id="modalSubtotal">0.00</span></span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-1">
+                        <span>Handling Fee:</span>
+                        <span>₹<span id="modalHandlingFee">0.00</span></span>
+                    </div>
+                    <div class="d-flex justify-content-between fw-bold fs-5 mt-2 pt-2 border-top border-secondary">
+                        <span>Final Billing Amount:</span>
+                        <span class="text-success">₹<span id="modalGrandTotal">0.00</span></span>
                     </div>
                     <!-- Minimum Order Alert -->
                     <div id="minOrderAlert" class="alert alert-warning alert-dismissible fade show mt-3" role="alert"
@@ -4227,6 +4235,7 @@
 {% block extra_js %}
 <script>
     window.MIN_ORDER_AMOUNT = parseFloat("{{ min_order_amount }}") || 1999;
+    window.HANDLING_FEE_PERCENTAGE = parseFloat("{{ handling_fee_percentage }}") || 0;
 </script>
 <script>
 
@@ -4237,9 +4246,11 @@
 
     // Initialize totals to 0 on page load
     document.addEventListener("DOMContentLoaded", function () {
-        document.getElementById("cart-total").textContent = "0.00";
-        document.getElementById("modalSubtotal").textContent = "0.00";
-        document.querySelector(".cart-items-count").textContent = "(0 items)";
+        if (document.getElementById("cart-total")) document.getElementById("cart-total").textContent = "0.00";
+        if (document.getElementById("modalSubtotal")) document.getElementById("modalSubtotal").textContent = "0.00";
+        if (document.getElementById("modalHandlingFee")) document.getElementById("modalHandlingFee").textContent = "0.00";
+        if (document.getElementById("modalGrandTotal")) document.getElementById("modalGrandTotal").textContent = "0.00";
+        if (document.querySelector(".cart-items-count")) document.querySelector(".cart-items-count").textContent = "(0 items)";
     });
 
     // =====================================================
@@ -4285,12 +4296,17 @@
     // 🟢 UPDATE CART DISPLAY (FLOATING CART + MODAL)
     // =====================================================
     function updateCartDisplay() {
-        const total = cart.reduce((s, i) => s + i.amount * i.quantity, 0);
+        const subtotal = cart.reduce((s, i) => s + i.amount * i.quantity, 0);
         const count = cart.reduce((s, i) => s + i.quantity, 0);
+        const feePct = window.HANDLING_FEE_PERCENTAGE || 0;
+        const handlingFee = Math.round(subtotal * (feePct / 100) * 100) / 100;
+        const grandTotal = subtotal + handlingFee;
 
-        document.getElementById("cart-total").textContent = total.toFixed(2);
-        document.querySelector(".cart-items-count").textContent = `(${count} items)`;
-        document.getElementById("modalSubtotal").textContent = total.toFixed(2);
+        if (document.getElementById("cart-total")) document.getElementById("cart-total").textContent = grandTotal.toFixed(2);
+        if (document.querySelector(".cart-items-count")) document.querySelector(".cart-items-count").textContent = `(${count} items)`;
+        if (document.getElementById("modalSubtotal")) document.getElementById("modalSubtotal").textContent = subtotal.toFixed(2);
+        if (document.getElementById("modalHandlingFee")) document.getElementById("modalHandlingFee").textContent = handlingFee.toFixed(2);
+        if (document.getElementById("modalGrandTotal")) document.getElementById("modalGrandTotal").textContent = grandTotal.toFixed(2);
 
         updateCartModal();
         updateMinOrderAlert(); // Check minimum order requirement

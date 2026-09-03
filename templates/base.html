@@ -1105,7 +1105,7 @@
           </div>
           <div class="top-contact-card">
             <div class="top-contact-title">Dispatch Details</div>
-            <div class="top-contact-phone">+91 82209 91515</div>
+            <div class="top-contact-phone">+91 96888 77705</div>
           </div>
         </div>
       </div>
@@ -1248,7 +1248,7 @@
             <p>+91 82202 010205</p>
             <p>+91 98948 35855</p>
             <h6>Gpay</h6>
-            <p>+91 75021 75121</p>            
+            <p>+91 75021 75121</p>
           </div>
         </div>
 
@@ -1522,13 +1522,13 @@
     document.body.appendChild(overlay);
 
     // Obfuscate screen content on focus loss (blur)
-    window.addEventListener('blur', function() {
+    window.addEventListener('blur', function () {
       overlay.style.display = 'flex';
       document.body.classList.add('blur-protection');
     });
 
     // Restore screen content on focus gain (focus)
-    window.addEventListener('focus', function() {
+    window.addEventListener('focus', function () {
       overlay.style.display = 'none';
       document.body.classList.remove('blur-protection');
     });
@@ -1536,28 +1536,42 @@
 
   <style>
     /* Zoomable product images cursor style */
-    .img-col img, .mobile-img img, .mobile-card-img, .img-thumbnail, .card-image-wrapper img, .quick-order-product-image, .about-grid img {
+    .img-col img,
+    .mobile-img img,
+    .mobile-card-img,
+    .img-thumbnail,
+    .card-image-wrapper img,
+    .quick-order-product-image,
+    .about-grid img {
       cursor: pointer !important;
-      pointer-events: auto !important; /* Override pointer-events: none from general img rule */
+      pointer-events: auto !important;
+      /* Override pointer-events: none from general img rule */
       transition: transform 0.2s ease;
     }
-    .img-col img:hover, .mobile-img img:hover, .mobile-card-img:hover, .img-thumbnail:hover, .card-image-wrapper img:hover, .quick-order-product-image:hover, .about-grid img:hover {
+
+    .img-col img:hover,
+    .mobile-img img:hover,
+    .mobile-card-img:hover,
+    .img-thumbnail:hover,
+    .card-image-wrapper img:hover,
+    .quick-order-product-image:hover,
+    .about-grid img:hover {
       transform: scale(1.05);
     }
   </style>
 
   <!-- 🌟 GLOBAL FULL IMAGE VIEW MODAL -->
   <div class="modal fade" id="imageModal" tabindex="-1" style="z-index: 1060;">
-      <div class="modal-dialog modal-fullscreen-sm-down modal-lg modal-dialog-centered">
-          <div class="modal-content" style="background: rgba(0,0,0,0.85); border: none;">
-              <div class="modal-body d-flex justify-content-center align-items-center p-0">
-                  <img id="modalImage" src="" alt="Product Image"
-                      style="max-height: 90vh; max-width: 95vw; object-fit: contain; border-radius: 10px;">
-              </div>
-              <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3"
-                  data-bs-dismiss="modal"></button>
-          </div>
+    <div class="modal-dialog modal-fullscreen-sm-down modal-lg modal-dialog-centered">
+      <div class="modal-content" style="background: rgba(0,0,0,0.85); border: none;">
+        <div class="modal-body d-flex justify-content-center align-items-center p-0">
+          <img id="modalImage" src="" alt="Product Image"
+            style="max-height: 90vh; max-width: 95vw; object-fit: contain; border-radius: 10px;">
+        </div>
+        <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3"
+          data-bs-dismiss="modal"></button>
       </div>
+    </div>
   </div>
 
   <script>
