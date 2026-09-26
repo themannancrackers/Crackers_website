@@ -118,14 +118,20 @@ def generate_pricelist_pdf():
                 discount_pct = Decimal('80')
                 discounted = (mrp * Decimal('0.20')).quantize(Decimal('0.01'))
                 
-                # Derive content format if available in description or default to '1 BOX'
+                # Derive clean packaging unit (e.g., 1 BOX, 5 PKT, 10 PCS) instead of long descriptions
                 content_str = "1 BOX"
-                if p.description and ("BOX" in p.description.upper() or "PKT" in p.description.upper() or "PCS" in p.description.upper()):
-                    content_str = p.description.strip()
+                if p.description:
+                    import re
+                    match = re.search(r'\b(\d+\s*(?:BOX|PKT|PCS|PACKET|BAG|SET|Pcs|Box)(?:\s*\([^)]+\))?)', p.description, re.IGNORECASE)
+                    if match:
+                        content_str = match.group(1).upper()
+                    elif len(p.description.strip()) <= 15:
+                        content_str = p.description.strip().upper()
                 elif "BOX" in p.name.upper():
                     content_str = "1 BOX"
                 elif "PKT" in p.name.upper() or "PACKET" in p.name.upper():
                     content_str = "1 PKT"
+
 
                 formatted_products.append({
                     's_no': global_s_no,
