@@ -1053,9 +1053,10 @@
 
     @media print {
       body {
-        display: none !important;
+        display: block !important;
       }
     }
+
 
     body.blur-protection {
       filter: blur(45px) !important;
@@ -1158,6 +1159,15 @@
             <li class="nav-item">
               <a class="nav-link" href="{% url 'inventory:contact' %}">
                 <i class="bi bi-telephone-fill"></i> Contact Us
+              </a>
+            </li>
+
+            <li class="nav-item ms-lg-2 my-1 my-lg-0">
+              <a class="nav-link px-3 py-2 rounded-pill shadow d-inline-flex align-items-center gap-1"
+                 style="background: linear-gradient(135deg, #ffd700, #ff8c00) !important; color: #000000 !important; font-weight: 800 !important; font-size: 0.95rem !important; border: 1.5px solid #ffffff !important; box-shadow: 0 4px 14px rgba(255, 140, 0, 0.6) !important;"
+                 href="{% url 'inventory:download_pricelist_pdf' %}" target="_blank">
+                <i class="bi bi-file-earmark-pdf-fill text-danger fs-6 me-1"></i>
+                <span>Download Price List PDF</span>
               </a>
             </li>
 
@@ -1495,44 +1505,9 @@
         e.preventDefault();
         return false;
       }
-      // Disable Print (Ctrl+P or Cmd+P)
-      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "p") {
-        e.preventDefault();
-        return false;
-      }
-      // Disable Copy (Ctrl+C or Cmd+C)
-      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "c") {
-        e.preventDefault();
-        return false;
-      }
-    });
-
-    // Clear clipboard on PrintScreen keyup
-    document.addEventListener("keyup", function (e) {
-      if (e.key === "PrintScreen") {
-        navigator.clipboard.writeText("");
-        alert("Screenshots and PrintScreen captures are disabled on this website for security.");
-      }
-    });
-
-    // Create and append the protection blur overlay element
-    const overlay = document.createElement('div');
-    overlay.id = 'blurOverlay';
-    overlay.innerHTML = '<div><i class="bi bi-lock-fill text-warning" style="font-size: 4rem; display: block; margin-bottom: 15px;"></i>🔒 Content Protected<br><span style="font-size: 1rem; color: #ffb347; font-weight: normal; margin-top: 10px; display: block;">Screenshots and screen sharing are disabled.</span></div>';
-    document.body.appendChild(overlay);
-
-    // Obfuscate screen content on focus loss (blur)
-    window.addEventListener('blur', function () {
-      overlay.style.display = 'flex';
-      document.body.classList.add('blur-protection');
-    });
-
-    // Restore screen content on focus gain (focus)
-    window.addEventListener('focus', function () {
-      overlay.style.display = 'none';
-      document.body.classList.remove('blur-protection');
     });
   </script>
+
 
   <style>
     /* Zoomable product images cursor style */

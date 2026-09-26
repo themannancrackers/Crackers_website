@@ -43,4 +43,6 @@ urlpatterns = [
     path("contact/", views.contact, name="contact"),
     path("myorder/", views.customer_orders, name="customer_orders"),
     path("update-settings/", views.update_settings, name="update_settings"),
+    path("download-pricelist/", views.download_pricelist_pdf, name="download_pricelist_pdf"),
 ]
+

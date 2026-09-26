@@ -91,6 +91,78 @@ def generate_order_pdf(order):
         logger.error(f"Failed to generate order PDF: {str(e)}")
         return None, f"Mannan Crackers {timezone.now().strftime('%Y-%m-%d')}.pdf"
 
+def generate_pricelist_pdf():
+    """
+    Generate PDF bytes and custom filename for the complete crackers price list.
+    Filename format: 'The Mannan Crackers Price List YYYY-MM-DD.pdf'
+    """
+    try:
+        from inventory.models import Category, Product
+        
+        categories = Category.objects.prefetch_related('products').all().order_by('order', 'name')
+        today_date = timezone.now()
+        date_str = today_date.strftime('%Y-%m-%d')
+        filename = f"The Mannan Crackers Price List {date_str}.pdf"
+
+        categories_data = []
+        global_s_no = 1
+
+        for category in categories:
+            prods = category.products.filter(is_active=True).order_by('order', 'name')
+            if not prods.exists():
+                continue
+                
+            formatted_products = []
+            for p in prods:
+                mrp = Decimal(str(p.price))
+                discount_pct = Decimal('80')
+                discounted = (mrp * Decimal('0.20')).quantize(Decimal('0.01'))
+                
+                # Derive content format if available in description or default to '1 BOX'
+                content_str = "1 BOX"
+                if p.description and ("BOX" in p.description.upper() or "PKT" in p.description.upper() or "PCS" in p.description.upper()):
+                    content_str = p.description.strip()
+                elif "BOX" in p.name.upper():
+                    content_str = "1 BOX"
+                elif "PKT" in p.name.upper() or "PACKET" in p.name.upper():
+                    content_str = "1 PKT"
+
+                formatted_products.append({
+                    's_no': global_s_no,
+                    'product_id': p.product_id,
+                    'name': p.name,
+                    'content': content_str,
+                    'original_price': f"{mrp:.2f}",
+                    'discount_percentage': int(discount_pct),
+                    'discounted_price': f"{discounted:.2f}",
+                })
+                global_s_no += 1
+
+            categories_data.append({
+                'category': category,
+                'products': formatted_products
+            })
+
+        context = {
+            'categories_data': categories_data,
+            'today_date': today_date,
+            'logo_base64': get_logo_base64(),
+        }
+
+        html_content = render_to_string('inventory/pricelist_pdf.html', context)
+        pdf_buffer = io.BytesIO()
+        pisa_status = pisa.CreatePDF(html_content, dest=pdf_buffer)
+
+        if pisa_status.err:
+            logger.error(f"Error rendering Price List PDF: {pisa_status.err}")
+            return None, filename
+
+        return pdf_buffer.getvalue(), filename
+    except Exception as e:
+        logger.error(f"Failed to generate price list PDF: {str(e)}", exc_info=True)
+        return None, f"The Mannan Crackers Price List {timezone.now().strftime('%Y-%m-%d')}.pdf"
+
+
 def send_order_confirmation(order):
     """Send order confirmation email to customer using Order object, with attached PDF bill."""
     try:

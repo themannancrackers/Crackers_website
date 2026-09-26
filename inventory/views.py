@@ -1223,3 +1223,20 @@ def staff_orders(request):
     })
 
 
+def download_pricelist_pdf(request):
+    """
+    View to generate and download the full crackers price list PDF.
+    """
+    pdf_bytes, filename = utils.generate_pricelist_pdf()
+    if pdf_bytes:
+        from django.http import HttpResponse
+        response = HttpResponse(pdf_bytes, content_type='application/pdf')
+        response['Content-Disposition'] = f'inline; filename="{filename}"'
+        return response
+    else:
+        from django.contrib import messages
+        messages.error(request, "Could not generate Price List PDF at this time.")
+        return redirect('inventory:home')
+
+
+
